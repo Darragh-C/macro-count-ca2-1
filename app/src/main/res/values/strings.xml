@@ -1,0 +1,49 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">MacroCount</string>
+    <string name="button_addItem">Add MacroCount</string>
+
+    <string name="hint_macroCountTitle">MacroCount Title</string>
+    <string name="hint_macroCountDescription">MacroCount Description</string>
+    <string name="hint_macroCountCalories">Enter the number of calories</string>
+    <string name="hint_macroCountProtein">Protein Count</string>
+    <string name="hint_macroCountCarbs">Carbohydrate Count</string>
+    <string name="hint_macroCountFat">Fat Count</string>
+    <string name="hint_userName">User name</string>
+    <string name="hint_loginEmail">Enter your email</string>
+    <string name="hint_loginPassword">Enter your password</string>
+
+    <string name="snackbar_macroCountTitle">Please Enter a title</string>
+    <string name="snackbar_macroCountCalories">Please Enter a number for your calories</string>
+    <string name="snackbar_macroCountCarbs">Please Enter a number for your carbs</string>
+    <string name="snackbar_macroCountProtein">Please Enter a number for your protein</string>
+    <string name="snackbar_macroCountFat">Please Enter a number for your fat</string>
+    <string name="snackbar_userEmail">Please enter an email address</string>
+    <string name="snackbar_userPassword">Please enter a password</string>
+    <string name="snackbar_invalidLogin">Email or password incorrect</string>
+
+    <string name="menu_addMacroCount">Add</string>
+    <string name="menu_cancelMacroCount">Cancel</string>
+    <string name="save_macroCount">Save</string>
+    <string name="button_deleteItem">Delete</string>
+
+    <string name="text_kg">kg</string>
+    <string name="text_dob">DOB</string>
+    <string name="text_height">Height</string>
+    <string name="text_weight">Weight</string>
+    <string name="text_gender">Gender</string>
+    <string name="text_genderM">Male</string>
+    <string name="text_genderF">Female</string>
+    <string name="title_userProfile">User profile</string>
+
+    <string name="button_addImage">Add Image</string>
+    <string name="button_takePhoto">Take Photo</string>
+    <string name="button_login">Log in</string>
+    <string name="button_signup">Sign up</string>
+
+    <string name="login_link">Log in</string>
+    <string name="signup_link">Sign up</string>
+
+    <string name="select_macrocount_image">Select image</string>
+
+
+</resources>

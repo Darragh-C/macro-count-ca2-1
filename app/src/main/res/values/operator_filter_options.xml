@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="operator_filter_options">
+        <item>Equals</item>
+        <item>More than</item>
+        <item>Less than</item>
+    </string-array>
+</resources>
