@@ -6,13 +6,27 @@
     app:startDestination="@id/macroListFragment">
 
     <fragment
-        android:id="@+id/macroCountFragment"
-        android:name="org.wit.macrocount.MacroCountFragment"
-        android:label="fragment_macro_count"
-        tools:layout="@layout/fragment_macro_count" />
-    <fragment
         android:id="@+id/macroListFragment"
-        android:name="org.wit.macrocount.MacroListFragment"
-        android:label="fragment_macro_list"
-        tools:layout="@layout/fragment_macro_list" />
+        android:name="org.wit.macrocount.fragments.MacroListFragment"
+        android:label="@string/action_macro_list"
+        tools:layout="@layout/fragment_macro_list" >
+        <action
+            android:id="@+id/action_macroListFragment_to_macroCountFragment"
+            app:destination="@id/macroCountFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/macroCountFragment"
+        android:name="org.wit.macrocount.fragments.MacroCountFragment"
+        android:label="@string/action_macro_count"
+        tools:layout="@layout/fragment_macro_count" >
+        <action
+            android:id="@+id/action_macroCountFragment_to_macroListFragment"
+            app:destination="@id/macroListFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+
 </navigation>

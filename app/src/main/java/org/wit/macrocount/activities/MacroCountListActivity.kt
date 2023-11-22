@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +13,6 @@ import org.wit.macrocount.adapters.MacroCountListener
 import org.wit.macrocount.databinding.ActivityMacrocountListBinding
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
-import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
 import timber.log.Timber
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -58,24 +56,24 @@ class MacroCountListActivity : AppCompatActivity(), MacroCountListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_macro_list, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.data_icon -> {
-                val launcherIntent = Intent(this, MacroChartsActivity::class.java)
-                startActivity(launcherIntent)
-            }
-            R.id.item_profile -> {
-                Timber.i("clicked profile icon")
-                val launcherIntent = Intent(this, UserProfileActivity::class.java)
-                startActivity(launcherIntent)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.data_icon -> {
+//                val launcherIntent = Intent(this, MacroChartsActivity::class.java)
+//                startActivity(launcherIntent)
+//            }
+//            R.id.item_profile -> {
+//                Timber.i("clicked profile icon")
+//                val launcherIntent = Intent(this, UserProfileActivity::class.java)
+//                startActivity(launcherIntent)
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     private val getAddResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
