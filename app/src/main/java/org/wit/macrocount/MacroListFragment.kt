@@ -38,6 +38,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
     ): View? {
         _fragBinding = FragmentMacroListBinding.inflate(inflater, container, false)
         val root = fragBinding.root
+        activity?.title = getString(R.string.action_macro_count)
         fragBinding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
         fragBinding.recyclerView.adapter = MacroCountAdapter(app.macroCounts.findAll(), this)
 
