@@ -22,7 +22,7 @@ import timber.log.Timber.Forest.i
 class MacroListFragment : Fragment(), MacroCountListener {
 
     private lateinit var app: MainApp
-    private lateinit var adapter: MacroCountAdapter
+    //private lateinit var adapter: MacroCountAdapter
     private var _fragBinding: FragmentMacroListBinding? = null
     private val fragBinding get() = _fragBinding!!
 
@@ -48,11 +48,12 @@ class MacroListFragment : Fragment(), MacroCountListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         i("onCreateOptionsMenu called")
-        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_macro_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        i("onOptionsItemSelected called")
         return NavigationUI.onNavDestinationSelected(item,
             requireView().findNavController()) || super.onOptionsItemSelected(item)
     }
@@ -64,6 +65,11 @@ class MacroListFragment : Fragment(), MacroCountListener {
                 arguments = Bundle().apply {
                 }
             }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setHasOptionsMenu(true)
     }
 
     override fun onDestroyView() {
