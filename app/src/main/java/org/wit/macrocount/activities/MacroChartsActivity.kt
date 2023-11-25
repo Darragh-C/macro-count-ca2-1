@@ -129,12 +129,12 @@ class MacroChartsActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        Timber.i("Rendering menu")
-        menuInflater.inflate(R.menu.menu_macrocount, menu)
-        val searchItem = menu.findItem(R.id.item_search)
-        searchItem.isVisible = false
-        return super.onCreateOptionsMenu(menu)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        Timber.i("Rendering menu")
+//        menuInflater.inflate(R.menu.menu_macrocount, menu)
+//        val searchItem = menu.findItem(R.id.item_search)
+//        searchItem.isVisible = false
+//        return super.onCreateOptionsMenu(menu)
+//    }
 
 }

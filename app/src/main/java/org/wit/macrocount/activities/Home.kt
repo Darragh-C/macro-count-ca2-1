@@ -13,10 +13,10 @@ class Home : AppCompatActivity() {
         setContentView(R.layout.activity_home)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        i("onCreateOptionsMenu home called")
-        menuInflater.inflate(R.menu.menu_macro_list, menu)
-        return super.onCreateOptionsMenu(menu)
-
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        i("onCreateOptionsMenu home called")
+//        menuInflater.inflate(R.menu.menu_macro_list, menu)
+//        return super.onCreateOptionsMenu(menu)
+//
+//    }
 }

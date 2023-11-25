@@ -253,21 +253,21 @@ class MacroCountActivity : AppCompatActivity() {
         return if (value.isNotEmpty()) value else "0"
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_macrocount, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_search -> {
-                val launcherIntent = Intent(this, MacroCountSearchActivity::class.java)
-                launcherIntent.putExtra("search", intent)
-                getResult.launch(launcherIntent)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        menuInflater.inflate(R.menu.menu_macrocount, menu)
+//        return super.onCreateOptionsMenu(menu)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.item_search -> {
+//                val launcherIntent = Intent(this, MacroCountSearchActivity::class.java)
+//                launcherIntent.putExtra("search", intent)
+//                getResult.launch(launcherIntent)
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =

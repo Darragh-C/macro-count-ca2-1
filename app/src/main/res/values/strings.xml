@@ -46,7 +46,7 @@
     <string name="select_macrocount_image">Select image</string>
 
 
-    <string name="action_macro_list">MacroCount</string>
+    <string name="action_macro_list">MacroCounts</string>
     <string name="action_macro_count">Add MacroCount</string>
 
 </resources>
