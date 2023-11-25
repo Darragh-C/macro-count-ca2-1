@@ -49,4 +49,8 @@
     <string name="action_macro_list">MacroCounts</string>
     <string name="action_macro_count">Add MacroCount</string>
 
+    <string name="action_share">Share</string>
+    <string name="action_send">Send</string>
+    <string name="group_communicate">Communicate</string>
+
 </resources>

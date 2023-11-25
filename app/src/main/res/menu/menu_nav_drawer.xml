@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+    tools:ignore="MissingDefaultResource">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/macroListFragment"
+            android:icon="@drawable/ic_menu_list"
+            android:title="@string/action_macro_list" />
+        <item
+            android:id="@+id/macroCountFragment"
+            android:icon="@drawable/ic_add"
+            android:title="@string/action_macro_count" />
+    </group>
+
+    <item android:title="@string/group_communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/action_share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/action_send" />
+        </menu>
+    </item>
+</menu>
