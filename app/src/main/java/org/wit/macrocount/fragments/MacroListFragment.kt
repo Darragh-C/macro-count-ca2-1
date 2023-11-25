@@ -94,7 +94,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
     }
 
     override fun onMacroCountClick(macroCount: MacroCountModel) {
-        val launcherIntent = Intent(activity, MacroCountActivity::class.java)
+        val launcherIntent = Intent(requireActivity(), MacroCountFragment::class.java)
         launcherIntent.putExtra("macrocount_edit", macroCount)
         getClickResult.launch(launcherIntent)
     }
