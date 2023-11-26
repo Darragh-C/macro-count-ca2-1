@@ -2,9 +2,11 @@ package org.wit.macrocount.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.HomeBinding
 import timber.log.Timber
@@ -18,8 +20,6 @@ class Home : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         i("starting home")
         super.onCreate(savedInstanceState)
-        i("setting up content view")
-        setContentView(R.layout.content_home)
 
         i("setting up home binding")
         homeBinding = HomeBinding.inflate(layoutInflater)
@@ -27,11 +27,16 @@ class Home : AppCompatActivity() {
         setContentView(homeBinding.root)
         i("setting up drawer layout")
         drawerLayout = homeBinding.drawerLayout
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         i("setting up nav controller")
         val navController = findNavController(R.id.nav_host_fragment)
         i("setting up action bar with nav controller")
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+
+        val navView = homeBinding.navView
+        navView.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
