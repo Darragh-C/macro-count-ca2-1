@@ -5,7 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.HomeBinding
@@ -16,39 +19,30 @@ class Home : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var homeBinding : HomeBinding
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         i("starting home")
         super.onCreate(savedInstanceState)
 
-        i("setting up home binding")
         homeBinding = HomeBinding.inflate(layoutInflater)
-        i("setting content view to home binding")
         setContentView(homeBinding.root)
-        i("setting up drawer layout")
         drawerLayout = homeBinding.drawerLayout
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        i("setting up nav controller")
         val navController = findNavController(R.id.nav_host_fragment)
-        i("setting up action bar with nav controller")
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+
+        appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.macroCountFragment, R.id.macroListFragment), drawerLayout)
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
         val navView = homeBinding.navView
         navView.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        i("setting up up/back nav")
         val navController = findNavController(R.id.nav_host_fragment)
-        return NavigationUI.navigateUp(navController, drawerLayout)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        i("onCreateOptionsMenu home called")
-//        menuInflater.inflate(R.menu.menu_macro_list, menu)
-//        return super.onCreateOptionsMenu(menu)
-//
-//    }
 }
