@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +34,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
     private var usersDailyMacroObjList = mutableListOf<MacroCountModel>()
     private var currentUserId: Long = 0
     private lateinit var macroCountAdapter: MacroCountAdapter
+    //private val navController = findNavController()
 
     //private lateinit var adapter: MacroCountAdapter
     private var _fragBinding: FragmentMacroListBinding? = null
@@ -94,19 +96,35 @@ class MacroListFragment : Fragment(), MacroCountListener {
     }
 
     override fun onMacroCountClick(macroCount: MacroCountModel) {
-        val launcherIntent = Intent(requireActivity(), MacroCountFragment::class.java)
-        launcherIntent.putExtra("macrocount_edit", macroCount)
-        getClickResult.launch(launcherIntent)
+        i("onMacroCountClick called")
+//        val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(macroCount)
+//        navController.navigate(directions)
+//        navController.currentBackStackEntry?.savedStateHandle
+//            ?.getLiveData<MacroCountModel>("macrocount_edit")
+//            ?.observe(viewLifecycleOwner) { result ->
+//                Timber.i("result: $result")
+//                updatedAdapterMacros()
+//                macroCountAdapter.updateData(usersDailyMacroObjList)
+//                macroCountAdapter.notifyDataSetChanged()
+//            }
     }
 
-    private val getClickResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                updatedAdapterMacros()
-                macroCountAdapter.updateData(usersDailyMacroObjList)
-                macroCountAdapter.notifyDataSetChanged()
-            }
-        }
+//    override fun onMacroCountClick(macroCount: MacroCountModel) {
+//        val launcherIntent = Intent(requireActivity(), MacroCountFragment::class.java)
+//        launcherIntent.putExtra("macrocount_edit", macroCount)
+//        getClickResult.launch(launcherIntent)
+//    }
+//
+//    private val getClickResult =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+//            if (it.resultCode == Activity.RESULT_OK) {
+//                updatedAdapterMacros()
+//                macroCountAdapter.updateData(usersDailyMacroObjList)
+//                macroCountAdapter.notifyDataSetChanged()
+//            }
+//        }
+
+
 
     private fun updatedAdapterMacros() {
         val today = LocalDate.now()
