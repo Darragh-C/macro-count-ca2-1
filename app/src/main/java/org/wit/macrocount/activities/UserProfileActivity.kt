@@ -25,8 +25,6 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
     private lateinit var userRepo: UserRepo
     private var user: UserModel? = null
-
-
     var signup = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
