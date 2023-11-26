@@ -13,6 +13,10 @@
             android:id="@+id/macroCountFragment"
             android:icon="@drawable/ic_add"
             android:title="@string/action_macro_count" />
+
+        <item android:id="@+id/aboutFragment"
+            android:icon="@drawable/ic_menu_about"
+            android:title="@string/action_about" />
     </group>
 
     <item android:title="@string/group_communicate">

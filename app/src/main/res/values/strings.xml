@@ -57,4 +57,8 @@
     <string name="nav_header_subtitle">voteforhomer@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
+    <string name="action_about">About Us</string>
+    <string name="aboutus_title">MacroCount</string>
+    <string name="aboutus_message">Use MacroCount to add your daily macros.\n\n Add photos \n\n View personalized analytics</string>
+
 </resources>

@@ -28,5 +28,10 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="org.wit.macrocount.fragments.AboutFragment"
+        android:label="@string/action_about"
+        tools:layout="@layout/fragment_about" />
 
 </navigation>
