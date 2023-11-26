@@ -37,7 +37,8 @@ class Home : AppCompatActivity() {
             R.id.macroCountFragment,
             R.id.macroListFragment,
             R.id.analyticsFragment,
-            R.id.aboutFragment),
+            R.id.aboutFragment,
+            R.id.userFragment),
             drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
