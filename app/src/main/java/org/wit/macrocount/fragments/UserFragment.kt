@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import org.wit.macrocount.R
 import org.wit.macrocount.activities.MacroCountListActivity
 import org.wit.macrocount.databinding.ActivityProfileBinding
+import org.wit.macrocount.databinding.FragmentUserBinding
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
@@ -21,12 +22,11 @@ import java.time.LocalDate
 class UserFragment : Fragment() {
 
     lateinit var app : MainApp
-    private lateinit var binding: ActivityProfileBinding
     private lateinit var userRepo: UserRepo
     private var user: UserModel? = null
     //var signup = false
     private var currentUserId: Long = 0
-    private var _fragBinding: ActivityProfileBinding? = null
+    private var _fragBinding: FragmentUserBinding? = null
     private val fragBinding get() = _fragBinding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +41,7 @@ class UserFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _fragBinding = ActivityProfileBinding.inflate(inflater, container, false)
+        _fragBinding = FragmentUserBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_user)
 
@@ -169,7 +169,7 @@ class UserFragment : Fragment() {
         }
 
         fragBinding.btnSave.setOnClickListener() {
-            user!!.name = binding.userName.text.toString()
+            user!!.name = fragBinding.userName.text.toString()
             user!!.dob = day.toString() + "/" + month.toString() + "/" + year.toString()
 
             Timber.i("userProfile saved: $user")
