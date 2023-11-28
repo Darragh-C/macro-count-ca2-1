@@ -33,7 +33,12 @@ class UserFragment : Fragment() {
         super.onCreate(savedInstanceState)
         app = activity?.application as MainApp
         userRepo = UserRepo(requireActivity().applicationContext)
-        currentUserId = userRepo.userId!!.toLong()
+        val currentUserId = userRepo.userId
+        if (currentUserId != null) {
+            user = app.users.findById(currentUserId.toLong())
+        } else {
+            user = UserModel()
+        }
         //setHasOptionsMenu(true)
     }
 
@@ -44,7 +49,9 @@ class UserFragment : Fragment() {
         _fragBinding = FragmentUserBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_user)
-
+        if (currentUserId != null) {
+            fragBinding.userName.setText(user?.name)
+        }
         //Weight goal radio buttons
 
         fragBinding.goalRadioGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -169,11 +176,11 @@ class UserFragment : Fragment() {
         }
 
         fragBinding.btnSave.setOnClickListener() {
-            user!!.name = fragBinding.userName.text.toString()
-            user!!.dob = day.toString() + "/" + month.toString() + "/" + year.toString()
+            user?.name = fragBinding.userName.text.toString()
+            user?.dob = day.toString() + "/" + month.toString() + "/" + year.toString()
 
             Timber.i("userProfile saved: $user")
-            app.users.update(user!!.copy())
+            //app.users.update(user!!.copy())
 
 //            if (signup) {
 //                val intent = Intent(this, MacroCountListActivity::class.java)
