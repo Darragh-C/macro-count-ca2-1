@@ -58,10 +58,16 @@ class UserJSONStore(private val context: Context): UserStore {
         serialize()
     }
 
-    override fun logIn(user: UserModel): Boolean {
+    override fun logIn(user: UserModel): UserModel {
         Timber.i("Logging in user: $user")
         var foundUser: UserModel? = users.find { u -> u.email == user.email}
-        return foundUser != null && foundUser.password == user.password
+        if (foundUser != null && foundUser.password == user.password) {
+            Timber.i("Logged in user: $foundUser")
+            return foundUser
+        } else {
+            Timber.i("User not found")
+            return UserModel()
+        }
     }
 
     override fun findById(id: Long?): UserModel? {

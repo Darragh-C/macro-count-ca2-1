@@ -34,6 +34,8 @@
     <string name="text_genderM">Male</string>
     <string name="text_genderF">Female</string>
     <string name="title_userProfile">User profile</string>
+    <string name="btn_save_user">Save</string>
+    <string name="btn_saved_user">Saved</string>
 
     <string name="button_addImage">Add Image</string>
     <string name="button_takePhoto">Take Photo</string>

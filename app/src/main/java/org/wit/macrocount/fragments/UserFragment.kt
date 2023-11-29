@@ -31,15 +31,17 @@ class UserFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.i("starting user profile fragment")
         app = activity?.application as MainApp
         userRepo = UserRepo(requireActivity().applicationContext)
         val currentUserId = userRepo.userId
         if (currentUserId != null) {
             user = app.users.findById(currentUserId.toLong())
-        } else {
-            user = UserModel()
         }
         //setHasOptionsMenu(true)
+//        arguments?.getParcelable<UserModel>("user_signup")?.let {
+//            // Use Parcelable data
+//        }
     }
 
     override fun onCreateView(
@@ -49,9 +51,6 @@ class UserFragment : Fragment() {
         _fragBinding = FragmentUserBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_user)
-        if (currentUserId != null) {
-            fragBinding.userName.setText(user?.name)
-        }
         //Weight goal radio buttons
 
         fragBinding.goalRadioGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -136,7 +135,14 @@ class UserFragment : Fragment() {
         var month: String = ""
         var year: String = ""
 
-        var presetDob = user?.dob?.split("/") ?: "01/01/2000".split("/")
+        var dob = ""
+        dob = if (user != null && user?.dob != "") {
+            user!!.dob
+        } else {
+            "01/01/2000"
+        }
+        var presetDob = dob.split("/")
+
         Timber.i("split dob: $presetDob")
         Timber.i("split dob 0: $presetDob[0]")
         Timber.i("split dob 1: $presetDob[1]")
@@ -180,15 +186,10 @@ class UserFragment : Fragment() {
             user?.dob = day.toString() + "/" + month.toString() + "/" + year.toString()
 
             Timber.i("userProfile saved: $user")
-            //app.users.update(user!!.copy())
 
-//            if (signup) {
-//                val intent = Intent(this, MacroCountListActivity::class.java)
-//                startActivity(intent)
-//            } else {
-//                setResult(AppCompatActivity.RESULT_OK)
-//                finish()
-//            }
+            fragBinding.btnSave.text = getString(R.string.btn_saved_user)
+            fragBinding.btnSave.setBackgroundResource(R.color.color_green)
+            app.users.update(user!!.copy())
 
         }
 

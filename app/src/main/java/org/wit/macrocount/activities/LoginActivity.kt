@@ -9,6 +9,7 @@ import org.wit.macrocount.R
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.databinding.ActivityLogInBinding
 import org.wit.macrocount.models.UserModel
+import org.wit.macrocount.models.UserRepo
 import org.wit.macrocount.models.currentUser
 import org.wit.macrocount.models.generateRandomId
 import timber.log.Timber
@@ -19,6 +20,7 @@ class LoginActivity: AppCompatActivity() {
 
     lateinit var app : MainApp
     private lateinit var binding: ActivityLogInBinding
+    private lateinit var userRepo: UserRepo
 
     var user = UserModel()
 
@@ -29,6 +31,7 @@ class LoginActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         app = application as MainApp
+        userRepo = UserRepo(applicationContext)
 
         Timber.i("Log in started..")
 
@@ -56,13 +59,14 @@ class LoginActivity: AppCompatActivity() {
 
             if (!validationFailed) {
 
-                Timber.i("Checking user for log in: $user.email")
+                Timber.i("Checking user for log in: $user")
 
                 var loggedInUser = app.users.logIn(user)
-                if (loggedInUser) {
-                    Timber.i("currentUser: $currentUser")
-                    val intent = Intent(this, MacroCountListActivity::class.java)
-                    intent.putExtra("user_login", currentUser)
+                Timber.i("loggedInUser: $loggedInUser")
+                if (loggedInUser != null && loggedInUser.id != 0L) {
+                    userRepo.userId = loggedInUser.id.toString()
+                    Timber.i("Current user: $userRepo.userId")
+                    val intent = Intent(this, Home::class.java)
                     startActivity(intent)
                 } else {
                     Snackbar

@@ -5,14 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import org.wit.macrocount.R
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.databinding.ActivitySignUpBinding
+import org.wit.macrocount.fragments.UserFragment
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
 import org.wit.macrocount.models.generateRandomId
 import timber.log.Timber
+import timber.log.Timber.Forest.i
 
 class SignupActivity: AppCompatActivity() {
 
@@ -30,7 +34,6 @@ class SignupActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         app = application as MainApp
-
         userRepo = UserRepo(applicationContext)
 
         Timber.i("Sign up started..")
@@ -66,9 +69,25 @@ class SignupActivity: AppCompatActivity() {
 
                 Timber.i("user at sign up intent: $user")
 
-                val intent = Intent(this, UserProfileActivity::class.java)
-                intent.putExtra("user_signup", user)
-                startActivity(intent)
+                val navController = findNavController(R.id.nav_host_fragment)
+                fun navigateToUserFragment() {
+                    i("navigating to user profile fragment")
+                    navController.navigate(R.id.userFragment)
+                }
+                navigateToUserFragment()
+
+//                val fragment = UserFragment()
+//                val args = Bundle()
+//                args.putParcelable("user_signup", user)
+//                fragment.arguments = args
+//
+//                supportFragmentManager.beginTransaction()
+//                    .replace(R.id.nav_host_fragment, fragment)
+//                    .commit()
+
+//                val intent = Intent(this, UserFragment::class.java)
+//                intent.putExtra("user_signup", user)
+//                startActivity(intent)
             }
         }
     }

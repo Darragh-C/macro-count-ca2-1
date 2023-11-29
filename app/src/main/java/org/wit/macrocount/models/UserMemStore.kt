@@ -1,4 +1,5 @@
 package org.wit.macrocount.models
+import timber.log.Timber
 import timber.log.Timber.Forest.i
 class UserMemStore: UserStore {
 
@@ -17,12 +18,14 @@ class UserMemStore: UserStore {
         logIn(user)
     }
 
-    override fun logIn(user: UserModel): Boolean {
+    override fun logIn(user: UserModel): UserModel {
         var foundUser: UserModel? = users.find { u -> u.email == user.email}
         if (foundUser != null && foundUser.password == user.password) {
-            return true
+            Timber.i("Logged in user: $foundUser")
+            return foundUser
         } else {
-            return false
+            Timber.i("User not found")
+            return UserModel()
         }
     }
 

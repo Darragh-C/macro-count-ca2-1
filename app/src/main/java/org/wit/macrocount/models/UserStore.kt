@@ -5,7 +5,7 @@ interface UserStore {
     fun create(user: UserModel)
     fun update(user: UserModel)
     fun delete(user: UserModel)
-    fun logIn(user: UserModel): Boolean
+    fun logIn(user: UserModel): UserModel?
     fun signUp(user: UserModel)
     fun findById(id: Long?): UserModel?
 //    fun setCurrentUser(user: UserModel)
