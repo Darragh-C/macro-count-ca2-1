@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.macrocount.R
@@ -97,6 +98,9 @@ class MacroListFragment : Fragment(), MacroCountListener {
 
     override fun onMacroCountClick(macroCount: MacroCountModel) {
         i("onMacroCountClick called")
+        val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(macroCount.id)
+        findNavController().navigate(directions)
+
 //        val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(macroCount)
 //        navController.navigate(directions)
 //        navController.currentBackStackEntry?.savedStateHandle

@@ -63,27 +63,26 @@ class MacroCountFragment : Fragment() {
         val root = fragBinding.root
         activity?.title = getString(R.string.action_macro_list)
 
-
-
-        if (requireActivity().intent.hasExtra("macrocount_edit")) {
-            editMacro = true
-            macroCount = requireActivity().intent.extras?.getParcelable("macrocount_edit")!!
-
+        val args = arguments
+        val macroId = MacroCountFragmentArgs.fromBundle(args!!).id
+        if (macroId != 0L) {
+            macroCount = app.macroCounts.findById(macroId)!!
             fragBinding.macroCountTitle.setText(macroCount.title)
             fragBinding.macroCountDescription.setText(macroCount.description)
             calories = initData(macroCount.calories).toInt()
             protein = initData(macroCount.protein).toInt()
             carbs = initData(macroCount.carbs).toInt()
             fat = initData(macroCount.fat).toInt()
-
             fragBinding.btnAdd.setText(R.string.save_macroCount)
-
-//            if (macroCount.image.toString() != "") {
-//                Picasso.get()
-//                    .load(macroCount.image)
-//                    .into(binding.macroCountImage)
-//            }
+            editMacro = true
         }
+
+////            if (macroCount.image.toString() != "") {
+////                Picasso.get()
+////                    .load(macroCount.image)
+////                    .into(binding.macroCountImage)
+////            }
+//        }
 
         //binding initial values to data views
         fragBinding.caloriesDataView.text = calories.toString()

@@ -65,7 +65,7 @@ class LoginActivity: AppCompatActivity() {
                 Timber.i("loggedInUser: $loggedInUser")
                 if (loggedInUser != null && loggedInUser.id != 0L) {
                     userRepo.userId = loggedInUser.id.toString()
-                    Timber.i("Current user: $userRepo.userId")
+                    Timber.i("Current user: ${userRepo.userId.toString()}")
                     val intent = Intent(this, Home::class.java)
                     startActivity(intent)
                 } else {

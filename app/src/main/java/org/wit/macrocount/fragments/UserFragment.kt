@@ -144,9 +144,9 @@ class UserFragment : Fragment() {
         var presetDob = dob.split("/")
 
         Timber.i("split dob: $presetDob")
-        Timber.i("split dob 0: $presetDob[0]")
-        Timber.i("split dob 1: $presetDob[1]")
-        Timber.i("split dob 2: $presetDob[2]")
+        Timber.i("split dob 0: ${presetDob[0]}")
+        Timber.i("split dob 1: ${presetDob[1]}")
+        Timber.i("split dob 2: ${presetDob[2]}")
 
 
         day = presetDob[0]
@@ -175,7 +175,7 @@ class UserFragment : Fragment() {
         val numberPickerYear = fragBinding.numberPickerYear
         numberPickerYear.minValue = 1920
         numberPickerYear.maxValue = LocalDate.now().year
-        numberPickerYear.value = presetDob[2].toInt()
+        numberPickerYear.value = presetDob[2].toInt() ?: 1990
         numberPickerYear.setOnValueChangedListener{ picker, oldVal, newVal ->
             Timber.i("{newVal}")
             year = newVal.toString()
