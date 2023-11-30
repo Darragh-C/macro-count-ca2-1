@@ -175,7 +175,7 @@ class UserFragment : Fragment() {
         val numberPickerYear = fragBinding.numberPickerYear
         numberPickerYear.minValue = 1920
         numberPickerYear.maxValue = LocalDate.now().year
-        numberPickerYear.value = presetDob[2].toInt() ?: 1990
+        numberPickerYear.value = presetDob[2]?.toInt() ?: 2000
         numberPickerYear.setOnValueChangedListener{ picker, oldVal, newVal ->
             Timber.i("{newVal}")
             year = newVal.toString()

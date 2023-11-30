@@ -13,6 +13,7 @@ import android.widget.SeekBar
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -218,23 +219,25 @@ class MacroCountFragment : Fragment() {
                         )
                     }"
                 )
+                val directions = MacroCountFragmentDirections.actionMacroCountFragmentToMacroListFragment()
+                findNavController().navigate(directions)
 
             }
         }
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Timber.i("onCreateOptionsMenu called")
-        inflater.inflate(R.menu.menu_macrocount, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Timber.i("onOptionsItemSelected called")
-        return NavigationUI.onNavDestinationSelected(item,
-            requireView().findNavController()) || super.onOptionsItemSelected(item)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        Timber.i("onCreateOptionsMenu called")
+//        inflater.inflate(R.menu.menu_macrocount, menu)
+//        super.onCreateOptionsMenu(menu, inflater)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        Timber.i("onOptionsItemSelected called")
+//        return NavigationUI.onNavDestinationSelected(item,
+//            requireView().findNavController()) || super.onOptionsItemSelected(item)
+//    }
     fun initData(value: String): String {
         return if (value.isNotEmpty()) value else "0"
     }
