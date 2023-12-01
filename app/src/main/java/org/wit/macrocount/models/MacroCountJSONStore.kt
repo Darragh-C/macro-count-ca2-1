@@ -59,6 +59,7 @@ class MacroCountJSONStore(private val context: Context) : MacroCountStore {
     override fun findByIds(ids: List<String>): List<MacroCountModel> {
         var foundMacros = mutableListOf<MacroCountModel?>()
         ids.forEach { it -> foundMacros.add(macroCounts.find { m -> m.id == it.toLong() })}
+        Timber.i("foundMacros: $foundMacros")
         return foundMacros.filterNotNull().toList()
     }
 
