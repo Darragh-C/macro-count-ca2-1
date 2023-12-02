@@ -50,23 +50,11 @@ class CameraFragment : Fragment() {
     private val fragBinding get() = _fragBinding!!
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
-    val context: Context = requireContext()
-    val contentResolver = context.contentResolver
-    val baseContext = context.applicationContext
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
-//        app = activity?.application as MainApp
-//        userRepo = UserRepo(requireActivity().applicationContext)
-//        val currentUserId = userRepo.userId
-//        if (currentUserId != null) {
-//            user = app.users.findById(currentUserId.toLong())
-//        }
-//        Timber.i("user at charts: $user")
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -109,7 +97,7 @@ class CameraFragment : Fragment() {
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(contentResolver,
+            .Builder(requireContext().contentResolver,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 contentValues)
             .build()
@@ -118,7 +106,7 @@ class CameraFragment : Fragment() {
         // been taken
         imageCapture.takePicture(
             outputOptions,
-            ContextCompat.getMainExecutor(context),
+            ContextCompat.getMainExecutor(requireContext()),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     Log.e(CameraFragment.TAG, "Photo capture failed: ${exc.message}", exc)
@@ -126,20 +114,20 @@ class CameraFragment : Fragment() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults){
                     val msg = "Photo captured: ${output.savedUri}"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext().applicationContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(CameraFragment.TAG, msg)
                     val resultIntent = Intent()
                     resultIntent.putExtra("image_uri", output.savedUri)
                     i("Photo resultIntent: $resultIntent")
-                    setResult(AppCompatActivity.RESULT_OK, resultIntent)
-                    finish()
+//                    setResult(AppCompatActivity.RESULT_OK, resultIntent)
+//                    finish()
                 }
             }
         )
     }
 
     private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
@@ -170,7 +158,7 @@ class CameraFragment : Fragment() {
                 Log.e(CameraFragment.TAG, "Use case binding failed", exc)
             }
 
-        }, ContextCompat.getMainExecutor(context))
+        }, ContextCompat.getMainExecutor(requireContext()))
     }
 
     private fun requestPermissions() {
@@ -179,7 +167,7 @@ class CameraFragment : Fragment() {
 
     private fun allPermissionsGranted() = CameraFragment.REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            baseContext, it) == PackageManager.PERMISSION_GRANTED
+            requireContext().applicationContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onDestroy() {
@@ -210,7 +198,7 @@ class CameraFragment : Fragment() {
                     permissionGranted = false
             }
             if (!permissionGranted) {
-                Toast.makeText(baseContext,
+                Toast.makeText(requireContext().applicationContext,
                     "Permission request denied",
                     Toast.LENGTH_SHORT).show()
             } else {

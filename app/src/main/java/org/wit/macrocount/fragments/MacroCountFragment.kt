@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -18,12 +19,15 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import org.wit.macrocount.R
+import org.wit.macrocount.activities.CameraActivity
 import org.wit.macrocount.databinding.FragmentMacroCountBinding
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.UserRepo
+import org.wit.macrocount.showImagePicker
 import timber.log.Timber
 import java.time.LocalDate
+import android.app.Activity
 
 class MacroCountFragment : Fragment() {
 
@@ -42,6 +46,7 @@ class MacroCountFragment : Fragment() {
     //seekbar max and min
     val seekBarMin = 0
     val seekBarMax = 500
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
 
     private var _fragBinding: FragmentMacroCountBinding? = null
     private val fragBinding get() = _fragBinding!!
@@ -76,14 +81,16 @@ class MacroCountFragment : Fragment() {
             fat = initData(macroCount.fat).toInt()
             fragBinding.btnAdd.setText(R.string.save_macroCount)
             editMacro = true
+
+            if (macroCount.image.toString() != "") {
+                Picasso.get()
+                    .load(macroCount.image)
+                    .into(fragBinding.macroCountImage)
+            }
         }
 
-////            if (macroCount.image.toString() != "") {
-////                Picasso.get()
-////                    .load(macroCount.image)
-////                    .into(binding.macroCountImage)
-////            }
-//        }
+
+
 
         //binding initial values to data views
         fragBinding.caloriesDataView.text = calories.toString()
@@ -107,7 +114,10 @@ class MacroCountFragment : Fragment() {
         fragBinding.carbsSeekBar.progress = carbs
         fragBinding.fatSeekBar.progress = fat
 
-
+//        fragBinding.takePhoto.setOnClickListener() {
+//            val launcherIntent = Intent(this, CameraActivity::class.java)
+//            getPhotoResult.launch(launcherIntent)
+//        }
 
         fragBinding.calorieSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(calorieSeekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -154,6 +164,12 @@ class MacroCountFragment : Fragment() {
             }
         })
 
+        registerImagePickerCallback()
+
+        fragBinding.chooseImage.setOnClickListener {
+            showImagePicker(imageIntentLauncher)
+        }
+
         return root
     }
 
@@ -161,7 +177,7 @@ class MacroCountFragment : Fragment() {
 
         fragBinding.btnAdd.setOnClickListener() {
             macroCount.title = fragBinding.macroCountTitle.text.toString()
-            //macroCount.description = fragBinding.macroCountDescription.text.toString()
+            macroCount.description = fragBinding.macroCountDescription.text.toString()
 
             macroCount.calories = calories.toString()
             macroCount.protein = protein.toString()
@@ -225,6 +241,26 @@ class MacroCountFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    AppCompatActivity.RESULT_OK -> {
+                        if (result.data != null) {
+                            Timber.i("Got Result ${result.data!!.data!!}")
+                            macroCount.image = result.data!!.data!!
+                            Timber.i("Got Result macrocount image ${macroCount.image}")
+                            Picasso.get()
+                                .load(macroCount.image)
+                                .into(fragBinding.macroCountImage)
+                        }
+                    }
+                    AppCompatActivity.RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
