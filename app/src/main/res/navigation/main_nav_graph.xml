@@ -36,6 +36,9 @@
             app:destination="@id/cameraFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/action_macroCountFragment_to_macroSearchFragment"
+            app:destination="@id/macroSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -55,6 +58,10 @@
     <fragment
         android:id="@+id/cameraFragment"
         android:name="org.wit.macrocount.fragments.CameraFragment"
-        android:label="CameraFragment" />
+        android:label="@string/action_camera" />
+    <fragment
+        android:id="@+id/macroSearchFragment"
+        android:name="org.wit.macrocount.fragments.MacroSearchFragment"
+        android:label="@string/action_macro_search" />
 
 </navigation>

@@ -91,9 +91,6 @@ class MacroCountFragment : Fragment() {
             }
         }
 
-
-
-
         //binding initial values to data views
         fragBinding.caloriesDataView.text = calories.toString()
         fragBinding.proteinDataView.text = protein.toString()
@@ -189,6 +186,45 @@ class MacroCountFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        fragBinding.searchFab.setOnClickListener() {
+            val directions = MacroCountFragmentDirections.actionMacroCountFragmentToMacroSearchFragment()
+            findNavController().navigate(directions)
+
+            parentFragmentManager.setFragmentResultListener("search_result", this) { key, result ->
+                val selectedItem = result.getParcelable<MacroCountModel>("searched_macro")
+
+                Timber.i("Got searchedMacro Result $selectedItem")
+
+                if (selectedItem != null) {
+                    Timber.i("returned selectedItem: ${selectedItem}")
+
+                    copyMacro = true
+
+                    macroCount.id = selectedItem.id
+
+                    fragBinding.macroCountTitle.setText(selectedItem.title)
+                    fragBinding.macroCountDescription.setText(selectedItem.description)
+                    calories = selectedItem.calories.toInt()
+                    protein = selectedItem.protein.toInt()
+                    carbs = selectedItem.carbs.toInt()
+                    fat = selectedItem.fat.toInt()
+
+                    // Update SeekBar progresses and data views
+                    fragBinding.calorieSeekBar.progress = calories
+                    fragBinding.proteinSeekBar.progress = protein
+                    fragBinding.carbsSeekBar.progress = carbs
+                    fragBinding.fatSeekBar.progress = fat
+                    fragBinding.caloriesDataView.text = calories.toString()
+                    fragBinding.proteinDataView.text = protein.toString()
+                    fragBinding.carbsDataView.text = carbs.toString()
+                    fragBinding.fatDataView.text = fat.toString()
+
+                    copiedMacro = selectedItem.copy()
+                }
+
+            }
+        }
 
         fragBinding.btnAdd.setOnClickListener() {
             macroCount.title = fragBinding.macroCountTitle.text.toString()
