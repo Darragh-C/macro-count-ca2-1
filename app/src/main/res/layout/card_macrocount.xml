@@ -24,7 +24,7 @@
                 android:id="@+id/macroCounterTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
+                android:textSize="@dimen/card_text_size"
                 android:layout_marginStart="@dimen/list_start_margin"
                 tools:text="A Title"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
             <Button
                 android:id="@+id/li_button_del"
                 style="@style/CustomButton"
-                android:text="DELETE"
+                android:text="@string/button_deleteItem"
                 android:background="@drawable/rounded_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -55,9 +55,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="@dimen/list_start_margin"
-            android:textSize="16sp"
-            tools:text="Calories"
-            android:layout_marginLeft="5dp"
+            android:textSize="@dimen/text_size_large"
+            tools:text="@string/card_calories"
+            android:layout_marginLeft="@dimen/card_text_margin_s"
             android:textColor="@color/grey"/>
 
         <TextView
@@ -65,9 +65,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:textSize="16sp"
-            tools:text="Protein"
-            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/text_size_large"
+            tools:text="@string/card_protein"
+            android:layout_marginLeft="@dimen/card_text_margin_l"
             android:textColor="@color/grey"/>
 
         <TextView
@@ -75,9 +75,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:textSize="16sp"
-            tools:text="Carbs"
-            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/text_size_large"
+            tools:text="@string/card_carbs"
+            android:layout_marginLeft="@dimen/card_text_margin_l"
             android:textColor="@color/grey"/>
 
         <TextView
@@ -85,9 +85,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:textSize="16sp"
-            tools:text="Fat"
-            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/text_size_large"
+            tools:text="@string/card_fat"
+            android:layout_marginLeft="@dimen/card_text_margin_l"
             android:textColor="@color/grey"/>
 
         </LinearLayout>

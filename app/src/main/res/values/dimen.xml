@@ -16,7 +16,12 @@
     <dimen name="fab_padding">24dp</dimen>
     <dimen name="relative_layout_padding">14dp</dimen>
     <dimen name="linear_layout_padding">20dp</dimen>
+    <dimen name="card_text_margin_s">5dp</dimen>
+    <dimen name="card_text_margin_m">8dp</dimen>
+    <dimen name="card_text_margin_l">10dp</dimen>
+    <dimen name="card_text_margin_xl">12dp</dimen>
 
+    <dimen name="card_text_size">30sp</dimen>
     <dimen name="slider_text_size">16sp</dimen>
     <dimen name="button_text_size">16sp</dimen>
     <dimen name="edit_text_size">14dp</dimen>

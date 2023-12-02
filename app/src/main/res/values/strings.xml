@@ -29,6 +29,11 @@
     <string name="save_macroCount">Save</string>
     <string name="button_deleteItem">Delete</string>
 
+    <string name="card_calories">Calories</string>
+    <string name="card_protein">Protein</string>
+    <string name="card_carbs">Carbs</string>
+    <string name="card_fat">Fat</string>
+
     <string name="text_kg">kg</string>
     <string name="text_cm">cm</string>
     <string name="text_dob">DOB</string>
