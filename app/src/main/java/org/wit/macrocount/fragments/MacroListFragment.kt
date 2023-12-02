@@ -100,17 +100,6 @@ class MacroListFragment : Fragment(), MacroCountListener {
         i("onMacroCountClick called")
         val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(macroCount.id)
         findNavController().navigate(directions)
-
-//        val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(macroCount)
-//        navController.navigate(directions)
-//        navController.currentBackStackEntry?.savedStateHandle
-//            ?.getLiveData<MacroCountModel>("macrocount_edit")
-//            ?.observe(viewLifecycleOwner) { result ->
-//                Timber.i("result: $result")
-//                updatedAdapterMacros()
-//                macroCountAdapter.updateData(usersDailyMacroObjList)
-//                macroCountAdapter.notifyDataSetChanged()
-//            }
     }
 
 //    override fun onMacroCountClick(macroCount: MacroCountModel) {

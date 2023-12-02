@@ -31,6 +31,11 @@
             android:name="id"
             app:argType="long"
             android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_macroCountFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -47,5 +52,9 @@
         android:name="org.wit.macrocount.fragments.UserFragment"
         android:label="@string/action_user"
         tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="org.wit.macrocount.fragments.CameraFragment"
+        android:label="CameraFragment" />
 
 </navigation>

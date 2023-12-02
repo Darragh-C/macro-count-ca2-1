@@ -28,6 +28,8 @@ import org.wit.macrocount.showImagePicker
 import timber.log.Timber
 import java.time.LocalDate
 import android.app.Activity
+import android.net.Uri
+import org.wit.macrocount.fragments.MacroCountFragmentDirections.Companion.actionMacroCountFragmentToCameraFragment
 
 class MacroCountFragment : Fragment() {
 
@@ -114,10 +116,23 @@ class MacroCountFragment : Fragment() {
         fragBinding.carbsSeekBar.progress = carbs
         fragBinding.fatSeekBar.progress = fat
 
-//        fragBinding.takePhoto.setOnClickListener() {
-//            val launcherIntent = Intent(this, CameraActivity::class.java)
-//            getPhotoResult.launch(launcherIntent)
-//        }
+        fragBinding.takePhoto.setOnClickListener {
+            val action = MacroCountFragmentDirections.actionMacroCountFragmentToCameraFragment()
+            findNavController().navigate(action)
+
+            parentFragmentManager.setFragmentResultListener("photoResult", this) { key, result ->
+                val imageUri = result.getParcelable<Uri>("image_uri")
+
+                Timber.i("Got Result $imageUri")
+                if (imageUri != null) {
+                    macroCount.image = imageUri
+                    Timber.i("Got Result macrocount image ${macroCount.image}")
+                    Picasso.get()
+                        .load(macroCount.image)
+                        .into(fragBinding.macroCountImage)
+                }
+            }
+        }
 
         fragBinding.calorieSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(calorieSeekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -263,21 +278,9 @@ class MacroCountFragment : Fragment() {
             }
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        Timber.i("onCreateOptionsMenu called")
-//        inflater.inflate(R.menu.menu_macrocount, menu)
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        Timber.i("onOptionsItemSelected called")
-//        return NavigationUI.onNavDestinationSelected(item,
-//            requireView().findNavController()) || super.onOptionsItemSelected(item)
-//    }
     fun initData(value: String): String {
         return if (value.isNotEmpty()) value else "0"
     }
-
 
     companion object {
         @JvmStatic
@@ -297,6 +300,4 @@ class MacroCountFragment : Fragment() {
         super.onResume()
 
     }
-
-
 }

@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.wit.macrocount.R
 import org.wit.macrocount.activities.CameraActivity
 import org.wit.macrocount.databinding.FragmentCameraBinding
@@ -112,15 +113,14 @@ class CameraFragment : Fragment() {
                     Log.e(CameraFragment.TAG, "Photo capture failed: ${exc.message}", exc)
                 }
 
-                override fun onImageSaved(output: ImageCapture.OutputFileResults){
-                    val msg = "Photo captured: ${output.savedUri}"
-                    Toast.makeText(requireContext().applicationContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d(CameraFragment.TAG, msg)
-                    val resultIntent = Intent()
-                    resultIntent.putExtra("image_uri", output.savedUri)
-                    i("Photo resultIntent: $resultIntent")
-//                    setResult(AppCompatActivity.RESULT_OK, resultIntent)
-//                    finish()
+                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                    val imageUri = output.savedUri
+                    i("Photo capture succeeded: $imageUri")
+                    val resultBundle = Bundle().apply {
+                        putParcelable("image_uri", imageUri)
+                    }
+                    parentFragmentManager.setFragmentResult("photoResult", resultBundle)
+                    findNavController().navigateUp()
                 }
             }
         )
