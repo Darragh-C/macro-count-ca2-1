@@ -4,10 +4,10 @@
 
     <string name="hint_macroCountTitle">MacroCount Title</string>
     <string name="hint_macroCountDescription">MacroCount Description</string>
-    <string name="hint_macroCountCalories">Enter the number of calories</string>
-    <string name="hint_macroCountProtein">Protein Count</string>
-    <string name="hint_macroCountCarbs">Carbohydrate Count</string>
-    <string name="hint_macroCountFat">Fat Count</string>
+    <string name="hint_macroCountCalories">Calories:</string>
+    <string name="hint_macroCountProtein">Protein:</string>
+    <string name="hint_macroCountCarbs">Carbs:</string>
+    <string name="hint_macroCountFat">Fat:</string>
     <string name="hint_userName">User name</string>
     <string name="hint_loginEmail">Enter your email</string>
     <string name="hint_loginPassword">Enter your password</string>

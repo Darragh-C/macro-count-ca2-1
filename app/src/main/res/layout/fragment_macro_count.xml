@@ -26,58 +26,58 @@
                 <EditText
                     android:id="@+id/macroCountTitle"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_margin="@dimen/text_padding"
                     android:autofillHints="hint"
                     android:hint="@string/hint_macroCountTitle"
                     android:inputType="text"
                     android:maxLength="25"
                     android:maxLines="1"
-                    android:padding="8dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="14sp" />
+                    android:padding="@dimen/text_padding"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/edit_text_size" />
 
                 <EditText
                     android:id="@+id/macroCountDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_margin="@dimen/text_padding"
                     android:autofillHints="hint"
                     android:hint="@string/hint_macroCountDescription"
                     android:inputType="text"
                     android:maxLength="25"
                     android:maxLines="1"
-                    android:padding="8dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="14sp" />
+                    android:padding="@dimen/text_padding"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/edit_text_size" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="@dimen/relative_layout_padding">
 
                     <TextView
                         android:id="@+id/caloriesTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Calories:"
-                        android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp" />
+                        android:text="@string/hint_macroCountCalories"
+                        android:textSize="@dimen/slider_text_size"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="@dimen/text_padding"
+                        android:layout_marginTop="@dimen/text_padding"
+                        android:layout_marginEnd="@dimen/text_padding" />
 
                     <TextView
                         android:id="@+id/caloriesDataView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="@dimen/text_padding"
+                        android:layout_marginTop="@dimen/text_padding"
+                        android:layout_marginEnd="@dimen/text_padding"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/slider_text_size" />
 
                 </RelativeLayout>
 
@@ -90,30 +90,30 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="@dimen/relative_layout_padding">
 
                     <TextView
                         android:id="@+id/proteinTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Protein:"
-                        android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp" />
+                        android:text="@string/hint_macroCountProtein"
+                        android:textSize="@dimen/slider_text_size"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="@dimen/text_padding"
+                        android:layout_marginTop="@dimen/text_padding"
+                        android:layout_marginEnd="@dimen/text_padding" />
 
                     <TextView
                         android:id="@+id/proteinDataView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="@dimen/text_padding"
+                        android:layout_marginTop="@dimen/text_padding"
+                        android:layout_marginEnd="@dimen/text_padding"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/slider_text_size" />
 
                 </RelativeLayout>
 
@@ -126,30 +126,30 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="@dimen/relative_layout_padding">
 
                     <TextView
                         android:id="@+id/carbsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Carbs:"
-                        android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp" />
+                        android:text="@string/hint_macroCountCarbs"
+                        android:textSize="@dimen/slider_text_size"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="@dimen/text_padding"
+                        android:layout_marginTop="@dimen/text_padding"
+                        android:layout_marginEnd="@dimen/text_padding" />
 
                     <TextView
                         android:id="@+id/carbsDataView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="@dimen/text_padding"
+                        android:layout_marginTop="@dimen/text_padding"
+                        android:layout_marginEnd="@dimen/text_padding"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/slider_text_size" />
 
                 </RelativeLayout>
 
@@ -162,30 +162,30 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="@dimen/relative_layout_padding">
 
                     <TextView
                         android:id="@+id/fatTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fat:"
-                        android:textSize="16sp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp" />
+                        android:text="@string/hint_macroCountFat"
+                        android:textSize="@dimen/slider_text_size"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="@dimen/text_padding"
+                        android:layout_marginTop="@dimen/text_padding"
+                        android:layout_marginEnd="@dimen/text_padding" />
 
                     <TextView
                         android:id="@+id/fatDataView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="@dimen/text_padding"
+                        android:layout_marginTop="@dimen/text_padding"
+                        android:layout_marginEnd="@dimen/text_padding"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/slider_text_size" />
 
                 </RelativeLayout>
 
@@ -206,26 +206,26 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_margin="16dp"
-                        android:background="@color/colorAccent"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
+                        android:layout_margin="@dimen/button_padding"
+                        android:background="@color/color_primary"
+                        android:paddingBottom="@dimen/button_padding"
+                        android:paddingTop="@dimen/button_padding"
                         android:text="@string/button_addImage"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16sp" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/button_text_size" />
 
                     <Button
                         android:id="@+id/takePhoto"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_margin="16dp"
-                        android:background="@color/colorAccent"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
+                        android:layout_margin="@dimen/button_padding"
+                        android:background="@color/color_primary"
+                        android:paddingBottom="@dimen/button_padding"
+                        android:paddingTop="@dimen/button_padding"
                         android:text="@string/button_takePhoto"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16sp" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/button_text_size" />
 
                 </LinearLayout>
 
@@ -241,25 +241,25 @@
                     android:id="@+id/btnAdd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:background="@color/colorAccent"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
+                    android:layout_margin="@dimen/button_padding"
+                    android:background="@color/color_primary"
+                    android:paddingTop="@dimen/button_padding"
+                    android:paddingBottom="@dimen/button_padding"
                     android:stateListAnimator="@null"
                     android:text="@string/save_macroCount"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/button_text_size" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/search_fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginEnd="@dimen/fab_padding"
+                    android:layout_marginBottom="@dimen/fab_padding"
                     android:clickable="true"
                     android:focusable="true"
                     android:tint="@color/white"
-                    app:backgroundTint="@color/colorAccent"
+                    app:backgroundTint="@color/color_primary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:srcCompat="@drawable/search_icon"
