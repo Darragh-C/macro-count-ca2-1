@@ -12,6 +12,9 @@
     <string name="hint_loginEmail">Enter your email</string>
     <string name="hint_loginPassword">Enter your password</string>
 
+    <string name="radio_text_gain">Gain</string>
+    <string name="radio_text_lose">Lose</string>
+
     <string name="snackbar_macroCountTitle">Please Enter a title</string>
     <string name="snackbar_macroCountCalories">Please Enter a number for your calories</string>
     <string name="snackbar_macroCountCarbs">Please Enter a number for your carbs</string>
@@ -27,7 +30,9 @@
     <string name="button_deleteItem">Delete</string>
 
     <string name="text_kg">kg</string>
+    <string name="text_cm">cm</string>
     <string name="text_dob">DOB</string>
+    <string name="text_age">Age</string>
     <string name="text_height">Height</string>
     <string name="text_weight">Weight</string>
     <string name="text_gender">Gender</string>

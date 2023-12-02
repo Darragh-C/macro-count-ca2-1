@@ -20,21 +20,21 @@
                     android:id="@+id/userName"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_margin="8dp"
+                    android:layout_margin="@dimen/text_padding"
                     android:autofillHints="hint"
-                    android:hint="User name"
+                    android:hint="@string/hint_userName"
                     android:inputType="text"
                     android:maxLength="25"
                     android:maxLines="1"
-                    android:padding="8dp"
+                    android:padding="@dimen/text_padding"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/edit_text_size" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="@dimen/linear_layout_padding">
 
                 <TextView
                     android:layout_width="0dp"
@@ -42,11 +42,11 @@
                     android:layout_weight="1"
                     android:text="Weight goal"
                     android:gravity="center_vertical"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="20dp"
-                    android:textSize="20sp"
+                    android:paddingTop="@dimen/text_padding_medium"
+                    android:paddingEnd="@dimen/text_padding"
+                    android:paddingBottom="@dimen/text_padding"
+                    android:paddingLeft="@dimen/text_padding_large"
+                    android:textSize="@dimen/text_size_large"
                     />
 
                 <RadioGroup
@@ -60,20 +60,20 @@
                         android:id="@+id/goalRadioButtonOption1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lose" />
+                        android:text="@string/radio_text_lose" />
 
                     <RadioButton
                         android:id="@+id/goalRadioButtonOption2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gain" />
+                        android:text="@string/radio_text_gain" />
                 </RadioGroup>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="@dimen/linear_layout_padding">
 
                 <TextView
                     android:layout_width="0dp"
@@ -81,11 +81,11 @@
                     android:layout_weight="1"
                     android:text="@string/text_gender"
                     android:gravity="center_vertical"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="20dp"
-                    android:textSize="20sp"
+                    android:paddingTop="@dimen/text_padding_medium"
+                    android:paddingEnd="@dimen/text_padding"
+                    android:paddingBottom="@dimen/text_padding_medium"
+                    android:paddingLeft="@dimen/text_padding_large"
+                    android:textSize="@dimen/text_size_large"
                     />
 
                 <RadioGroup
@@ -113,26 +113,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="@dimen/linear_layout_padding">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Age"
+                    android:text="@string/text_age"
                     android:gravity="center_vertical"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="20dp"
-                    android:textSize="20sp"
+                    android:paddingTop="@dimen/text_padding_medium"
+                    android:paddingEnd="@dimen/text_padding"
+                    android:paddingBottom="@dimen/text_padding"
+                    android:paddingLeft="@dimen/text_padding_large"
+                    android:textSize="@dimen/text_size_large"
                     />
 
                 <NumberPicker
                     android:id="@+id/numberPickerAge"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="20sp"/>
+                    android:textSize="@dimen/text_size_large"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -140,11 +140,11 @@
                     android:layout_weight="1"
                     android:text="years"
                     android:gravity="center_vertical"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="20dp"
-                    android:textSize="20sp"
+                    android:paddingTop="@dimen/text_padding_medium"
+                    android:paddingEnd="@dimen/text_padding"
+                    android:paddingBottom="@dimen/text_padding"
+                    android:paddingLeft="@dimen/text_padding_large"
+                    android:textSize="@dimen/text_size_large"
                     />
 
             </LinearLayout>
@@ -153,7 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="@dimen/text_padding_large">
 
                 <TextView
                     android:layout_width="0dp"
@@ -161,30 +161,30 @@
                     android:layout_weight="1"
                     android:text="@string/text_height"
                     android:gravity="center_vertical"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="20dp"
-                    android:textSize="20sp"
+                    android:paddingTop="@dimen/text_padding_medium"
+                    android:paddingEnd="@dimen/text_padding"
+                    android:paddingBottom="@dimen/text_padding"
+                    android:paddingLeft="@dimen/text_padding_large"
+                    android:textSize="@dimen/text_size_large"
                     />
 
                 <NumberPicker
                     android:id="@+id/numberPickerHeight"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="20sp"/>
+                    android:textSize="@dimen/text_size_large"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="cm"
+                    android:text="@string/text_cm"
                     android:gravity="center_vertical"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="20dp"
-                    android:textSize="20sp"
+                    android:paddingTop="@dimen/text_padding_medium"
+                    android:paddingEnd="@dimen/text_padding"
+                    android:paddingBottom="@dimen/text_padding"
+                    android:paddingLeft="@dimen/text_padding_large"
+                    android:textSize="@dimen/text_size_large"
                     />
 
             </LinearLayout>
@@ -193,7 +193,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp"
+                android:padding="@dimen/text_padding_large"
                 >
 
                 <TextView
@@ -201,12 +201,12 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
+                    android:paddingLeft="@dimen/text_padding_large"
+                    android:paddingTop="@dimen/text_padding_medium"
+                    android:paddingEnd="@dimen/text_padding"
+                    android:paddingBottom="@dimen/text_padding"
                     android:text="@string/text_weight"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/text_size_large" />
 
                 <NumberPicker
                     android:id="@+id/numberPickerWeight"
@@ -219,11 +219,11 @@
                     android:layout_weight="1"
                     android:text="@string/text_kg"
                     android:gravity="center_vertical"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="20dp"
-                    android:textSize="20sp"
+                    android:paddingTop="@dimen/text_padding_medium"
+                    android:paddingEnd="@dimen/text_padding"
+                    android:paddingBottom="@dimen/text_padding"
+                    android:paddingLeft="@dimen/text_padding_large"
+                    android:textSize="@dimen/text_size_large"
                     />
             </LinearLayout>
 
@@ -231,7 +231,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp"
+                android:padding="@dimen/text_padding_large"
                 >
                 <TextView
                     android:layout_width="0dp"
@@ -239,11 +239,11 @@
                     android:layout_weight="1"
                     android:text="@string/text_dob"
                     android:gravity="center_vertical"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="20dp"
-                    android:textSize="20sp"
+                    android:paddingTop="@dimen/text_padding_medium"
+                    android:paddingEnd="@dimen/text_padding"
+                    android:paddingBottom="@dimen/text_padding"
+                    android:paddingLeft="@dimen/text_padding_large"
+                    android:textSize="@dimen/text_size_large"
                     />
 
                 <NumberPicker
@@ -264,14 +264,14 @@
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:background="@color/colorAccent"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:layout_margin="@dimen/button_padding_large"
+                android:background="@color/color_primary"
+                android:paddingTop="@dimen/button_padding"
+                android:paddingBottom="@dimen/button_padding"
                 android:stateListAnimator="@null"
                 android:text="@string/btn_save_user"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/button_text_size" />
 
         </LinearLayout>
     </FrameLayout>
