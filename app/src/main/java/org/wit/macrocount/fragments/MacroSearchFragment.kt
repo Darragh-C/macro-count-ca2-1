@@ -55,7 +55,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         fragBinding.macroSearchRecyclerView.setLayoutManager(LinearLayoutManager(activity))
 
         if (currentUserId != null) {
-            userMacros = app.macroCounts.findByUserId(currentUserId)
+            //userMacros = app.macroCounts.findByUserId(currentUserId)
             Timber.i("userMacros at search: $userMacros")
             filteredMacros = userMacros
             macroCountAdapter = MacroCountAdapter(userMacros, this)

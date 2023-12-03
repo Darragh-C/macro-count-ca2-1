@@ -1,4 +1,4 @@
-package org.wit.macrocount.fragments
+package org.wit.macrocount.ui.macro
 
 import android.content.Intent
 import android.os.Bundle
@@ -22,6 +22,18 @@ import org.wit.macrocount.showImagePicker
 import timber.log.Timber
 import java.time.LocalDate
 import android.net.Uri
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+import org.wit.macrocount.ui.list.MacroListViewModel
+import androidx.lifecycle.Observer
 
 class MacroCountFragment : Fragment() {
 
@@ -44,6 +56,7 @@ class MacroCountFragment : Fragment() {
 
     private var _fragBinding: FragmentMacroCountBinding? = null
     private val fragBinding get() = _fragBinding!!
+    private lateinit var macroViewModel: MacroViewModel
 
 
 
@@ -62,11 +75,18 @@ class MacroCountFragment : Fragment() {
         _fragBinding = FragmentMacroCountBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_macro_list)
+        setupMenu()
+
+        macroViewModel = ViewModelProvider(this).get(MacroViewModel::class.java)
+        macroViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
+                status ->
+            status?.let { render(status) }
+        })
 
         val args = arguments
         val macroId = MacroCountFragmentArgs.fromBundle(args!!).id
         if (macroId != 0L) {
-            macroCount = app.macroCounts.findById(macroId)!!
+            //macroCount = app.macroCounts.findById(macroId)!!
             fragBinding.macroCountTitle.setText(macroCount.title)
             fragBinding.macroCountDescription.setText(macroCount.description)
             calories = initData(macroCount.calories).toInt()
@@ -177,6 +197,33 @@ class MacroCountFragment : Fragment() {
         return root
     }
 
+    private fun setupMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {
+                // Handle for example visibility of menu items
+            }
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_macrocount, menu)
+            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Validate and handle the selected menu item
+                return NavigationUI.onNavDestinationSelected(menuItem,
+                    requireView().findNavController())
+            }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun render(status: Boolean) {
+        when (status) {
+            true -> {
+                view?.let {
+                    findNavController().popBackStack()
+                }
+            }
+            false -> Toast.makeText(context,getString(R.string.macroAddError),Toast.LENGTH_LONG).show()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         fragBinding.searchFab.setOnClickListener() {
@@ -253,7 +300,7 @@ class MacroCountFragment : Fragment() {
             if (!validationFailed) {
                 if (editMacro) {
                     Timber.i("macroCount edited and saved: $macroCount")
-                    app.macroCounts.update(macroCount.copy())
+                    //app.macroCounts.update(macroCount.copy())
                 } else if (copyMacro) {
                     Timber.i("copiedMacro: $copiedMacro")
                     Timber.i("macroCount after copy: $macroCount")
@@ -261,14 +308,15 @@ class MacroCountFragment : Fragment() {
                         app.days.addMacroId(macroCount.id, macroCount.userId, LocalDate.now())
                         Timber.i("copied macroCount added to today: $macroCount")
                     } else {
-                        app.macroCounts.create(macroCount.copy())
+                        //app.macroCounts.create(macroCount.copy())
                         Timber.i("creating new macroCount from copied and edited macro: $macroCount")
                     }
                 } else {
-                    app.macroCounts.create(macroCount.copy())
+                    //app.macroCounts.create(macroCount.copy())
+                    macroViewModel.addMacro(macroCount.copy())
                     Timber.i("macroCount added: $macroCount")
                 }
-                Timber.i("All user macros: ${app.macroCounts.findByUserId(currentUserId)}")
+                //Timber.i("All user macros: ${app.macroCounts.findByUserId(currentUserId)}")
                 Timber.i("LocalDate.now(): ${LocalDate.now()}")
                 Timber.i(
                     "Today's macros: ${
@@ -310,14 +358,14 @@ class MacroCountFragment : Fragment() {
         return if (value.isNotEmpty()) value else "0"
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MacroCountFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
-    }
+//    companion object {
+//        @JvmStatic
+//        fun newInstance(param1: String, param2: String) =
+//            MacroCountFragment().apply {
+//                arguments = Bundle().apply {
+//                }
+//            }
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

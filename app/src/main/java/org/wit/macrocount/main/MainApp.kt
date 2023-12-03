@@ -12,14 +12,15 @@ import timber.log.Timber.Forest.i
 
 class MainApp : Application() {
 
-    lateinit var macroCounts: MacroCountStore
+    //lateinit var macroCounts: MacroCountStore
     lateinit var users: UserStore
     lateinit var days: DayStore
 
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        macroCounts = MacroCountJSONStore(applicationContext)
+//        macroCounts = MacroCountJSONStore(applicationContext)
+        //macroCounts = org.wit.macrocount.models.MacroCountManager()
         users = UserJSONStore(applicationContext)
         days = DayJSONStore(applicationContext)
         i("MacroCount started")

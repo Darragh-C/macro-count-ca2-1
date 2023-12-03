@@ -9,7 +9,7 @@ var lastId = 0L
 internal fun getId(): Long {
     return lastId++
 }
-class MacroCountMemStore: MacroCountStore {
+object MacroCountManager: MacroCountStore {
 
     val macroCounts = ArrayList<MacroCountModel>()
 
@@ -47,7 +47,7 @@ class MacroCountMemStore: MacroCountStore {
         macroCount.id = getId()
         macroCounts.add(macroCount)
 
-        app.days.addMacroId(macroCount.id, macroCount.userId, LocalDate.now())
+        //app.days.addMacroId(macroCount.id, macroCount.userId, LocalDate.now())
 
         logAll()
     }

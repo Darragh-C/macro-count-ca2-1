@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/macroListFragment"
-        android:name="org.wit.macrocount.fragments.MacroListFragment"
+        android:name="org.wit.macrocount.ui.list.MacroListFragment"
         android:label="@string/action_macro_list"
         tools:layout="@layout/fragment_macro_list" >
         <action
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/macroCountFragment"
-        android:name="org.wit.macrocount.fragments.MacroCountFragment"
+        android:name="org.wit.macrocount.ui.macro.MacroCountFragment"
         android:label="@string/action_macro_count"
         tools:layout="@layout/fragment_macro_count" >
         <action

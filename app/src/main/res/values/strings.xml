@@ -12,6 +12,9 @@
     <string name="hint_loginEmail">Enter your email</string>
     <string name="hint_loginPassword">Enter your password</string>
 
+    <string name="macrosNotFound">No MacroCounts Yet…\nGo add a MacroCount!</string>
+    <string name="macroAddError">Error : Couldn\'t add macro…</string>
+
     <string name="radio_text_gain">Gain</string>
     <string name="radio_text_lose">Lose</string>
 

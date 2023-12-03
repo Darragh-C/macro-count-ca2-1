@@ -69,7 +69,7 @@ class AnalyticsFragment : Fragment() {
         var userMacrosToday = app.days.findByUserDate(user!!.id, LocalDate.now())
         var userMacros = listOf<MacroCountModel>()
         if (userMacrosToday != null) {
-            userMacros = app.macroCounts.findByIds(userMacrosToday.userMacroIds) as List<MacroCountModel>
+            //userMacros = app.macroCounts.findByIds(userMacrosToday.userMacroIds) as List<MacroCountModel>
         }
 
         Timber.i("userMacros: $userMacros")
