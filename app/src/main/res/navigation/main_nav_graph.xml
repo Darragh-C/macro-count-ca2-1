@@ -15,6 +15,11 @@
             app:destination="@id/macroCountFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_macroListFragment_to_macroDetailFragment"
+            app:destination="@id/macroDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
     </fragment>
 
     <fragment
@@ -64,5 +69,18 @@
         android:id="@+id/macroSearchFragment"
         android:name="org.wit.macrocount.fragments.MacroSearchFragment"
         android:label="@string/action_macro_search" />
+    <fragment
+        android:id="@+id/macroDetailFragment"
+        android:name="org.wit.macrocount.ui.detail.MacroDetailFragment"
+        android:label="fragment_macro_detail"
+        tools:layout="@layout/fragment_macro_detail" >
+
+        <argument
+            android:name="macroid"
+            app:argType="long"
+            android:defaultValue="0L" />
+
+
+    </fragment>
 
 </navigation>

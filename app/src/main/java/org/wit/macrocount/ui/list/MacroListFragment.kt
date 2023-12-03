@@ -140,7 +140,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
 
     override fun onMacroCountClick(macroCount: MacroCountModel) {
         i("onMacroCountClick called")
-        val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(macroCount.id)
+        val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroDetailFragment(macroCount.id)
         findNavController().navigate(directions)
     }
 

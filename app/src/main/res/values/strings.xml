@@ -12,6 +12,8 @@
     <string name="hint_loginEmail">Enter your email</string>
     <string name="hint_loginPassword">Enter your password</string>
 
+
+
     <string name="macrosNotFound">No MacroCounts Yet…\nGo add a MacroCount!</string>
     <string name="macroAddError">Error : Couldn\'t add macro…</string>
 
@@ -31,6 +33,7 @@
     <string name="menu_cancelMacroCount">Cancel</string>
     <string name="save_macroCount">Save</string>
     <string name="button_deleteItem">Delete</string>
+    <string name="button_editItem">Edit</string>
 
     <string name="card_calories">Calories</string>
     <string name="card_protein">Protein</string>
