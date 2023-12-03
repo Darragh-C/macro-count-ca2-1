@@ -326,9 +326,11 @@ class MacroCountFragment : Fragment() {
                         )
                     }"
                 )
-                val directions = MacroCountFragmentDirections.actionMacroCountFragmentToMacroListFragment()
-                findNavController().navigate(directions)
-
+                //findNavController().popBackStack()
+                //val directions = MacroCountFragmentDirections.actionMacroCountFragmentToMacroListFragment()
+                //findNavController().navigate(R.id.action_macroCountFragment_to_macroListFragment)
+//                val directions = MacroCountFragmentDirections.actionMacroCountFragmentToMacroListFragment()
+//                findNavController().navigate(directions)
             }
         }
 

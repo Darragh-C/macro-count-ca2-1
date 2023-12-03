@@ -22,11 +22,7 @@
         android:name="org.wit.macrocount.ui.macro.MacroCountFragment"
         android:label="@string/action_macro_count"
         tools:layout="@layout/fragment_macro_count" >
-        <action
-            android:id="@+id/action_macroCountFragment_to_macroListFragment"
-            app:destination="@id/macroListFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+
         <argument
             android:name="id"
             app:argType="long"
@@ -39,6 +35,11 @@
         <action
             android:id="@+id/action_macroCountFragment_to_macroSearchFragment"
             app:destination="@id/macroSearchFragment" />
+        <action
+            android:id="@+id/action_macroCountFragment_to_macroListFragment"
+            app:destination="@id/macroListFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
