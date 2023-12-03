@@ -57,8 +57,15 @@ class MacroListFragment : Fragment(), MacroCountListener {
         macroCountAdapter = MacroCountAdapter(usersDailyMacroObjList, this)
         fragBinding.recyclerView.adapter = macroCountAdapter
 
+        fragBinding.listFab.setOnClickListener {
+            val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(0)
+            findNavController().navigate(directions)
+        }
+
         return root
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         i("onCreateOptionsMenu called")
