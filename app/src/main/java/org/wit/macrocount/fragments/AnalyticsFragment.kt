@@ -74,7 +74,7 @@ class AnalyticsFragment : Fragment() {
 
         Timber.i("userMacros: $userMacros")
 
-        if (user != null && userMacros != null) {
+        if (user != null && userMacros.isNotEmpty()) {
             calorieGoal = calcBmr(
                 user!!.weight.toInt(),
                 user!!.height.toInt(),

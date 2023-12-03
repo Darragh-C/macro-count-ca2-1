@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.macrocount.R
 import org.wit.macrocount.adapters.MacroCountAdapter
 import org.wit.macrocount.adapters.MacroCountListener
-import org.wit.macrocount.databinding.ActivityMacrocountSearchBinding
 import org.wit.macrocount.databinding.FragmentMacroSearchBinding
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
