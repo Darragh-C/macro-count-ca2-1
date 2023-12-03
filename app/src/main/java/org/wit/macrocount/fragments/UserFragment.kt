@@ -1,17 +1,11 @@
 package org.wit.macrocount.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.NumberPicker
-import android.widget.RadioGroup
-import androidx.appcompat.app.AppCompatActivity
 import org.wit.macrocount.R
-import org.wit.macrocount.activities.MacroCountListActivity
-import org.wit.macrocount.databinding.ActivityProfileBinding
 import org.wit.macrocount.databinding.FragmentUserBinding
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.UserModel

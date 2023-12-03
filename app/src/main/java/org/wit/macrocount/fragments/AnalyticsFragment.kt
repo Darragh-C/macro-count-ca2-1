@@ -13,7 +13,6 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import org.wit.macrocount.R
-import org.wit.macrocount.databinding.ActivityChartsBinding
 import org.wit.macrocount.databinding.FragmentAnalyticsBinding
 import org.wit.macrocount.helpers.calcBmr
 import org.wit.macrocount.helpers.calcProtein

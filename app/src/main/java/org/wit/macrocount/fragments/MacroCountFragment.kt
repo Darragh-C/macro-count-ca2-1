@@ -4,22 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import org.wit.macrocount.R
-import org.wit.macrocount.activities.CameraActivity
 import org.wit.macrocount.databinding.FragmentMacroCountBinding
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
@@ -27,9 +21,7 @@ import org.wit.macrocount.models.UserRepo
 import org.wit.macrocount.showImagePicker
 import timber.log.Timber
 import java.time.LocalDate
-import android.app.Activity
 import android.net.Uri
-import org.wit.macrocount.fragments.MacroCountFragmentDirections.Companion.actionMacroCountFragmentToCameraFragment
 
 class MacroCountFragment : Fragment() {
 
