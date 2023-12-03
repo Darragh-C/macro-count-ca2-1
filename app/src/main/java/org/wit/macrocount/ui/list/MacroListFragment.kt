@@ -139,27 +139,10 @@ class MacroListFragment : Fragment(), MacroCountListener {
     }
 
     override fun onMacroCountClick(macroCount: MacroCountModel) {
-        i("onMacroCountClick called")
+        i("onMacroCountClick called $macroCount")
         val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroDetailFragment(macroCount.id)
         findNavController().navigate(directions)
     }
-
-//    override fun onMacroCountClick(macroCount: MacroCountModel) {
-//        val launcherIntent = Intent(requireActivity(), MacroCountFragment::class.java)
-//        launcherIntent.putExtra("macrocount_edit", macroCount)
-//        getClickResult.launch(launcherIntent)
-//    }
-//
-//    private val getClickResult =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-//            if (it.resultCode == Activity.RESULT_OK) {
-//                updatedAdapterMacros()
-//                macroCountAdapter.updateData(usersDailyMacroObjList)
-//                macroCountAdapter.notifyDataSetChanged()
-//            }
-//        }
-
-
 
 //    private fun updatedAdapterMacros() {
 //        val today = LocalDate.now()

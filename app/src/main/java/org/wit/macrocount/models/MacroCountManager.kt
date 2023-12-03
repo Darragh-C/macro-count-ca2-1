@@ -2,9 +2,13 @@ package org.wit.macrocount.models
 import org.wit.macrocount.main.MainApp
 import timber.log.Timber.Forest.i
 import java.time.LocalDate
+import java.util.Random
 
 var lastId = 0L
 
+fun generateId(): Long {
+    return Random().nextLong()
+}
 
 internal fun getId(): Long {
     return lastId++
@@ -44,13 +48,15 @@ object MacroCountManager: MacroCountStore {
 
 
     override fun create(macroCount: MacroCountModel) {
-        macroCount.id = getId()
+        macroCount.id = generateId()
         macroCounts.add(macroCount)
 
         //app.days.addMacroId(macroCount.id, macroCount.userId, LocalDate.now())
 
         logAll()
     }
+
+
 
     override fun update(macroCount: MacroCountModel) {
         var foundMacroCount: MacroCountModel? = macroCounts.find { m -> m.id == macroCount.id }
