@@ -50,6 +50,8 @@ class MacroCountAdapter constructor(private var macroCounts: List<MacroCountMode
 
             binding.root.setOnClickListener { listener.onMacroCountClick(macroCount) }
 
+
+
         }
 
 

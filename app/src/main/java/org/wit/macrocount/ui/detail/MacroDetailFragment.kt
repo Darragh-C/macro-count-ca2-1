@@ -37,11 +37,9 @@ class MacroDetailFragment : Fragment() {
         val root = fragBinding.root
 
         detailViewModel = ViewModelProvider(this).get(MacroDetailViewModel::class.java)
-        detailViewModel.observableMacro.observe(viewLifecycleOwner, Observer {
-                macro ->
-            macro?.let { render(macro) }
-            Timber.i("observableMacro ${macro}")
-        })
+        detailViewModel.observableMacro.observe(viewLifecycleOwner, Observer {render() })
+            //Timber.i("observableMacro ${macro}")
+
         return root
 
         //val args = arguments
@@ -50,7 +48,8 @@ class MacroDetailFragment : Fragment() {
 //        return view
     }
 
-    private fun render(macro: MacroCountModel) {
+    private fun render() {
+        //fragBinding.
         fragBinding.macrovm = detailViewModel
     }
 

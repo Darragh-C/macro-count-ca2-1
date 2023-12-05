@@ -9,6 +9,7 @@
             type="org.wit.macrocount.ui.detail.MacroDetailViewModel" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/frameLayout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -72,7 +73,7 @@
                     android:id="@+id/detailCalorieDataView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{Integer.toString(macrovm.observableMacro.calories)}"
+                    android:text="@{macrovm.observableMacro.calories}"
                     android:layout_marginStart="@dimen/text_padding"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/detail_data_padding_large"
@@ -103,7 +104,7 @@
                     android:id="@+id/detailProteinDataView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Integer.toString(macrovm.observableMacro.protein)"
+                    android:text="@{macrovm.observableMacro.protein}"
                     android:layout_marginStart="@dimen/text_padding"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/detail_data_padding_large"
@@ -134,7 +135,7 @@
                     android:id="@+id/detailsCarbsDataView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Integer.toString(macrovm.observableMacro.carbs)"
+                    android:text="@{macrovm.observableMacro.carbs}"
                     android:layout_marginStart="@dimen/text_padding"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/detail_data_padding_large"
@@ -165,7 +166,7 @@
                     android:id="@+id/detailFatDataView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Integer.toString(macrovm.observableMacro.fat)"
+                    android:text="@{macrovm.observableMacro.fat}"
                     android:layout_marginStart="@dimen/text_padding"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/detail_data_padding_large"
