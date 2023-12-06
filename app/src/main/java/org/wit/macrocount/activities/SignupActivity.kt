@@ -1,17 +1,14 @@
 package org.wit.macrocount.activities
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import org.wit.macrocount.R
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.databinding.ActivitySignUpBinding
-import org.wit.macrocount.fragments.UserFragment
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
 import org.wit.macrocount.models.generateRandomId

@@ -5,19 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.FragmentUserBinding
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
+import org.wit.macrocount.ui.user.UserDetailViewModel
 import timber.log.Timber
 import java.time.LocalDate
 
 class UserFragment : Fragment() {
 
-    lateinit var app : MainApp
-    private lateinit var userRepo: UserRepo
+    lateinit var app: MainApp
     private var user: UserModel? = null
+    private lateinit var userRepo: UserRepo
     //var signup = false
     private var currentUserId: Long = 0
     private var _fragBinding: FragmentUserBinding? = null
@@ -45,6 +47,7 @@ class UserFragment : Fragment() {
         _fragBinding = FragmentUserBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_user)
+
         //Weight goal radio buttons
 
         fragBinding.goalRadioGroup.setOnCheckedChangeListener { group, checkedId ->

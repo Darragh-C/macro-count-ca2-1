@@ -1,7 +1,7 @@
 package org.wit.macrocount.models
 import timber.log.Timber
 import timber.log.Timber.Forest.i
-class UserMemStore: UserStore {
+object UserManager: UserStore {
 
     val users = ArrayList<UserModel>()
 
