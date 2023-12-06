@@ -17,7 +17,4 @@ class UserDetailViewModel : ViewModel() {
         user.value = UserManager.findById(id)
     }
 
-    fun setUser(user: UserModel) {
-        this.user.value = user
-    }
 }

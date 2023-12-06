@@ -5,7 +5,7 @@
     <data>
         <variable
             name="uservm"
-            type="ie.wit.donationx.ui.user.UserDetailViewModel" />
+            type="org.wit.macrocount.ui.user.UserDetailViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout"

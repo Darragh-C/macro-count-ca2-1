@@ -10,20 +10,29 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import org.wit.macrocount.R
-import org.wit.macrocount.databinding.FragmentUserBinding
 import org.wit.macrocount.databinding.FragmentUserDetailBinding
 import org.wit.macrocount.models.UserModel
+import org.wit.macrocount.models.UserRepo
 import timber.log.Timber
 
 class UserDetailFragment : Fragment() {
+    private lateinit var userRepo: UserRepo
+    private var currentUserId: Long = 0
 
-    //private val args by navArgs<MacroDetailFragmentArgs>()
+    //private val args by navArgs<UserDetailFragmentArgs>()
     private lateinit var detailViewModel: UserDetailViewModel
     private var _fragBinding: FragmentUserDetailBinding? = null
     private val fragBinding get() = _fragBinding!!
 
     companion object {
         fun newInstance() = UserDetailFragment()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Timber.i("starting user profile detail fragment")
+        userRepo = UserRepo(requireActivity().applicationContext)
+        val currentUserId = userRepo.userId
     }
 
     override fun onCreateView(
@@ -36,15 +45,11 @@ class UserDetailFragment : Fragment() {
         val root = fragBinding.root
 
         detailViewModel = ViewModelProvider(this).get(UserDetailViewModel::class.java)
-        detailViewModel.observableUser.observe(viewLifecycleOwner, Observer {render() })
+        detailViewModel.observableUser.observe(viewLifecycleOwner, Observer { render() })
         //Timber.i("observableMacro ${macro}")
 
         return root
 
-        //val args = arguments
-//        Timber.i("MacroDetailFragment passed args ${args}")
-//        Toast.makeText(context,"Macro ID Selected : ${args}", Toast.LENGTH_LONG).show()
-//        return view
     }
 
     private fun render() {
@@ -52,18 +57,14 @@ class UserDetailFragment : Fragment() {
         fragBinding.uservm = detailViewModel
     }
 
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(MacroDetailViewModel::class.java)
-//        // TODO: Use the ViewModel
-//    }
 
     override fun onResume() {
         super.onResume()
-        detailViewModel.getUser(args.macroid)
+        detailViewModel.getUser(currentUserId)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
     }
+}
