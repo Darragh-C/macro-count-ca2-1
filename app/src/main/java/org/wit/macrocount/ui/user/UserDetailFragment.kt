@@ -28,25 +28,31 @@ class UserDetailFragment : Fragment() {
         fun newInstance() = UserDetailFragment()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Timber.i("starting user profile detail fragment")
-        userRepo = UserRepo(requireActivity().applicationContext)
-        val currentUserId = userRepo.userId
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_user_detail, container, false)
+        //val view = inflater.inflate(R.layout.fragment_user_detail, container, false)
 
         _fragBinding = FragmentUserDetailBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
+        userRepo = UserRepo(requireActivity().applicationContext)
+        val currentUserId = userRepo.userId
+        Timber.i("currentUserId: $currentUserId at user fragment")
+
+
         detailViewModel = ViewModelProvider(this).get(UserDetailViewModel::class.java)
+        if (currentUserId != null) {
+            Timber.i("currentUserId: $currentUserId not null")
+            detailViewModel.getUser(currentUserId.toLong())
+        }
+        val vmUser = detailViewModel.observableUser.value
+        Timber.i("vmUser: $vmUser at user fragment")
         detailViewModel.observableUser.observe(viewLifecycleOwner, Observer { render() })
         //Timber.i("observableMacro ${macro}")
+
+
 
         return root
 
@@ -58,10 +64,10 @@ class UserDetailFragment : Fragment() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        detailViewModel.getUser(currentUserId)
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        detailViewModel.getUser(currentUserId)
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -5,9 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-
-
+    tools:context=".fragments.LoginFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -69,7 +67,7 @@
                 android:background="@drawable/rounded_button"
                 android:stateListAnimator="@null"
                 android:text="@string/button_login"
-                 />
+                />
 
             <TextView
                 android:id="@+id/signupLink"
@@ -81,15 +79,8 @@
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold" />
 
-
-
         </LinearLayout>
 
-
-
-
     </RelativeLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

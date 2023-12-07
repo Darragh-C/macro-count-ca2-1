@@ -72,19 +72,6 @@ class SignupActivity: AppCompatActivity() {
                     navController.navigate(R.id.userFragment)
                 }
                 navigateToUserFragment()
-
-//                val fragment = UserFragment()
-//                val args = Bundle()
-//                args.putParcelable("user_signup", user)
-//                fragment.arguments = args
-//
-//                supportFragmentManager.beginTransaction()
-//                    .replace(R.id.nav_host_fragment, fragment)
-//                    .commit()
-
-//                val intent = Intent(this, UserFragment::class.java)
-//                intent.putExtra("user_signup", user)
-//                startActivity(intent)
             }
         }
     }

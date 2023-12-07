@@ -81,5 +81,9 @@
             android:defaultValue="0L" />
 
     </fragment>
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="org.wit.macrocount.ui.user.UserDetailFragment"
+        android:label="UserDetailFragment" />
 
 </navigation>

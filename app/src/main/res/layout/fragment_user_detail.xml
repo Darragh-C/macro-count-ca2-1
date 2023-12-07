@@ -7,284 +7,284 @@
             name="uservm"
             type="org.wit.macrocount.ui.user.UserDetailViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/frameLayout"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.detail.UserDetailFragment">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/frameLayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.user.UserDetailFragment">
 
-        <ScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/relative_layout_padding">
-
-                    <TextView
-                        android:id="@+id/detailNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/hint_userName"
-                        android:textSize="@dimen/text_size_large"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="@dimen/detail_data_padding_medium"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/text_padding" />
-
-                    <TextView
-                        android:id="@+id/detailNameDataView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{uservm.observableUser.name}"
-                        android:layout_marginStart="@dimen/text_padding"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/detail_data_padding_large"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_large" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/relative_layout_padding">
-
-                    <TextView
-                        android:id="@+id/detailGoalTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/hint_userName"
-                        android:textSize="@dimen/text_size_large"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="@dimen/detail_data_padding_medium"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/text_padding" />
-
-                    <TextView
-                        android:id="@+id/detailGoalDataView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{uservm.observableUser.goal}"
-                        android:layout_marginStart="@dimen/text_padding"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/detail_data_padding_large"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_large" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/relative_layout_padding">
-
-                    <TextView
-                        android:id="@+id/detailGenderTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/text_gender"
-                        android:textSize="@dimen/text_size_large"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="@dimen/detail_data_padding_medium"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/text_padding" />
-
-                    <TextView
-                        android:id="@+id/detailGenderDataView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{uservm.observableUser.gender}"
-                        android:layout_marginStart="@dimen/text_padding"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/detail_data_padding_large"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_large" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/relative_layout_padding">
-
-                    <TextView
-                        android:id="@+id/detailAgeTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/text_age"
-                        android:textSize="@dimen/text_size_large"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="@dimen/detail_data_padding_medium"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/text_padding" />
-
-                    <TextView
-                        android:id="@+id/detailAgeDataView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{uservm.observableUser.age}"
-                        android:layout_marginStart="@dimen/text_padding"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/detail_data_padding_large"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_large" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/relative_layout_padding">
-
-                    <TextView
-                        android:id="@+id/detailHeightTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/text_height"
-                        android:textSize="@dimen/text_size_large"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="@dimen/detail_data_padding_medium"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/text_padding" />
-
-                    <TextView
-                        android:id="@+id/detailHeightDataView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{uservm.observableUser.height}"
-                        android:layout_marginStart="@dimen/text_padding"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/detail_data_padding_large"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_large" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/relative_layout_padding">
-
-                    <TextView
-                        android:id="@+id/detailWeightTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/text_weight"
-                        android:textSize="@dimen/text_size_large"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="@dimen/detail_data_padding_medium"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/text_padding" />
-
-                    <TextView
-                        android:id="@+id/detailWeightDataView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{uservm.observableUser.weight}"
-                        android:layout_marginStart="@dimen/text_padding"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/detail_data_padding_large"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_large" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/relative_layout_padding">
-
-                    <TextView
-                        android:id="@+id/detailDOBTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/text_dob"
-                        android:textSize="@dimen/text_size_large"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="@dimen/detail_data_padding_medium"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/text_padding" />
-
-                    <TextView
-                        android:id="@+id/detailDOBDataView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{uservm.observableUser.weight}"
-                        android:layout_marginStart="@dimen/text_padding"
-                        android:layout_marginTop="@dimen/text_padding"
-                        android:layout_marginEnd="@dimen/detail_data_padding_large"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_large" />
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-        </ScrollView>
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:weightSum="2">
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/editUser"
-                android:layout_width="0dp"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="@dimen/button_padding"
-                android:background="@color/color_primary"
-                android:paddingBottom="@dimen/button_padding"
-                android:paddingTop="@dimen/button_padding"
-                android:text="@string/button_editItem"
-                android:textColor="@color/white"
-                android:textSize="@dimen/button_text_size" />
+                android:padding="@dimen/relative_layout_padding">
 
-            <Button
-                android:id="@+id/deleteUser"
-                android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/detailNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_userName"
+                    android:textSize="@dimen/text_size_large"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/detail_data_padding_medium"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/text_padding" />
+
+                <TextView
+                    android:id="@+id/detailNameDataView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="test"
+                    android:layout_marginStart="@dimen/text_padding"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/detail_data_padding_large"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_large" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="@dimen/button_padding"
-                android:background="@color/color_primary"
-                android:paddingBottom="@dimen/button_padding"
-                android:paddingTop="@dimen/button_padding"
-                android:text="@string/button_deleteItem"
-                android:textColor="@color/white"
-                android:textSize="@dimen/button_text_size" />
+                android:padding="@dimen/relative_layout_padding">
+
+                <TextView
+                    android:id="@+id/detailGoalTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_userName"
+                    android:textSize="@dimen/text_size_large"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/detail_data_padding_medium"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/text_padding" />
+
+                <TextView
+                    android:id="@+id/detailGoalDataView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{uservm.observableUser.email}"
+                    android:layout_marginStart="@dimen/text_padding"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/detail_data_padding_large"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_large" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/relative_layout_padding">
+
+                <TextView
+                    android:id="@+id/detailGenderTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_gender"
+                    android:textSize="@dimen/text_size_large"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/detail_data_padding_medium"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/text_padding" />
+
+                <TextView
+                    android:id="@+id/detailGenderDataView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{uservm.observableUser.gender}"
+                    android:layout_marginStart="@dimen/text_padding"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/detail_data_padding_large"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_large" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/relative_layout_padding">
+
+                <TextView
+                    android:id="@+id/detailAgeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_age"
+                    android:textSize="@dimen/text_size_large"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/detail_data_padding_medium"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/text_padding" />
+
+                <TextView
+                    android:id="@+id/detailAgeDataView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{uservm.observableUser.age}"
+                    android:layout_marginStart="@dimen/text_padding"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/detail_data_padding_large"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_large" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/relative_layout_padding">
+
+                <TextView
+                    android:id="@+id/detailHeightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_height"
+                    android:textSize="@dimen/text_size_large"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/detail_data_padding_medium"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/text_padding" />
+
+                <TextView
+                    android:id="@+id/detailHeightDataView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{uservm.observableUser.height}"
+                    android:layout_marginStart="@dimen/text_padding"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/detail_data_padding_large"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_large" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/relative_layout_padding">
+
+                <TextView
+                    android:id="@+id/detailWeightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_weight"
+                    android:textSize="@dimen/text_size_large"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/detail_data_padding_medium"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/text_padding" />
+
+                <TextView
+                    android:id="@+id/detailWeightDataView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{uservm.observableUser.weight}"
+                    android:layout_marginStart="@dimen/text_padding"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/detail_data_padding_large"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_large" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/relative_layout_padding">
+
+                <TextView
+                    android:id="@+id/detailDOBTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_dob"
+                    android:textSize="@dimen/text_size_large"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/detail_data_padding_medium"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/text_padding" />
+
+                <TextView
+                    android:id="@+id/detailDOBDataView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{uservm.observableUser.weight}"
+                    android:layout_marginStart="@dimen/text_padding"
+                    android:layout_marginTop="@dimen/text_padding"
+                    android:layout_marginEnd="@dimen/detail_data_padding_large"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_large" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/editUser"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/button_padding"
+            android:background="@color/color_primary"
+            android:paddingBottom="@dimen/button_padding"
+            android:paddingTop="@dimen/button_padding"
+            android:text="@string/button_editItem"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_text_size" />
+
+        <Button
+            android:id="@+id/deleteUser"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/button_padding"
+            android:background="@color/color_primary"
+            android:paddingBottom="@dimen/button_padding"
+            android:paddingTop="@dimen/button_padding"
+            android:text="@string/button_deleteItem"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_text_size" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

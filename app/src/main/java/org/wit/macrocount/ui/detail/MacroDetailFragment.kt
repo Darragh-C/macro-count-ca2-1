@@ -31,7 +31,7 @@ class MacroDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_macro_detail, container, false)
+        //val view = inflater.inflate(R.layout.fragment_macro_detail, container, false)
 
         _fragBinding = FragmentMacroDetailBinding.inflate(inflater, container, false)
         val root = fragBinding.root
@@ -52,12 +52,6 @@ class MacroDetailFragment : Fragment() {
         //fragBinding.
         fragBinding.macrovm = detailViewModel
     }
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(MacroDetailViewModel::class.java)
-//        // TODO: Use the ViewModel
-//    }
 
     override fun onResume() {
         super.onResume()

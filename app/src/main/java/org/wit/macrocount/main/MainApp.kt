@@ -4,7 +4,7 @@ import org.wit.macrocount.models.DayStore
 import org.wit.macrocount.models.MacroCountJSONStore
 import org.wit.macrocount.models.MacroCountStore
 import org.wit.macrocount.models.UserJSONStore
-import org.wit.macrocount.models.UserMemStore
+//import org.wit.macrocount.models.UserMemStore
 import org.wit.macrocount.models.UserStore
 import org.wit.macrocount.models.DayJSONStore
 import timber.log.Timber
