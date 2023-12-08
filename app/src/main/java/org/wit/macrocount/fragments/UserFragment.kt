@@ -31,9 +31,9 @@ class UserFragment : Fragment() {
         app = activity?.application as MainApp
         userRepo = UserRepo(requireActivity().applicationContext)
         val currentUserId = userRepo.userId
-        if (currentUserId != null) {
-            user = app.users.findById(currentUserId.toLong())
-        }
+//        if (currentUserId != null) {
+//            user = app.users.findById(currentUserId.toLong())
+//        }
         //setHasOptionsMenu(true)
 //        arguments?.getParcelable<UserModel>("user_signup")?.let {
 //            // Use Parcelable data
@@ -186,7 +186,7 @@ class UserFragment : Fragment() {
 
             fragBinding.btnSave.text = getString(R.string.btn_saved_user)
             fragBinding.btnSave.setBackgroundResource(R.color.color_green)
-            app.users.update(user!!.copy())
+            //app.users.update(user!!.copy())
 
         }
 

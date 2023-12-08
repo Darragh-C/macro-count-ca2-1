@@ -96,9 +96,9 @@ class MacroListFragment : Fragment(), MacroCountListener {
             }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun render(donationsList: List<MacroCountModel>) {
-        fragBinding.recyclerView.adapter = MacroCountAdapter(donationsList,this)
-        if (donationsList.isEmpty()) {
+    private fun render(macroList: List<MacroCountModel>) {
+        fragBinding.recyclerView.adapter = MacroCountAdapter(macroList,this)
+        if (macroList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
             fragBinding.macrosNotFound.visibility = View.VISIBLE
         } else {

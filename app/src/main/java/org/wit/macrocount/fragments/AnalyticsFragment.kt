@@ -48,10 +48,10 @@ class AnalyticsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         app = activity?.application as MainApp
         userRepo = UserRepo(requireActivity().applicationContext)
-        val currentUserId = userRepo.userId
-        if (currentUserId != null) {
-            user = app.users.findById(currentUserId.toLong())
-        }
+//        val currentUserId = userRepo.userId
+//        if (currentUserId != null) {
+//            user = app.users.findById(currentUserId.toLong())
+//        }
         Timber.i("user at charts: $user")
 
 

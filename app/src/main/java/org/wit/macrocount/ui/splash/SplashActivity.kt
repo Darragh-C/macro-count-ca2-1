@@ -1,10 +1,11 @@
-package org.wit.macrocount.activities
+package org.wit.macrocount.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import org.wit.macrocount.R
 import android.os.Handler
+import org.wit.macrocount.ui.login.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
 

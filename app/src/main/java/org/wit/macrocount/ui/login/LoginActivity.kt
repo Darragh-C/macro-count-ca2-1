@@ -1,17 +1,18 @@
-package org.wit.macrocount.activities
+package org.wit.macrocount.ui.login
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import org.wit.macrocount.R
+import org.wit.macrocount.activities.Home
+import org.wit.macrocount.ui.signup.SignupActivity
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.databinding.ActivityLogInBinding
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
-import org.wit.macrocount.models.currentUser
-import org.wit.macrocount.models.generateRandomId
 import timber.log.Timber
 
 
@@ -21,6 +22,7 @@ class LoginActivity: AppCompatActivity() {
     lateinit var app : MainApp
     private lateinit var binding: ActivityLogInBinding
     private lateinit var userRepo: UserRepo
+    private lateinit var loginViewModel: LoginViewModel
 
     var user = UserModel()
 
@@ -32,6 +34,8 @@ class LoginActivity: AppCompatActivity() {
 
         app = application as MainApp
         userRepo = UserRepo(applicationContext)
+
+        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         Timber.i("Log in started..")
 
@@ -60,12 +64,14 @@ class LoginActivity: AppCompatActivity() {
             if (!validationFailed) {
 
                 Timber.i("Checking user for log in: $user")
+                loginViewModel.login(user)
 
-                var loggedInUser = app.users.logIn(user)
-                Timber.i("loggedInUser: $loggedInUser")
-                if (loggedInUser != null && loggedInUser.id != 0L) {
-                    userRepo.userId = loggedInUser.id.toString()
-                    Timber.i("Current user: ${userRepo.userId.toString()}")
+//                //var loggedInUser = app.users.logIn(user)
+
+                if (loginViewModel.observableStatus.value == true) {
+                    Timber.i("Logged in?: ${loginViewModel.observableUser.value}")
+                    userRepo.userId = loginViewModel.observableUser.value?.id.toString()
+                    Timber.i("Current user: ${loginViewModel.observableUser.value}")
                     val intent = Intent(this, Home::class.java)
                     startActivity(intent)
                 } else {

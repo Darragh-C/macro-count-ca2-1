@@ -1,9 +1,10 @@
-package org.wit.macrocount.activities
+package org.wit.macrocount.ui.signup
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import org.wit.macrocount.R
@@ -12,6 +13,7 @@ import org.wit.macrocount.databinding.ActivitySignUpBinding
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
 import org.wit.macrocount.models.generateRandomId
+import org.wit.macrocount.ui.login.LoginActivity
 import timber.log.Timber
 import timber.log.Timber.Forest.i
 
@@ -19,7 +21,7 @@ class SignupActivity: AppCompatActivity() {
 
     lateinit var app : MainApp
     private lateinit var binding: ActivitySignUpBinding
-
+    private lateinit var signupViewModel: SignupViewModel
     var user = UserModel()
     private lateinit var userRepo: UserRepo
 
@@ -32,6 +34,8 @@ class SignupActivity: AppCompatActivity() {
 
         app = application as MainApp
         userRepo = UserRepo(applicationContext)
+
+        signupViewModel = ViewModelProvider(this).get(SignupViewModel::class.java)
 
         Timber.i("Sign up started..")
 
@@ -61,17 +65,15 @@ class SignupActivity: AppCompatActivity() {
 
                 Timber.i("User added: $user.email")
                 user.id = generateRandomId()
-                app.users.create(user.copy())
+                //app.users.create(user.copy())
+                signupViewModel.addUser(user.copy())
                 userRepo.userId = user.id.toString()
 
-                Timber.i("user at sign up intent: $user")
-
-                val navController = findNavController(R.id.nav_host_fragment)
-                fun navigateToUserFragment() {
-                    i("navigating to user profile fragment")
-                    navController.navigate(R.id.userFragment)
+                if (signupViewModel.observableStatus.value == true) {
+                    Timber.i("signed up user: ${signupViewModel.observableStatus.value}")
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
                 }
-                navigateToUserFragment()
             }
         }
     }

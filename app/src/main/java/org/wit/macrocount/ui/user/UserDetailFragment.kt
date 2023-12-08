@@ -38,11 +38,14 @@ class UserDetailFragment : Fragment() {
         val root = fragBinding.root
 
         userRepo = UserRepo(requireActivity().applicationContext)
-        val currentUserId = userRepo.userId
+        if (userRepo.userId != null) {
+            currentUserId = userRepo.userId!!.toLong()
+        }
+
         Timber.i("currentUserId: $currentUserId at user fragment")
 
 
-        detailViewModel = ViewModelProvider(this).get(UserDetailViewModel::class.java)
+        detailViewModel = ViewModelProvider(requireActivity()).get(UserDetailViewModel::class.java)
         if (currentUserId != null) {
             Timber.i("currentUserId: $currentUserId not null")
             detailViewModel.getUser(currentUserId.toLong())
@@ -59,8 +62,12 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun render() {
-        //fragBinding.
-        fragBinding.uservm = detailViewModel
+        val vmUser = detailViewModel.observableUser.value
+        if (vmUser != null) {
+            fragBinding.uservm = detailViewModel
+        } else {
+            Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show()
+        }
     }
 
 

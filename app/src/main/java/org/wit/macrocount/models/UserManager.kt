@@ -30,7 +30,9 @@ object UserManager: UserStore {
     }
 
     override fun findById(id: Long?): UserModel? {
-        return users.find { u -> u.id == id }
+        val user = users.find { u -> u.id == id }
+        i("user found findById: $user")
+        return user
     }
 
     override fun update(user: UserModel) {
