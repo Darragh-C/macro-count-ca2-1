@@ -9,7 +9,7 @@
 
     <dimen name="text_padding">8dp</dimen>
     <dimen name="detail_data_padding_medium">40dp</dimen>
-    <dimen name="detail_data_padding_large">240dp</dimen>
+    <dimen name="detail_data_padding_large">140dp</dimen>
     <dimen name="text_padding_large">20dp</dimen>
     <dimen name="text_padding_big">10dp</dimen>
     <dimen name="text_padding_medium">12dp</dimen>

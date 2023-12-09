@@ -78,13 +78,19 @@
     <fragment
         android:id="@+id/macroDetailFragment"
         android:name="org.wit.macrocount.ui.detail.MacroDetailFragment"
-        android:label="fragment_macro_detail"
+        android:label="@string/menu_macro_detail"
         tools:layout="@layout/fragment_macro_detail" >
 
         <argument
             android:name="macroid"
             app:argType="long"
             android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_macroDetailFragment_to_macroCountFragment"
+            app:destination="@id/macroCountFragment"
+            android:label="@string/menu_macro_detail"
+            tools:layout="@layout/fragment_macro_detail"
+            />
 
     </fragment>
     <fragment

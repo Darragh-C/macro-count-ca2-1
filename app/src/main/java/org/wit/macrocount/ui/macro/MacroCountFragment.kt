@@ -38,7 +38,7 @@ class MacroCountFragment : Fragment() {
 
     lateinit var app : MainApp
     private lateinit var userRepo: UserRepo
-    private lateinit var macroCount: MacroCountModel
+    //private lateinit var macroCount: MacroCountModel
     private var editMacro = false
     private var copyMacro = false
     private var currentUserId: Long = 0
@@ -58,29 +58,34 @@ class MacroCountFragment : Fragment() {
 
     private lateinit var macroViewModel: EditMacroViewModel
 
-
+    companion object {
+        fun newInstance() = MacroCountFragment()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         app = activity?.application as MainApp
         userRepo = UserRepo(requireActivity().applicationContext)
         currentUserId = userRepo.userId!!.toLong()
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _fragBinding = FragmentMacroCountBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_macro_list)
         setupMenu()
 
-        macroViewModel = ViewModelProvider(this).get(EditMacroViewModel::class.java)
-        Timber.i("observable macro: ${macroViewModel.observableMacro.value}")
-        macroCount = macroViewModel.observableMacro.value!!
+        macroViewModel = ViewModelProvider(requireActivity()).get(EditMacroViewModel::class.java)
+        Timber.i("onCreateView macroViewModel: $macroViewModel")
+        Timber.i("onCreateView macroViewModel.observableMacro.value: ${macroViewModel.observableMacro.value}")
 
+
+        fragBinding.macrovm = macroViewModel
 
         val args = arguments
         val macroId = MacroCountFragmentArgs.fromBundle(args!!).id
@@ -98,17 +103,71 @@ class MacroCountFragment : Fragment() {
                 fragBinding.btnAdd.setText(R.string.save_macroCount)
                 editMacro = true
 
-                if (macroCount.image.toString() != "") {
-                    Picasso.get()
-                        .load(macroCount.image)
-                        .into(fragBinding.macroCountImage)
-                }
+//                if (macroCount.image.toString() != "") {
+//                    Picasso.get()
+//                        .load(macroCount.image)
+//                        .into(fragBinding.macroCountImage)
+//                }
 
             }
-
+        } else {
+            macroViewModel.setMacro()
         }
 
-        fragBinding.macrovm = macroViewModel
+        Timber.i("onCreateView2 macroViewModel: $macroViewModel")
+        Timber.i("onCreateView2 macroViewModel.observableMacro.value: ${macroViewModel.observableMacro.value}")
+
+
+        return root
+    }
+
+
+
+    private fun setupMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {
+                // Handle for example visibility of menu items
+            }
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_macrocount, menu)
+            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Validate and handle the selected menu item
+                return NavigationUI.onNavDestinationSelected(menuItem,
+                    requireView().findNavController())
+            }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+//    private fun render(status: Boolean) {
+//        when (status) {
+//            true -> {
+//                view?.let {
+//                    //findNavController().popBackStack()
+//                }
+//            }
+//            false -> Toast.makeText(context,getString(R.string.macroAddError),Toast.LENGTH_LONG).show()
+//        }
+//    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        Timber.i("observable macro: ${macroViewModel.observableMacro.value}")
+        var macroCount = macroViewModel.observableMacro.value!!
+
+        fragBinding.lifecycleOwner = this
+        macroViewModel.observableMacro.observe(viewLifecycleOwner, Observer {macro ->
+            fragBinding.proteinDataView.text = macro.protein
+            render()
+//            proteinDataView.text =
+        })
+
+
+        Timber.i("onViewCreated macroViewModel: $macroViewModel")
+        Timber.i("onViewCreated macroViewModel.observableMacro.value: ${macroViewModel.observableMacro.value}")
+
+
+        //fragBinding.macrovm = macroViewModel
 
 //        macroViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
 //                status ->
@@ -170,7 +229,7 @@ class MacroCountFragment : Fragment() {
         fragBinding.proteinSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(proteinSeekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 macroViewModel.editProtein(progress)
-//                fragBinding.proteinDataView.text = progress.toString()
+                //fragBinding.proteinDataView.text = progress.toString()
 //                protein = progress
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -210,37 +269,6 @@ class MacroCountFragment : Fragment() {
             showImagePicker(imageIntentLauncher)
         }
 
-        return root
-    }
-
-    private fun setupMenu() {
-        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
-            override fun onPrepareMenu(menu: Menu) {
-                // Handle for example visibility of menu items
-            }
-
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_macrocount, menu)
-            }
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Validate and handle the selected menu item
-                return NavigationUI.onNavDestinationSelected(menuItem,
-                    requireView().findNavController())
-            }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    private fun render(status: Boolean) {
-        when (status) {
-            true -> {
-                view?.let {
-                    //findNavController().popBackStack()
-                }
-            }
-            false -> Toast.makeText(context,getString(R.string.macroAddError),Toast.LENGTH_LONG).show()
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         fragBinding.searchFab.setOnClickListener() {
             val directions = MacroCountFragmentDirections.actionMacroCountFragmentToMacroSearchFragment()
@@ -256,7 +284,7 @@ class MacroCountFragment : Fragment() {
 
                     copyMacro = true
 
-                    macroCount.id = selectedItem.id
+                    //macroCount.id = selectedItem.id
 
                     fragBinding.macroCountTitle.setText(selectedItem.title)
                     fragBinding.macroCountDescription.setText(selectedItem.description)
@@ -291,21 +319,21 @@ class MacroCountFragment : Fragment() {
 //            macroCount.fat = fat.toString()
 
             if (currentUserId != null) {
-                Timber.i("Before assignment: $macroCount")
+                Timber.i("Before assignment: ${macroViewModel.observableMacro.value}")
                 Timber.i("currentUserId at macro add: $currentUserId")
                 macroViewModel.setUserId(currentUserId)
 //                macroCount.userId = currentUserId
-                Timber.i("After assignment: $macroCount")
+                Timber.i("After assignment: $macroViewModel.observableMacro.value")
             }
 
             val validationChecks = listOf(
-                Pair(macroCount.title.isEmpty(), R.string.snackbar_macroCountTitle),
+                Pair(macroViewModel.observableMacro.value?.title?.isEmpty(), R.string.snackbar_macroCountTitle),
             )
 
             var validationFailed = false
 
             for (check in validationChecks) {
-                if (check.first) {
+                if (check.first == true) {
                     Snackbar
                         .make(it, check.second, Snackbar.LENGTH_LONG)
                         .show()
@@ -316,23 +344,24 @@ class MacroCountFragment : Fragment() {
 
             if (!validationFailed) {
                 if (editMacro) {
-                    Timber.i("macroCount edited and saved: $macroCount")
+                    Timber.i("macroCount edited and saved: $macroViewModel.observableMacro.value")
                     //app.macroCounts.update(macroCount.copy())
                     macroViewModel.updateMacro()
                 } else if (copyMacro) {
-                    Timber.i("copiedMacro: $copiedMacro")
-                    Timber.i("macroCount after copy: $macroCount")
-                    if (copiedMacro.equals(macroCount)) {
-                        app.days.addMacroId(macroCount.id, macroCount.userId, LocalDate.now())
-                        Timber.i("copied macroCount added to today: $macroCount")
-                    } else {
-                        //app.macroCounts.create(macroCount.copy())
-                        Timber.i("creating new macroCount from copied and edited macro: $macroCount")
-                    }
+                    Timber.i("copiedMacro")
+//                    Timber.i("copiedMacro: $copiedMacro")
+//                    Timber.i("macroCount after copy: $macroCount")
+//                    if (copiedMacro.equals(macroCount)) {
+//                        app.days.addMacroId(macroCount.id, macroCount.userId, LocalDate.now())
+//                        Timber.i("copied macroCount added to today: $macroCount")
+//                    } else {
+//                        //app.macroCounts.create(macroCount.copy())
+//                        Timber.i("creating new macroCount from copied and edited macro: $macroCount")
+//                    }
                 } else {
                     //app.macroCounts.create(macroCount.copy())
                     macroViewModel.addMacro()
-                    Timber.i("macroCount added: $macroCount")
+                    Timber.i("macroCount added: ${macroViewModel.observableMacro.value}")
                 }
                 //Timber.i("All user macros: ${app.macroCounts.findByUserId(currentUserId)}")
                 Timber.i("LocalDate.now(): ${LocalDate.now()}")
@@ -354,6 +383,11 @@ class MacroCountFragment : Fragment() {
 
     }
 
+    private fun render() {
+        //fragBinding.
+        fragBinding.macrovm = macroViewModel
+    }
+
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -362,10 +396,10 @@ class MacroCountFragment : Fragment() {
                     AppCompatActivity.RESULT_OK -> {
                         if (result.data != null) {
                             Timber.i("Got Result ${result.data!!.data!!}")
-                            macroCount.image = result.data!!.data!!
-                            Timber.i("Got Result macrocount image ${macroCount.image}")
+                            macroViewModel.observableMacro.value?.image = result.data!!.data!!
+                            Timber.i("Got Result macrocount image ${macroViewModel.observableMacro.value?.image}")
                             Picasso.get()
-                                .load(macroCount.image)
+                                .load(macroViewModel.observableMacro.value?.image)
                                 .into(fragBinding.macroCountImage)
                         }
                     }
@@ -394,6 +428,7 @@ class MacroCountFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        fragBinding.proteinDataView.text = macroViewModel.observableMacro.value?.protein
 
     }
 }

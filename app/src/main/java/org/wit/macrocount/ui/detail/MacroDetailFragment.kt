@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.FragmentMacroDetailBinding
@@ -39,6 +40,15 @@ class MacroDetailFragment : Fragment() {
         detailViewModel = ViewModelProvider(this).get(MacroDetailViewModel::class.java)
         detailViewModel.observableMacro.observe(viewLifecycleOwner, Observer {render() })
             //Timber.i("observableMacro ${macro}")
+
+        fragBinding.editMacro.setOnClickListener() {
+            val action = detailViewModel.observableMacro.value?.id?.let { it ->
+                MacroDetailFragmentDirections.actionMacroDetailFragmentToMacroCountFragment(it)
+            }
+            if (action != null) {
+                findNavController().navigate(action)
+            }
+        }
 
         return root
 

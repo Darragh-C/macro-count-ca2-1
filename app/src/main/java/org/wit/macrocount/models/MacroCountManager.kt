@@ -17,7 +17,7 @@ object MacroCountManager: MacroCountStore {
 
     val macroCounts = ArrayList<MacroCountModel>()
 
-    private lateinit var app: MainApp
+    //private lateinit var app: MainApp
 
     override fun findAll(): List<MacroCountModel> {
         return macroCounts

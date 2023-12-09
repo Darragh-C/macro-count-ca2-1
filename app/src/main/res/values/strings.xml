@@ -88,5 +88,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="menu_user_detail">User Details</string>
+    <string name="menu_macro_detail">Macro Details</string>
 
 </resources>

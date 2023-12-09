@@ -8,10 +8,12 @@ import org.wit.macrocount.models.MacroCountModel
 
 class EditMacroViewModel : ViewModel() {
 
+    private val vmMacro = MutableLiveData<MacroCountModel>()
+
     private val getStatus = MutableLiveData<Boolean>()
     private val addStatus = MutableLiveData<Boolean>()
     private val updateStatus = MutableLiveData<Boolean>()
-    private val vmMacro = MutableLiveData<MacroCountModel>()
+
 
     val observableGetStatus: LiveData<Boolean>
         get() = getStatus
@@ -25,6 +27,7 @@ class EditMacroViewModel : ViewModel() {
     val observableMacro: LiveData<MacroCountModel>
         get() = vmMacro
 
+
     fun getMacro(id: Long) {
         getStatus.value = try {
             vmMacro.value = MacroCountManager.findById(id)
@@ -32,6 +35,10 @@ class EditMacroViewModel : ViewModel() {
         } catch (e: IllegalArgumentException) {
             false
         }
+    }
+
+    fun setMacro() {
+        vmMacro.value = MacroCountModel()
     }
 
     fun addMacro() {
@@ -52,23 +59,31 @@ class EditMacroViewModel : ViewModel() {
         }
     }
 
+    fun editTitle(string: String) {
+        vmMacro.value?.title = string
+    }
+
     fun editCalories(calories: Int) {
         vmMacro.value?.calories = calories.toString()
     }
 
     fun editProtein(protein: Int) {
-        vmMacro.value?.calories = protein.toString()
+        vmMacro.value?.protein = protein.toString()
+        vmMacro.value = vmMacro.value
     }
 
     fun editCarbs(carbs: Int) {
         vmMacro.value?.carbs = carbs.toString()
+        vmMacro.value = vmMacro.value
     }
 
     fun editFat(fat: Int) {
         vmMacro.value?.fat = fat.toString()
+        vmMacro.value = vmMacro.value
     }
 
     fun setUserId(id: Long) {
         vmMacro.value?.userId = id
+
     }
 }
