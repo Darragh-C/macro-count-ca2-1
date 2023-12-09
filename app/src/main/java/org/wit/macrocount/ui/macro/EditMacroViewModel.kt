@@ -9,6 +9,7 @@ import org.wit.macrocount.models.MacroCountModel
 class EditMacroViewModel : ViewModel() {
 
     private val vmMacro = MutableLiveData<MacroCountModel>()
+    private val copiedMacro = MutableLiveData<MacroCountModel>()
 
     private val getStatus = MutableLiveData<Boolean>()
     private val addStatus = MutableLiveData<Boolean>()
@@ -27,6 +28,9 @@ class EditMacroViewModel : ViewModel() {
     val observableMacro: LiveData<MacroCountModel>
         get() = vmMacro
 
+    val observableCopy: LiveData<MacroCountModel>
+        get() = copiedMacro
+
 
     fun getMacro(id: Long) {
         getStatus.value = try {
@@ -37,8 +41,12 @@ class EditMacroViewModel : ViewModel() {
         }
     }
 
-    fun setMacro() {
-        vmMacro.value = MacroCountModel()
+    fun setMacro(macro: MacroCountModel) {
+        vmMacro.value = macro
+    }
+
+    fun setCopy(macro: MacroCountModel) {
+        copiedMacro.value = macro
     }
 
     fun addMacro() {
@@ -48,6 +56,10 @@ class EditMacroViewModel : ViewModel() {
         } catch (e: IllegalArgumentException) {
             false
         }
+    }
+
+    fun addCopiedMacro() {
+
     }
 
     fun updateMacro() {
