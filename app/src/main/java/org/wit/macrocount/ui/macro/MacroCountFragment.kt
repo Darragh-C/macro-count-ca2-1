@@ -32,31 +32,31 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import org.wit.macrocount.ui.list.MacroListViewModel
 import androidx.lifecycle.Observer
 
 class MacroCountFragment : Fragment() {
 
     lateinit var app : MainApp
     private lateinit var userRepo: UserRepo
-    var macroCount = MacroCountModel()
-    var editMacro = false
-    var copyMacro = false
-    var currentUserId: Long = 0
-    var copiedMacro = MacroCountModel()
+    private lateinit var macroCount: MacroCountModel
+    private var editMacro = false
+    private var copyMacro = false
+    private var currentUserId: Long = 0
+    private var copiedMacro = MacroCountModel()
     //seekbar data value stores
-    var calories: Int = 0
-    var protein: Int = 0
-    var carbs: Int = 0
-    var fat: Int = 0
+    private var calories: Int = 0
+    private var protein: Int = 0
+    private var carbs: Int = 0
+    private var fat: Int = 0
     //seekbar max and min
-    val seekBarMin = 0
-    val seekBarMax = 500
+    private val seekBarMin = 0
+    private val seekBarMax = 500
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
 
     private var _fragBinding: FragmentMacroCountBinding? = null
     private val fragBinding get() = _fragBinding!!
-    private lateinit var macroViewModel: MacroViewModel
+
+    private lateinit var macroViewModel: EditMacroViewModel
 
 
 
@@ -77,37 +77,49 @@ class MacroCountFragment : Fragment() {
         activity?.title = getString(R.string.action_macro_list)
         setupMenu()
 
-        macroViewModel = ViewModelProvider(this).get(MacroViewModel::class.java)
-        macroViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
-                status ->
-            status?.let { render(status) }
-        })
+        macroViewModel = ViewModelProvider(this).get(EditMacroViewModel::class.java)
+        Timber.i("observable macro: ${macroViewModel.observableMacro.value}")
+        macroCount = macroViewModel.observableMacro.value!!
+
 
         val args = arguments
         val macroId = MacroCountFragmentArgs.fromBundle(args!!).id
         if (macroId != 0L) {
             //macroCount = app.macroCounts.findById(macroId)!!
-            fragBinding.macroCountTitle.setText(macroCount.title)
-            fragBinding.macroCountDescription.setText(macroCount.description)
-            calories = initData(macroCount.calories).toInt()
-            protein = initData(macroCount.protein).toInt()
-            carbs = initData(macroCount.carbs).toInt()
-            fat = initData(macroCount.fat).toInt()
-            fragBinding.btnAdd.setText(R.string.save_macroCount)
-            editMacro = true
+            macroViewModel.getMacro(macroId)
+            if (macroViewModel.observableGetStatus.value == true) {
 
-            if (macroCount.image.toString() != "") {
-                Picasso.get()
-                    .load(macroCount.image)
-                    .into(fragBinding.macroCountImage)
+//                fragBinding.macroCountTitle.setText(macroCount.title)
+//                fragBinding.macroCountDescription.setText(macroCount.description)
+//                calories = initData(macroCount.calories).toInt()
+//                protein = initData(macroCount.protein).toInt()
+//                carbs = initData(macroCount.carbs).toInt()
+//                fat = initData(macroCount.fat).toInt()
+                fragBinding.btnAdd.setText(R.string.save_macroCount)
+                editMacro = true
+
+                if (macroCount.image.toString() != "") {
+                    Picasso.get()
+                        .load(macroCount.image)
+                        .into(fragBinding.macroCountImage)
+                }
+
             }
+
         }
 
+        fragBinding.macrovm = macroViewModel
+
+//        macroViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
+//                status ->
+//            status?.let { render(status) }
+//        })
+
         //binding initial values to data views
-        fragBinding.caloriesDataView.text = calories.toString()
-        fragBinding.proteinDataView.text = protein.toString()
-        fragBinding.carbsDataView.text = carbs.toString()
-        fragBinding.fatDataView.text = fat.toString()
+//        fragBinding.caloriesDataView.text = calories.toString()
+//        fragBinding.proteinDataView.text = protein.toString()
+//        fragBinding.carbsDataView.text = carbs.toString()
+//        fragBinding.fatDataView.text = fat.toString()
 
         // Set the SeekBar range
         fragBinding.calorieSeekBar.min = seekBarMin
@@ -120,10 +132,10 @@ class MacroCountFragment : Fragment() {
         fragBinding.fatSeekBar.max = seekBarMax
 
         //seekbar progresses
-        fragBinding.calorieSeekBar.progress = calories
-        fragBinding.proteinSeekBar.progress = protein
-        fragBinding.carbsSeekBar.progress = carbs
-        fragBinding.fatSeekBar.progress = fat
+        fragBinding.calorieSeekBar.progress = macroCount.calories.toInt()
+        fragBinding.proteinSeekBar.progress = macroCount.protein.toInt()
+        fragBinding.carbsSeekBar.progress = macroCount.carbs.toInt()
+        fragBinding.fatSeekBar.progress = macroCount.fat.toInt()
 
         fragBinding.takePhoto.setOnClickListener {
             val action = MacroCountFragmentDirections.actionMacroCountFragmentToCameraFragment()
@@ -145,8 +157,9 @@ class MacroCountFragment : Fragment() {
 
         fragBinding.calorieSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(calorieSeekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                fragBinding.caloriesDataView.text = progress.toString()
-                calories = progress
+                macroViewModel.editCalories(progress)
+//                fragBinding.caloriesDataView.text = progress.toString()
+//                calories = progress
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
@@ -156,8 +169,9 @@ class MacroCountFragment : Fragment() {
         })
         fragBinding.proteinSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(proteinSeekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                fragBinding.proteinDataView.text = progress.toString()
-                protein = progress
+                macroViewModel.editProtein(progress)
+//                fragBinding.proteinDataView.text = progress.toString()
+//                protein = progress
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
@@ -167,8 +181,9 @@ class MacroCountFragment : Fragment() {
         })
         fragBinding.carbsSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(carbsSeekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                fragBinding.carbsDataView.text = progress.toString()
-                carbs = progress
+                macroViewModel.editCarbs(progress)
+//                fragBinding.carbsDataView.text = progress.toString()
+//                carbs = progress
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
@@ -178,8 +193,9 @@ class MacroCountFragment : Fragment() {
         })
         fragBinding.fatSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(fatSeekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                fragBinding.fatDataView.text = progress.toString()
-                fat = progress
+                macroViewModel.editFat(progress)
+//                fragBinding.fatDataView.text = progress.toString()
+//                fat = progress
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
@@ -217,7 +233,7 @@ class MacroCountFragment : Fragment() {
         when (status) {
             true -> {
                 view?.let {
-                    findNavController().popBackStack()
+                    //findNavController().popBackStack()
                 }
             }
             false -> Toast.makeText(context,getString(R.string.macroAddError),Toast.LENGTH_LONG).show()
@@ -266,18 +282,19 @@ class MacroCountFragment : Fragment() {
         }
 
         fragBinding.btnAdd.setOnClickListener() {
-            macroCount.title = fragBinding.macroCountTitle.text.toString()
-            macroCount.description = fragBinding.macroCountDescription.text.toString()
-
-            macroCount.calories = calories.toString()
-            macroCount.protein = protein.toString()
-            macroCount.carbs = carbs.toString()
-            macroCount.fat = fat.toString()
+//            macroCount.title = fragBinding.macroCountTitle.text.toString()
+//            macroCount.description = fragBinding.macroCountDescription.text.toString()
+//
+//            macroCount.calories = calories.toString()
+//            macroCount.protein = protein.toString()
+//            macroCount.carbs = carbs.toString()
+//            macroCount.fat = fat.toString()
 
             if (currentUserId != null) {
                 Timber.i("Before assignment: $macroCount")
                 Timber.i("currentUserId at macro add: $currentUserId")
-                macroCount.userId = currentUserId
+                macroViewModel.setUserId(currentUserId)
+//                macroCount.userId = currentUserId
                 Timber.i("After assignment: $macroCount")
             }
 
@@ -301,6 +318,7 @@ class MacroCountFragment : Fragment() {
                 if (editMacro) {
                     Timber.i("macroCount edited and saved: $macroCount")
                     //app.macroCounts.update(macroCount.copy())
+                    macroViewModel.updateMacro()
                 } else if (copyMacro) {
                     Timber.i("copiedMacro: $copiedMacro")
                     Timber.i("macroCount after copy: $macroCount")
@@ -313,7 +331,7 @@ class MacroCountFragment : Fragment() {
                     }
                 } else {
                     //app.macroCounts.create(macroCount.copy())
-                    macroViewModel.addMacro(macroCount.copy())
+                    macroViewModel.addMacro()
                     Timber.i("macroCount added: $macroCount")
                 }
                 //Timber.i("All user macros: ${app.macroCounts.findByUserId(currentUserId)}")
