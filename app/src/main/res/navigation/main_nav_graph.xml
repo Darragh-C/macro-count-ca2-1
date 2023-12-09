@@ -58,7 +58,7 @@
         tools:layout="@layout/fragment_analytics" />
     <fragment
         android:id="@+id/userFragment"
-        android:name="org.wit.macrocount.fragments.UserFragment"
+        android:name="org.wit.macrocount.ui.edituser.UserFragment"
         android:label="@string/action_user"
         tools:layout="@layout/fragment_user" />
     <fragment
