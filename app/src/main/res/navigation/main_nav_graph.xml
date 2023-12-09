@@ -60,7 +60,13 @@
         android:id="@+id/userFragment"
         android:name="org.wit.macrocount.ui.edituser.UserFragment"
         android:label="@string/action_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
     <fragment
         android:id="@+id/cameraFragment"
         android:name="org.wit.macrocount.fragments.CameraFragment"

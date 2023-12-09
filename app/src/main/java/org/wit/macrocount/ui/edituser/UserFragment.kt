@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.FragmentUserBinding
 import org.wit.macrocount.main.MainApp
@@ -194,7 +195,8 @@ class UserFragment : Fragment() {
             fragBinding.btnSave.text = getString(R.string.btn_saved_user)
             fragBinding.btnSave.setBackgroundResource(R.color.color_green)
             //app.users.update(user!!.copy())
-
+            val action = UserFragmentDirections.actionUserFragmentToUserDetailFragment()
+            findNavController().navigate(action)
         }
 
         return root
