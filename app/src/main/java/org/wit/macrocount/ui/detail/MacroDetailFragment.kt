@@ -5,12 +5,20 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.NavigationUI
 import com.squareup.picasso.Picasso
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.FragmentMacroDetailBinding
@@ -39,6 +47,8 @@ class MacroDetailFragment : Fragment() {
 
         detailViewModel = ViewModelProvider(this).get(MacroDetailViewModel::class.java)
 
+
+
         return root
 
         //val args = arguments
@@ -48,6 +58,8 @@ class MacroDetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        setupMenu()
 
         detailViewModel.observableMacro.observe(viewLifecycleOwner, Observer {render() })
         //Timber.i("observableMacro ${macro}")
@@ -60,16 +72,32 @@ class MacroDetailFragment : Fragment() {
                 .load(detailViewModel.observableMacro.value?.image)
                 .into(fragBinding.macroCountImage)
         }
+    }
 
-        fragBinding.editMacro.setOnClickListener() {
-            val action = detailViewModel.observableMacro.value?.id?.let { it ->
-                MacroDetailFragmentDirections.actionMacroDetailFragmentToMacroCountFragment(it)
+    private fun setupMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {
+                // Handle for example visibility of menu items
             }
-            if (action != null) {
-                findNavController().navigate(action)
-            }
-        }
 
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_macro_detail, menu)
+            }
+
+            val action = MacroDetailFragmentDirections.actionMacroDetailFragmentToMacroCountFragment(args.macroid)
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.macro_count -> {
+                        findNavController().navigate(action)
+                        return true
+                    }
+                }
+                // Validate and handle the selected menu item
+                return NavigationUI.onNavDestinationSelected(menuItem,
+                    requireView().findNavController())
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun render() {

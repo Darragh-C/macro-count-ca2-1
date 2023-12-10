@@ -68,10 +68,6 @@ class MacroListFragment : Fragment(), MacroCountListener {
             macros?.let { render(macros) }
         })
 
-//        updatedAdapterMacros()
-//        macroCountAdapter = MacroCountAdapter(usersDailyMacroObjList, this)
-//        fragBinding.recyclerView.adapter = macroCountAdapter
-
         fragBinding.listFab.setOnClickListener {
             val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(0)
             findNavController().navigate(directions)

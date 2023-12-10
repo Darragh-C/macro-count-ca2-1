@@ -4,16 +4,25 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.NavigationUI
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.FragmentUserDetailBinding
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
+import org.wit.macrocount.ui.detail.MacroDetailFragmentDirections
 import timber.log.Timber
 
 class UserDetailFragment : Fragment() {
@@ -38,6 +47,15 @@ class UserDetailFragment : Fragment() {
         _fragBinding = FragmentUserDetailBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
+        detailViewModel = ViewModelProvider(requireActivity()).get(UserDetailViewModel::class.java)
+
+        setupMenu()
+
+        return root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         userRepo = UserRepo(requireActivity().applicationContext)
         if (userRepo.userId != null) {
             currentUserId = userRepo.userId!!.toLong()
@@ -45,8 +63,6 @@ class UserDetailFragment : Fragment() {
 
         Timber.i("currentUserId: $currentUserId at user fragment")
 
-
-        detailViewModel = ViewModelProvider(requireActivity()).get(UserDetailViewModel::class.java)
         if (currentUserId != null) {
             Timber.i("currentUserId: $currentUserId not null")
             detailViewModel.getUser(currentUserId.toLong())
@@ -62,8 +78,23 @@ class UserDetailFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        return root
+    }
 
+    private fun setupMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {
+                // Handle for example visibility of menu items
+            }
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_user_detail, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Validate and handle the selected menu item
+                return NavigationUI.onNavDestinationSelected(menuItem,
+                    requireView().findNavController())
+            }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun render() {
