@@ -96,11 +96,11 @@ class MacroCountFragment : Fragment() {
                 fragBinding.btnAdd.setText(R.string.save_macroCount)
                 editMacro = true
 
-//                if (macroCount.image.toString() != "") {
-//                    Picasso.get()
-//                        .load(macroCount.image)
-//                        .into(fragBinding.macroCountImage)
-//                }
+                if (macroViewModel.observableMacro.value?.image != Uri.EMPTY) {
+                    Picasso.get()
+                        .load(macroViewModel.observableMacro.value?.image)
+                        .into(fragBinding.macroCountImage)
+                }
 
             }
         } else {

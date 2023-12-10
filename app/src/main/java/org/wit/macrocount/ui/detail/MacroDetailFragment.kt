@@ -1,5 +1,6 @@
 package org.wit.macrocount.ui.detail
 
+import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.squareup.picasso.Picasso
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.FragmentMacroDetailBinding
 import org.wit.macrocount.models.MacroCountModel
@@ -26,8 +28,6 @@ class MacroDetailFragment : Fragment() {
         fun newInstance() = MacroDetailFragment()
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,8 +38,28 @@ class MacroDetailFragment : Fragment() {
         val root = fragBinding.root
 
         detailViewModel = ViewModelProvider(this).get(MacroDetailViewModel::class.java)
+
+        return root
+
+        //val args = arguments
+//        Timber.i("MacroDetailFragment passed args ${args}")
+//        Toast.makeText(context,"Macro ID Selected : ${args}", Toast.LENGTH_LONG).show()
+//        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         detailViewModel.observableMacro.observe(viewLifecycleOwner, Observer {render() })
-            //Timber.i("observableMacro ${macro}")
+        //Timber.i("observableMacro ${macro}")
+
+        detailViewModel.getMacro(args.macroid)
+
+        if (detailViewModel.observableMacro.value?.image != Uri.EMPTY) {
+            Timber.i("Loading image: ${detailViewModel.observableMacro.value?.image}")
+            Picasso.get()
+                .load(detailViewModel.observableMacro.value?.image)
+                .into(fragBinding.macroCountImage)
+        }
 
         fragBinding.editMacro.setOnClickListener() {
             val action = detailViewModel.observableMacro.value?.id?.let { it ->
@@ -50,12 +70,6 @@ class MacroDetailFragment : Fragment() {
             }
         }
 
-        return root
-
-        //val args = arguments
-//        Timber.i("MacroDetailFragment passed args ${args}")
-//        Toast.makeText(context,"Macro ID Selected : ${args}", Toast.LENGTH_LONG).show()
-//        return view
     }
 
     private fun render() {
@@ -65,7 +79,7 @@ class MacroDetailFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        detailViewModel.getMacro(args.macroid)
+
     }
 
     override fun onDestroyView() {
