@@ -21,6 +21,8 @@ class AnalyticsViewModel: ViewModel() {
     private val user = MutableLiveData<UserModel>()
     private val dailyCalories = MutableLiveData<Int>()
     private val dailyProtein = MutableLiveData<Int>()
+    private val dailyCarbs = MutableLiveData<Int>()
+    private val dailyFat = MutableLiveData<Int>()
     private val calorieGoal = MutableLiveData<Int>()
     private val proteinGoal = MutableLiveData<Int>()
     private val caloriesProgress = MutableLiveData<Int?>()
@@ -34,6 +36,18 @@ class AnalyticsViewModel: ViewModel() {
 
     val observableUser: LiveData<UserModel>
         get() = user
+
+    val observableCalorieTotal: MutableLiveData<Int>
+        get() = dailyCalories
+
+    val observableProteinTotal: MutableLiveData<Int>
+        get() = dailyProtein
+
+    val observableCarbsTotal: MutableLiveData<Int>
+        get() = dailyCarbs
+
+    val observableFatTotal: MutableLiveData<Int>
+        get() = dailyFat
 
     val observableCalorieProgress: MutableLiveData<Int?>
         get() = caloriesProgress
@@ -62,6 +76,8 @@ class AnalyticsViewModel: ViewModel() {
     fun runCalculations() {
         calcDailyCalories()
         calcDailyProtein()
+        calcDailyCarbs()
+        calcDailyFat()
         calcCalorieGoal()
         calcProteinGoal()
         concatProteinFraction()
@@ -80,6 +96,14 @@ class AnalyticsViewModel: ViewModel() {
 
     fun calcDailyProtein() {
         dailyProtein.value = macroList.value!!.sumOf {it.protein.toInt()}
+    }
+
+    fun calcDailyCarbs() {
+        dailyCarbs.value = macroList.value!!.sumOf {it.carbs.toInt()}
+    }
+
+    fun calcDailyFat() {
+        dailyFat.value = macroList.value!!.sumOf {it.fat.toInt()}
     }
 
     fun calcCalorieGoal() {

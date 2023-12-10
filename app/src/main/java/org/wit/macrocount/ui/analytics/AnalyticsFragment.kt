@@ -79,8 +79,11 @@ class AnalyticsFragment : Fragment() {
 
         if (user != null && userMacros?.isNotEmpty() == true) {
             analyticsViewModel.runCalculations()
+            pieChartSetup()
         }
+    }
 
+    fun pieChartSetup() {
         //pie chart
 
         pieChart = fragBinding.macroPieChart
@@ -90,39 +93,40 @@ class AnalyticsFragment : Fragment() {
         //totaling up the macros
 
         if (userMacros != null && userMacros!!.isNotEmpty()) {
-            val totalProtein = userMacros?.sumBy { it.protein.toInt() }
-            val totalCarbs = userMacros?.sumBy { it.carbs.toInt() }
-            val totalFat = userMacros?.sumBy { it.fat.toInt() }
-            Timber.i("totalProtein: $totalProtein")
-            Timber.i("totalCarbs: $totalCarbs")
-            Timber.i("totalFat: $totalFat")
 
-            macroTotals.add(PieEntry(totalProtein!!.toFloat(), "Protein"))
-            macroTotals.add(PieEntry(totalCarbs!!.toFloat(), "Carbs"))
-            macroTotals.add(PieEntry(totalFat!!.toFloat(), "Fat"))
+            macroTotals.add(
+                PieEntry(
+                    analyticsViewModel.observableProteinTotal.value?.toFloat()!!,
+                    "Protein"
+                )
+            )
+            macroTotals.add(
+                PieEntry(
+                    analyticsViewModel.observableCarbsTotal.value?.toFloat()!!,
+                    "Carbs"
+                )
+            )
+            macroTotals.add(
+                PieEntry(
+                    analyticsViewModel.observableFatTotal.value?.toFloat()!!,
+                    "Fat"
+                )
+            )
 
             Timber.i("macroTotals: $macroTotals")
 
             val pieDataSet = PieDataSet(macroTotals, "Macro proportions")
 
             pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS, 255)
-
             pieDataSet.valueTextSize = 15f
-
             pieDataSet.valueTextColor = Color.BLACK
-
             val pieData = PieData(pieDataSet)
-
             pieChart.data = pieData
-
             pieChart.centerText = "Macro proportions"
-
             pieChart.animateY(2000)
-        } else {
+        }  else {
             Timber.i("userMacros is null or empty: $userMacros")
-
         }
-
     }
 
     companion object {
