@@ -93,13 +93,6 @@ class MacroCountFragment : Fragment() {
             //macroCount = app.macroCounts.findById(macroId)!!
             macroViewModel.getMacro(macroId)
             if (macroViewModel.observableGetStatus.value == true) {
-
-//                fragBinding.macroCountTitle.setText(macroCount.title)
-//                fragBinding.macroCountDescription.setText(macroCount.description)
-//                calories = initData(macroCount.calories).toInt()
-//                protein = initData(macroCount.protein).toInt()
-//                carbs = initData(macroCount.carbs).toInt()
-//                fat = initData(macroCount.fat).toInt()
                 fragBinding.btnAdd.setText(R.string.save_macroCount)
                 editMacro = true
 
@@ -254,26 +247,6 @@ class MacroCountFragment : Fragment() {
                     macroViewModel.setMacro(selectedItem)
                     macroViewModel.setCopy(selectedItem)
 
-                    //macroCount.id = selectedItem.id
-
-//                    fragBinding.macroCountTitle.setText(selectedItem.title)
-//                    fragBinding.macroCountDescription.setText(selectedItem.description)
-//                    calories = selectedItem.calories.toInt()
-//                    protein = selectedItem.protein.toInt()
-//                    carbs = selectedItem.carbs.toInt()
-//                    fat = selectedItem.fat.toInt()
-//
-//                    // Update SeekBar progresses and data views
-//                    fragBinding.calorieSeekBar.progress = calories
-//                    fragBinding.proteinSeekBar.progress = protein
-//                    fragBinding.carbsSeekBar.progress = carbs
-//                    fragBinding.fatSeekBar.progress = fat
-//                    fragBinding.caloriesDataView.text = calories.toString()
-//                    fragBinding.proteinDataView.text = protein.toString()
-//                    fragBinding.carbsDataView.text = carbs.toString()
-//                    fragBinding.fatDataView.text = fat.toString()
-
-//                    copiedMacro = selectedItem.copy()
                 }
 
             }
@@ -385,7 +358,10 @@ class MacroCountFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        fragBinding.proteinDataView.text = macroViewModel.observableMacro.value?.protein
+        fragBinding.calorieSeekBar.progress = macroViewModel.observableMacro.value?.calories?.toInt()!!
+        fragBinding.proteinSeekBar.progress = macroViewModel.observableMacro.value?.protein?.toInt()!!
+        fragBinding.carbsSeekBar.progress = macroViewModel.observableMacro.value?.carbs?.toInt()!!
+        fragBinding.fatSeekBar.progress = macroViewModel.observableMacro.value?.fat?.toInt()!!
 
     }
 }

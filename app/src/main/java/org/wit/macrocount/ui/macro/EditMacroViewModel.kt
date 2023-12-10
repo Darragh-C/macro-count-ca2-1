@@ -43,6 +43,7 @@ class EditMacroViewModel : ViewModel() {
 
     fun setMacro(macro: MacroCountModel) {
         vmMacro.value = macro
+        vmMacro.value = vmMacro.value
     }
 
     fun setCopy(macro: MacroCountModel) {

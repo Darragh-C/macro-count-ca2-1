@@ -73,7 +73,7 @@
         android:label="@string/action_camera" />
     <fragment
         android:id="@+id/macroSearchFragment"
-        android:name="org.wit.macrocount.fragments.MacroSearchFragment"
+        android:name="org.wit.macrocount.ui.macrosearch.MacroSearchFragment"
         android:label="@string/action_macro_search" />
     <fragment
         android:id="@+id/macroDetailFragment"

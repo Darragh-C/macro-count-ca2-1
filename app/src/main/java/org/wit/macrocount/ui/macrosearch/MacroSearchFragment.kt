@@ -1,4 +1,4 @@
-package org.wit.macrocount.fragments
+package org.wit.macrocount.ui.macrosearch
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -10,8 +10,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.macrocount.R
@@ -34,6 +35,8 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
     private var _fragBinding: FragmentMacroSearchBinding? = null
     private val fragBinding get() = _fragBinding!!
 
+    private lateinit var macroSearchViewModel: MacroSearchViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = activity?.application as MainApp
@@ -54,14 +57,20 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
 
         fragBinding.macroSearchRecyclerView.setLayoutManager(LinearLayoutManager(activity))
 
-        if (currentUserId != null) {
-            //userMacros = app.macroCounts.findByUserId(currentUserId)
-            Timber.i("userMacros at search: $userMacros")
-            filteredMacros = userMacros
-            macroCountAdapter = MacroCountAdapter(userMacros, this)
-            fragBinding.macroSearchRecyclerView.adapter = macroCountAdapter
+        macroSearchViewModel = ViewModelProvider(this).get(MacroSearchViewModel::class.java)
+        macroSearchViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
+                macros ->
+            macros?.let { render(macros) }
+        })
 
-        }
+//        if (currentUserId != null) {
+//            //userMacros = app.macroCounts.findByUserId(currentUserId)
+//            Timber.i("userMacros at search: $userMacros")
+//            //filteredMacros = userMacros
+//            macroCountAdapter = MacroCountAdapter(userMacros, this)
+//            fragBinding.macroSearchRecyclerView.adapter = macroCountAdapter
+//
+//        }
 
         fragBinding.macroSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -88,6 +97,17 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
 
 
         return root
+    }
+
+    private fun render(macroList: List<MacroCountModel>) {
+        fragBinding.macroSearchRecyclerView.adapter = MacroCountAdapter(macroList,this)
+        if (macroList.isEmpty()) {
+            fragBinding.macroSearchRecyclerView.visibility = View.GONE
+            fragBinding.macrosNotFound.visibility = View.VISIBLE
+        } else {
+            fragBinding.macroSearchRecyclerView.visibility = View.VISIBLE
+            fragBinding.macrosNotFound.visibility = View.GONE
+        }
     }
 
     private fun showFilterDialog(view: View) {
@@ -177,15 +197,6 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MacroSearchFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             MacroSearchFragment().apply {
