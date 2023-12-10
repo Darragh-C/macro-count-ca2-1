@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+        <variable
+            name="analyticsvm"
+            type="org.wit.macrocount.ui.analytics.AnalyticsViewModel" />
+    </data>
+<FrameLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.AnalyticsFragment">
+    tools:context=".ui.analytics.AnalyticsFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/list_start_margin"
-                android:text="0/0"
+                android:text="@{analyticsvm.observableCalorieFraction}"
                 android:paddingTop="@dimen/text_padding_big"
                 android:paddingRight="@dimen/list_end_margin"
                 android:paddingBottom="@dimen/text_padding_big"
@@ -49,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/progress_bar_margin"
             android:layout_marginEnd="@dimen/progress_bar_margin"
+            android:progress="@{analyticsvm.observableCalorieProgress}"
             />
 
         <LinearLayout
@@ -74,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/list_start_margin"
-                android:text="0/0"
+                android:text="@{analyticsvm.observableProteinFraction}"
                 android:paddingTop="@dimen/text_padding_big"
                 android:paddingRight="@dimen/list_end_margin"
                 android:paddingBottom="@dimen/text_padding_big"
@@ -90,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/progress_bar_margin"
             android:layout_marginEnd="@dimen/progress_bar_margin"
+            android:progress="@{analyticsvm.observableProteinProgress}"
             />
 
         <com.github.mikephil.charting.charts.PieChart
@@ -98,3 +109,4 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 </FrameLayout>
+</layout>

@@ -53,7 +53,7 @@
         tools:layout="@layout/fragment_about" />
     <fragment
         android:id="@+id/analyticsFragment"
-        android:name="org.wit.macrocount.fragments.AnalyticsFragment"
+        android:name="org.wit.macrocount.ui.analytics.AnalyticsFragment"
         android:label="@string/action_analytics"
         tools:layout="@layout/fragment_analytics" />
     <fragment

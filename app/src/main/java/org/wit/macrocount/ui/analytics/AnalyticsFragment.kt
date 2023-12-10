@@ -1,4 +1,4 @@
-package org.wit.macrocount.fragments
+package org.wit.macrocount.ui.analytics
 
 import android.graphics.Color
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -28,30 +29,20 @@ import kotlin.math.roundToInt
 class AnalyticsFragment : Fragment() {
 
     lateinit var app : MainApp
-    private lateinit var caloriesProgressBar: ProgressBar
-    private lateinit var proteinProgressBar: ProgressBar
+    private var currentUserId: Long = 0L
     private lateinit var userRepo: UserRepo
     private var user: UserModel? = null
-    private var calorieGoal: Int = 0
-    private var proteinGoal: Int = 0
-    private var dailyCalories: Int = 0
-    private var dailyProtein: Int = 0
     private var userMacros: List<MacroCountModel>? = null
-    private var caloriesProgress: Int = 0
-    private var proteinProgress: Int = 0
     lateinit var pieChart: PieChart
-
     private var _fragBinding: FragmentAnalyticsBinding? = null
     private val fragBinding get() = _fragBinding!!
+    private lateinit var analyticsViewModel: AnalyticsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = activity?.application as MainApp
         userRepo = UserRepo(requireActivity().applicationContext)
-//        val currentUserId = userRepo.userId
-//        if (currentUserId != null) {
-//            user = app.users.findById(currentUserId.toLong())
-//        }
+        currentUserId = userRepo.userId?.toLong()!!
         Timber.i("user at charts: $user")
 
 
@@ -65,52 +56,30 @@ class AnalyticsFragment : Fragment() {
         val root = fragBinding.root
         activity?.title = getString(R.string.action_analytics)
 
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        analyticsViewModel = ViewModelProvider(requireActivity()).get(AnalyticsViewModel::class.java)
+        analyticsViewModel.getUser(currentUserId)
+
+        user = analyticsViewModel.observableUser.value
+        userMacros = analyticsViewModel.observableMacroList.value
+
+        fragBinding.analyticsvm = analyticsViewModel
+
         //userMacros = app.macroCounts.findByUserId(user!!.id)
-        var userMacrosToday = app.days.findByUserDate(user!!.id, LocalDate.now())
-        var userMacros = listOf<MacroCountModel>()
-        if (userMacrosToday != null) {
+
+        //var userMacrosToday = app.days.findByUserDate(user!!.id, LocalDate.now())
+        //var userMacros = listOf<MacroCountModel>()
+        //if (userMacrosToday != null) {
             //userMacros = app.macroCounts.findByIds(userMacrosToday.userMacroIds) as List<MacroCountModel>
+        //}
+
+        if (user != null && userMacros?.isNotEmpty() == true) {
+            analyticsViewModel.runCalculations()
         }
-
-        Timber.i("userMacros: $userMacros")
-
-        if (user != null && userMacros.isNotEmpty()) {
-            calorieGoal = calcBmr(
-                user!!.weight.toInt(),
-                user!!.height.toInt(),
-                user!!.age.toInt(),
-                user!!.goal
-            )
-
-            proteinGoal = calcProtein(
-                user!!.weight.toInt(),
-                user!!.goal
-            )
-
-            dailyCalories = userMacros!!.sumOf { it.calories.toInt() }
-            Timber.i("dailyCalories: $dailyCalories")
-
-            dailyProtein = userMacros!!.sumOf { it.protein.toInt() }
-            Timber.i("dailyCalories: $dailyProtein")
-
-            var calorieFraction = "$dailyCalories/$calorieGoal"
-            fragBinding.caloriesProgressFraction.text = calorieFraction
-            var proteinFraction = "$dailyProtein/$proteinGoal"
-            fragBinding.proteinProgressFraction.text = proteinFraction
-
-            caloriesProgress = ((dailyCalories.toDouble() / calorieGoal.toDouble()) * 100).roundToInt()
-            Timber.i("caloriesProgress: $caloriesProgress")
-            proteinProgress = ((dailyProtein.toDouble() / proteinGoal.toDouble()) * 100).roundToInt()
-            Timber.i("caloriesProgress: $proteinProgress")
-
-        }
-
-
-        caloriesProgressBar = fragBinding.caloriesProgressBar
-        caloriesProgressBar.progress = caloriesProgress
-
-        proteinProgressBar = fragBinding.proteinProgressBar
-        proteinProgressBar.progress = proteinProgress
 
         //pie chart
 
@@ -153,8 +122,6 @@ class AnalyticsFragment : Fragment() {
             Timber.i("userMacros is null or empty: $userMacros")
 
         }
-
-        return root
 
     }
 
