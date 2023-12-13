@@ -3,7 +3,7 @@ import timber.log.Timber.Forest.i
 import java.time.LocalDate
 import java.util.Date
 
-class DayMemStore: DayStore {
+object DayManager: DayStore {
 
     val days = ArrayList<DayModel>()
 

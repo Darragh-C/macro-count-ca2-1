@@ -3,8 +3,10 @@ package org.wit.macrocount.ui.macro
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import org.wit.macrocount.models.DayManager
 import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
+import java.time.LocalDate
 
 class EditMacroViewModel : ViewModel() {
 
@@ -14,6 +16,9 @@ class EditMacroViewModel : ViewModel() {
     private val getStatus = MutableLiveData<Boolean>()
     private val addStatus = MutableLiveData<Boolean>()
     private val updateStatus = MutableLiveData<Boolean>()
+
+    val seekbarMin = 0
+    val seekbarMax = 500
 
 
     val observableGetStatus: LiveData<Boolean>
@@ -46,6 +51,10 @@ class EditMacroViewModel : ViewModel() {
         vmMacro.value = vmMacro.value
     }
 
+    fun addToDay(userId: Long) {
+        vmMacro.value?.let { DayManager.addMacroId(it.id, it.userId, LocalDate.now() ) }
+    }
+
     fun setCopy(macro: MacroCountModel) {
         copiedMacro.value = macro
     }
@@ -57,10 +66,6 @@ class EditMacroViewModel : ViewModel() {
         } catch (e: IllegalArgumentException) {
             false
         }
-    }
-
-    fun addCopiedMacro() {
-
     }
 
     fun updateMacro() {

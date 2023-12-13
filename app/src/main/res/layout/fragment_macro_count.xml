@@ -99,6 +99,8 @@
                     android:id="@+id/calorieSeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:min="@{macrovm.seekbarMin}"
+                    android:max="@{macrovm.seekbarMax}"
                     android:progress="50"/>
 
                 <RelativeLayout
@@ -136,6 +138,8 @@
                     android:id="@+id/proteinSeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:min="@{macrovm.seekbarMin}"
+                    android:max="@{macrovm.seekbarMax}"
                     android:progress="50"/>
 
                 <RelativeLayout
@@ -173,6 +177,8 @@
                     android:id="@+id/carbsSeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:min="@{macrovm.seekbarMin}"
+                    android:max="@{macrovm.seekbarMax}"
                     android:progress="50"/>
 
                 <RelativeLayout
@@ -210,6 +216,8 @@
                     android:id="@+id/fatSeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:min="@{macrovm.seekbarMin}"
+                    android:max="@{macrovm.seekbarMax}"
                     android:progress="50"/>
 
                 <LinearLayout

@@ -139,24 +139,12 @@ class MacroCountFragment : Fragment() {
 
         fragBinding.lifecycleOwner = this
         macroViewModel.observableMacro.observe(viewLifecycleOwner, Observer {macro ->
-            fragBinding.proteinDataView.text = macro.protein
             render()
-//            proteinDataView.text =
         })
 
 
         Timber.i("onViewCreated macroViewModel: $macroViewModel")
         Timber.i("onViewCreated macroViewModel.observableMacro.value: ${macroViewModel.observableMacro.value}")
-
-        // Set the SeekBar range
-        fragBinding.calorieSeekBar.min = seekBarMin
-        fragBinding.calorieSeekBar.max = seekBarMax
-        fragBinding.proteinSeekBar.min = seekBarMin
-        fragBinding.proteinSeekBar.max = seekBarMax
-        fragBinding.carbsSeekBar.min = seekBarMin
-        fragBinding.carbsSeekBar.max = seekBarMax
-        fragBinding.fatSeekBar.min = seekBarMin
-        fragBinding.fatSeekBar.max = seekBarMax
 
         //seekbar progresses
         fragBinding.calorieSeekBar.progress = macroCount.calories.toInt()
@@ -284,9 +272,8 @@ class MacroCountFragment : Fragment() {
                 } else if (copyMacro) {
                     Timber.i("copiedMacro: ${macroViewModel.observableCopy.value}")
                     if (macroViewModel.observableCopy.equals(macroViewModel.observableMacro.value)) {
-                        macroViewModel.addCopiedMacro()
-//                        app.days.addMacroId(macroCount.id, macroCount.userId, LocalDate.now())
-//                        Timber.i("copied macroCount added to today: $macroCount")
+                        macroViewModel.addToDay(currentUserId)
+                        Timber.i("copied macroCount added to today: ${macroViewModel.observableMacro.value}")
                     } else {
                         macroViewModel.addMacro()
                         Timber.i("creating new macroCount from copied and edited macro: $macroCount")
@@ -295,7 +282,6 @@ class MacroCountFragment : Fragment() {
                     macroViewModel.addMacro()
                     Timber.i("macroCount added: ${macroViewModel.observableMacro.value}")
                 }
-                //Timber.i("All user macros: ${app.macroCounts.findByUserId(currentUserId)}")
                 Timber.i("LocalDate.now(): ${LocalDate.now()}")
                 Timber.i(
                     "Today's macros: ${
@@ -305,7 +291,6 @@ class MacroCountFragment : Fragment() {
                         )
                     }"
                 )
-                //findNavController().popBackStack()
                 val directions = MacroCountFragmentDirections.actionMacroCountFragmentToMacroListFragment()
                 findNavController().navigate(directions)
             }
