@@ -92,4 +92,6 @@
     <string name="menu_user_detail">User Details</string>
     <string name="menu_macro_detail">Macro Details</string>
 
+    <string name="messageLoading">Please wait while the MacroCounts are Loading...</string>
+
 </resources>
