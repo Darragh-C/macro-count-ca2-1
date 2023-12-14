@@ -1,5 +1,6 @@
 package org.wit.macrocount.ui.list
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,6 +22,9 @@ import org.wit.macrocount.R
 import org.wit.macrocount.adapters.MacroCountAdapter
 import org.wit.macrocount.adapters.MacroCountListener
 import org.wit.macrocount.databinding.FragmentMacroListBinding
+import org.wit.macrocount.helpers.createLoader
+import org.wit.macrocount.helpers.hideLoader
+import org.wit.macrocount.helpers.showLoader
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.UserRepo
@@ -35,6 +39,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
     private var usersDailyMacroObjList = mutableListOf<MacroCountModel>()
     private var currentUserId: Long = 0
     private lateinit var macroCountAdapter: MacroCountAdapter
+    lateinit var loader : AlertDialog
     //private val navController = findNavController()
 
     //private lateinit var adapter: MacroCountAdapter
@@ -57,15 +62,22 @@ class MacroListFragment : Fragment(), MacroCountListener {
     ): View? {
         _fragBinding = FragmentMacroListBinding.inflate(inflater, container, false)
         val root = fragBinding.root
+
         setupMenu()
         activity?.title = getString(R.string.action_macro_list)
 
         fragBinding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
 
         macroListViewModel = ViewModelProvider(this).get(MacroListViewModel::class.java)
+
+        loader = createLoader(requireActivity())
+        showLoader(loader,"Downloading macros")
         macroListViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
                 macros ->
-            macros?.let { render(macros) }
+            macros?.let {
+                render(macros)
+                hideLoader(loader)
+            }
         })
 
         fragBinding.listFab.setOnClickListener {

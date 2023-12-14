@@ -13,6 +13,7 @@ import org.wit.macrocount.helpers.calcBmr
 import org.wit.macrocount.helpers.calcProtein
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.UserRepo
+import timber.log.Timber
 import kotlin.math.roundToInt
 
 class AnalyticsViewModel: ViewModel() {
@@ -70,7 +71,13 @@ class AnalyticsViewModel: ViewModel() {
     }
 
     fun load() {
-        macroList.value = MacroCountManager.findAll()
+        try {
+            MacroCountManager.findAll(macroList)
+            Timber.i("Retrofit Success : $macroList.value")
+        }
+        catch (e: Exception) {
+            Timber.i("Retrofit error: ${e.message}")
+        }
     }
 
     fun runCalculations() {

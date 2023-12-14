@@ -1,5 +1,11 @@
 package org.wit.macrocount.models
+import androidx.lifecycle.MutableLiveData
+import org.wit.macrocount.api.MacroCountClient
 import org.wit.macrocount.main.MainApp
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import timber.log.Timber
 import timber.log.Timber.Forest.i
 import java.time.LocalDate
 import java.util.Random
@@ -19,8 +25,27 @@ object MacroCountManager: MacroCountStore {
 
     //private lateinit var app: MainApp
 
-    override fun findAll(): List<MacroCountModel> {
-        return macroCounts
+//    override fun findAll(): List<MacroCountModel> {
+//        return macroCounts
+//    }
+
+    override fun findAll(macroList: MutableLiveData<List<MacroCountModel>>) {
+
+        val call = MacroCountClient.getApi().getall()
+
+        call.enqueue(object : Callback<List<MacroCountModel>> {
+            override fun onResponse(call: Call<List<MacroCountModel>>,
+                                    response: Response<List<MacroCountModel>>
+            ) {
+                Timber.i("response: $response")
+                macroList.value = response.body() as ArrayList<MacroCountModel>
+                Timber.i("Retrofit JSON = ${response.body()}")
+            }
+
+            override fun onFailure(call: Call<List<MacroCountModel>>, t: Throwable) {
+                Timber.i("Retrofit Error : $t.message")
+            }
+        })
     }
     override fun findByUserId(id: Long): List<MacroCountModel> {
         return macroCounts.filter { m -> m.userId == id }

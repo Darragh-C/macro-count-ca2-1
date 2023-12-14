@@ -1,7 +1,9 @@
 package org.wit.macrocount.models
 
+import androidx.lifecycle.MutableLiveData
+
 interface MacroCountStore {
-    fun findAll(): List<MacroCountModel>
+    fun findAll(macroList: MutableLiveData<List<MacroCountModel>>)
     fun create(macroCount: MacroCountModel)
     fun update(macroCount: MacroCountModel)
     fun delete(macroCount: MacroCountModel)

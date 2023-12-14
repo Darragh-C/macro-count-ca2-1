@@ -1,6 +1,7 @@
 package org.wit.macrocount.models
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
@@ -43,9 +44,9 @@ class MacroCountJSONStore(private val context: Context) : MacroCountStore {
         }
     }
 
-    override fun findAll(): MutableList<MacroCountModel> {
+    override fun findAll(macroList: MutableLiveData<List<MacroCountModel>>) {
         logAll()
-        return macroCounts
+
     }
 
     override fun findByUserId(id: Long): List<MacroCountModel> {

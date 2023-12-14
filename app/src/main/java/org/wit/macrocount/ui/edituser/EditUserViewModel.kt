@@ -12,6 +12,9 @@ class EditUserViewModel: ViewModel() {
     private val status = MutableLiveData<Boolean>()
     private val user = MutableLiveData<UserModel>()
 
+    val seekbarMin = 0
+    val seekbarMax = 500
+
     val observableStatus: LiveData<Boolean>
         get() = status
 
