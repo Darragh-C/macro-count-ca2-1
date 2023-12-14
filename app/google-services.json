@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "349019415368",
+    "firebase_url": "https://macro-count-f9b7a-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "macro-count-f9b7a",
+    "storage_bucket": "macro-count-f9b7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349019415368:android:479513fdcd781a24d7897d",
+        "android_client_info": {
+          "package_name": "org.wit.macrocount"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7otxhdPXnE8OqL4K7fqhJf_9hOMdmeh0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
