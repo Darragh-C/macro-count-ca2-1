@@ -6,7 +6,7 @@ interface MacroCountStore {
     fun findAll(macroList: MutableLiveData<List<MacroCountModel>>)
     fun create(macroCount: MacroCountModel)
     fun update(macroCount: MacroCountModel)
-    fun delete(macroCount: MacroCountModel)
+    fun delete(id: String)
     fun index(macroCount: MacroCountModel): Int
     fun findByUserId(id: Long): List<MacroCountModel>
     fun findById(id: Long): MacroCountModel?

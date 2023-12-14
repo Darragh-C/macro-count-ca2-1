@@ -1,6 +1,7 @@
 package org.wit.macrocount.models
 import androidx.lifecycle.MutableLiveData
 import org.wit.macrocount.api.MacroCountClient
+import org.wit.macrocount.api.MacroCountWrapper
 import org.wit.macrocount.main.MainApp
 import retrofit2.Call
 import retrofit2.Callback
@@ -73,12 +74,24 @@ object MacroCountManager: MacroCountStore {
 
 
     override fun create(macroCount: MacroCountModel) {
-        macroCount.id = generateId()
-        macroCounts.add(macroCount)
 
-        //app.days.addMacroId(macroCount.id, macroCount.userId, LocalDate.now())
+        val call = MacroCountClient.getApi().post(macroCount)
 
-        logAll()
+        call.enqueue(object : Callback<MacroCountWrapper> {
+            override fun onResponse(call: Call<MacroCountWrapper>,
+                                    response: Response<MacroCountWrapper>
+            ) {
+                val macroWrapper = response.body()
+                if (macroWrapper != null) {
+                    Timber.i("Retrofit ${macroWrapper.message}")
+                    Timber.i("Retrofit ${macroWrapper.data.toString()}")
+                }
+            }
+
+            override fun onFailure(call: Call<MacroCountWrapper>, t: Throwable) {
+                Timber.i("Retrofit Error : $t.message")
+            }
+        })
     }
 
 
@@ -97,11 +110,24 @@ object MacroCountManager: MacroCountStore {
         }
     }
 
-    override fun delete(macroCount: MacroCountModel) {
-        var foundMacroCount: MacroCountModel? = macroCounts.find { m -> m.id == macroCount.id }
-        if (foundMacroCount != null) {
-            macroCounts.remove(macroCount)
-        }
+    override fun delete(id: String) {
+        val call = MacroCountClient.getApi().delete(id)
+
+        call.enqueue(object : Callback<MacroCountWrapper> {
+            override fun onResponse(call: Call<MacroCountWrapper>,
+                                    response: Response<MacroCountWrapper>
+            ) {
+                val macroWrapper = response.body()
+                if (macroWrapper != null) {
+                    Timber.i("Retrofit Delete ${macroWrapper.message}")
+                    Timber.i("Retrofit Delete ${macroWrapper.data.toString()}")
+                }
+            }
+
+            override fun onFailure(call: Call<MacroCountWrapper>, t: Throwable) {
+                Timber.i("Retrofit Delete Error : $t.message")
+            }
+        })
     }
 
     override fun index(macroCount: MacroCountModel): Int {
