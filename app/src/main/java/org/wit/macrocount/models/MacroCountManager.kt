@@ -1,7 +1,9 @@
 package org.wit.macrocount.models
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseUser
 import org.wit.macrocount.api.MacroCountClient
 import org.wit.macrocount.api.MacroCountWrapper
+import org.wit.macrocount.firebase.FirebaseDBManager.database
 import org.wit.macrocount.main.MainApp
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,15 +54,16 @@ object MacroCountManager: MacroCountStore {
         return macroCounts.filter { m -> m.userId == id }
     }
 
-    override fun findById(id: Long): MacroCountModel? {
-        return macroCounts.find { m -> m.id == id }
+
+    override fun findById(id: String): MacroCountModel? {
+        return macroCounts.find { m -> m.uid == id }
     }
 
-    override fun findByIds(ids: List<String>): List<MacroCountModel?> {
-        var foundMacros = mutableListOf<MacroCountModel?>()
-        ids.forEach { it -> foundMacros.add(macroCounts.find { m -> m.id == it.toLong() })}
-        return foundMacros
-    }
+//    override fun findByIds(ids: List<String>): List<MacroCountModel?> {
+//        var foundMacros = mutableListOf<MacroCountModel?>()
+//        ids.forEach { it -> foundMacros.add(macroCounts.find { m -> m.uid == it.toLong() })}
+//        return foundMacros
+//    }
 
     override fun findByTitle(title: String): MacroCountModel {
         val foundMacros = macroCounts.filter { m -> m.title == title }
@@ -73,31 +76,29 @@ object MacroCountManager: MacroCountStore {
     }
 
 
-    override fun create(macroCount: MacroCountModel) {
+    override fun create(firebaseUser: MutableLiveData<FirebaseUser>, macroCount: MacroCountModel) {
+        Timber.i("Firebase DB Reference : $database")
 
-        val call = MacroCountClient.getApi().post(macroCount)
+        val uid = firebaseUser.value!!.uid
+        val key = database.child("macrocounts").push().key
+        if (key == null) {
+            Timber.i("Firebase Error : Key Empty")
+            return
+        }
+        macroCount.uid = key
+        val macroValues = macroCount.toMap()
 
-        call.enqueue(object : Callback<MacroCountWrapper> {
-            override fun onResponse(call: Call<MacroCountWrapper>,
-                                    response: Response<MacroCountWrapper>
-            ) {
-                val macroWrapper = response.body()
-                if (macroWrapper != null) {
-                    Timber.i("Retrofit ${macroWrapper.message}")
-                    Timber.i("Retrofit ${macroWrapper.data.toString()}")
-                }
-            }
+        val childAdd = HashMap<String, Any>()
+        childAdd["/macrocounts/$key"] = macroValues
+        childAdd["/user-macrocounts/$uid/$key"] = macroValues
 
-            override fun onFailure(call: Call<MacroCountWrapper>, t: Throwable) {
-                Timber.i("Retrofit Error : $t.message")
-            }
-        })
+        database.updateChildren(childAdd)
     }
 
 
 
-    override fun update(macroCount: MacroCountModel) {
-        var foundMacroCount: MacroCountModel? = macroCounts.find { m -> m.id == macroCount.id }
+    override fun update(userid: String, macroid: String, macroCount: MacroCountModel) {
+        var foundMacroCount: MacroCountModel? = macroCounts.find { m -> m.uid == macroCount.uid }
         if (foundMacroCount != null) {
             foundMacroCount.title = macroCount.title
             foundMacroCount.description = macroCount.description
@@ -110,8 +111,8 @@ object MacroCountManager: MacroCountStore {
         }
     }
 
-    override fun delete(id: String) {
-        val call = MacroCountClient.getApi().delete(id)
+    override fun delete(userid: String, macroid: String) {
+        val call = MacroCountClient.getApi().delete(userid)
 
         call.enqueue(object : Callback<MacroCountWrapper> {
             override fun onResponse(call: Call<MacroCountWrapper>,
@@ -131,7 +132,7 @@ object MacroCountManager: MacroCountStore {
     }
 
     override fun index(macroCount: MacroCountModel): Int {
-        var foundMacroCount: MacroCountModel? = macroCounts.find { m -> m.id == macroCount.id }
+        var foundMacroCount: MacroCountModel? = macroCounts.find { m -> m.uid == macroCount.uid }
         if (foundMacroCount != null) {
             return macroCounts.indexOf(macroCount)
         } else {

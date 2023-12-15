@@ -275,11 +275,11 @@ class MacroCountFragment : Fragment() {
                         macroViewModel.addToDay(currentUserId)
                         Timber.i("copied macroCount added to today: ${macroViewModel.observableMacro.value}")
                     } else {
-                        macroViewModel.addMacro()
+                        macroViewModel.addMacro(macroViewModel.liveFirebaseUser)
                         Timber.i("creating new macroCount from copied and edited macro: $macroCount")
                     }
                 } else {
-                    macroViewModel.addMacro()
+                    macroViewModel.addMacro(macroViewModel.liveFirebaseUser)
                     Timber.i("macroCount added: ${macroViewModel.observableMacro.value}")
                 }
                 Timber.i("LocalDate.now(): ${LocalDate.now()}")

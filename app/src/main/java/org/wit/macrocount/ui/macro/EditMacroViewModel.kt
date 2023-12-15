@@ -3,9 +3,12 @@ package org.wit.macrocount.ui.macro
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseUser
+import org.wit.macrocount.firebase.FirebaseDBManager
 import org.wit.macrocount.models.DayManager
 import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
+import timber.log.Timber
 import java.time.LocalDate
 
 class EditMacroViewModel : ViewModel() {
@@ -16,6 +19,8 @@ class EditMacroViewModel : ViewModel() {
     private val getStatus = MutableLiveData<Boolean>()
     private val addStatus = MutableLiveData<Boolean>()
     private val updateStatus = MutableLiveData<Boolean>()
+
+    var liveFirebaseUser = MutableLiveData<FirebaseUser>()
 
     val seekbarMin = 0
     val seekbarMax = 500
@@ -52,16 +57,17 @@ class EditMacroViewModel : ViewModel() {
     }
 
     fun addToDay(userId: Long) {
-        vmMacro.value?.let { DayManager.addMacroId(it.id, it.userId, LocalDate.now() ) }
+//        vmMacro.value?.let { DayManager.addMacroId(it.uid, it.userId, LocalDate.now() ) }
+        Timber.i("addtoDay")
     }
 
     fun setCopy(macro: MacroCountModel) {
         copiedMacro.value = macro
     }
 
-    fun addMacro() {
+    fun addMacro(firebaseUser: MutableLiveData<FirebaseUser>) {
         addStatus.value = try {
-            vmMacro.value?.let { MacroCountManager.create(it) }
+            vmMacro.value?.let { FirebaseDBManager.create(firebaseUser, it) }
             true
         } catch (e: IllegalArgumentException) {
             false
