@@ -46,6 +46,7 @@ object FirebaseDBManager: MacroCountStore {
     }
 
     override fun create(firebaseUser: MutableLiveData<FirebaseUser>, macroCount: MacroCountModel) {
+        Timber.i("Creating macro FirebaseDBManager : $database")
         Timber.i("Firebase DB Reference : $database")
 
         val uid = firebaseUser.value!!.uid

@@ -13,7 +13,12 @@
           "package_name": "org.wit.macrocount"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "349019415368-ae2hbki6f1ds1f0cvr3h8tncqfdeefhi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD7otxhdPXnE8OqL4K7fqhJf_9hOMdmeh0"
@@ -21,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "349019415368-ae2hbki6f1ds1f0cvr3h8tncqfdeefhi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -65,9 +65,10 @@ class EditMacroViewModel : ViewModel() {
         copiedMacro.value = macro
     }
 
-    fun addMacro() {
+    fun addMacro(firebaseUser: MutableLiveData<FirebaseUser>, macro: MacroCountModel) {
+        Timber.i("adding macro at edit macro vm, macro: ${macro}, user: ${firebaseUser.value.toString()}")
         addStatus.value = try {
-            vmMacro.value?.let { FirebaseDBManager.create(liveFirebaseUser, it) }
+            FirebaseDBManager.create(firebaseUser, macro)
             true
         } catch (e: IllegalArgumentException) {
             false

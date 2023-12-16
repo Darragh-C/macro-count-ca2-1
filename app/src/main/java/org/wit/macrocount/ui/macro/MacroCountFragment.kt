@@ -33,6 +33,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.lifecycle.Observer
+import org.wit.macrocount.ui.login.LoggedInViewModel
 
 class MacroCountFragment : Fragment() {
 
@@ -52,6 +53,7 @@ class MacroCountFragment : Fragment() {
     private val seekBarMin = 0
     private val seekBarMax = 500
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var loggedInViewModel : LoggedInViewModel
 
     private var _fragBinding: FragmentMacroCountBinding? = null
     private val fragBinding get() = _fragBinding!!
@@ -68,6 +70,7 @@ class MacroCountFragment : Fragment() {
         app = activity?.application as MainApp
         userRepo = UserRepo(requireActivity().applicationContext)
         currentUserId = userRepo.userId!!.toLong()
+        loggedInViewModel = ViewModelProvider(requireActivity()).get(LoggedInViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -96,7 +99,7 @@ class MacroCountFragment : Fragment() {
                 fragBinding.btnAdd.setText(R.string.save_macroCount)
                 editMacro = true
 
-                if (macroViewModel.observableMacro.value?.image != Uri.EMPTY) {
+                if (macroViewModel.observableMacro.value?.image != "") {
                     Picasso.get()
                         .load(macroViewModel.observableMacro.value?.image)
                         .into(fragBinding.macroCountImage)
@@ -161,7 +164,7 @@ class MacroCountFragment : Fragment() {
 
                 Timber.i("Got Result $imageUri")
                 if (imageUri != null) {
-                    macroCount.image = imageUri
+                    macroCount.image = imageUri.toString()
                     Timber.i("Got Result macrocount image ${macroCount.image}")
                     Picasso.get()
                         .load(macroCount.image)
@@ -266,6 +269,7 @@ class MacroCountFragment : Fragment() {
             }
 
             if (!validationFailed) {
+                Timber.i("Validation passed")
                 if (editMacro) {
                     Timber.i("macroCount edited and saved: $macroViewModel.observableMacro.value")
                     macroViewModel.updateMacro()
@@ -275,12 +279,13 @@ class MacroCountFragment : Fragment() {
                         macroViewModel.addToDay(currentUserId)
                         Timber.i("copied macroCount added to today: ${macroViewModel.observableMacro.value}")
                     } else {
-                        macroViewModel.addMacro()
+                        macroViewModel.addMacro(loggedInViewModel.liveFirebaseUser, macroViewModel.observableMacro.value!!)
                         Timber.i("creating new macroCount from copied and edited macro: $macroCount")
                     }
                 } else {
-                    macroViewModel.addMacro()
-                    Timber.i("macroCount added: ${macroViewModel.observableMacro.value}")
+                    Timber.i("adding macroCount : ${macroViewModel.observableMacro.value} for ${loggedInViewModel.liveFirebaseUser}")
+                    macroViewModel.addMacro(loggedInViewModel.liveFirebaseUser, macroViewModel.observableMacro.value!!)
+
                 }
                 Timber.i("LocalDate.now(): ${LocalDate.now()}")
 //                Timber.i(
@@ -311,7 +316,7 @@ class MacroCountFragment : Fragment() {
                     AppCompatActivity.RESULT_OK -> {
                         if (result.data != null) {
                             Timber.i("Got Result ${result.data!!.data!!}")
-                            macroViewModel.observableMacro.value?.image = result.data!!.data!!
+                            macroViewModel.observableMacro.value?.image = result.data!!.data!!.toString()
                             Timber.i("Got Result macrocount image ${macroViewModel.observableMacro.value?.image}")
                             Picasso.get()
                                 .load(macroViewModel.observableMacro.value?.image)

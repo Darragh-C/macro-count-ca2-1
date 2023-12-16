@@ -66,7 +66,7 @@ class MacroDetailFragment : Fragment() {
 
         detailViewModel.getMacro(args.macroid)
 
-        if (detailViewModel.observableMacro.value?.image != Uri.EMPTY) {
+        if (detailViewModel.observableMacro.value?.image != "") {
             Timber.i("Loading image: ${detailViewModel.observableMacro.value?.image}")
             Picasso.get()
                 .load(detailViewModel.observableMacro.value?.image)
