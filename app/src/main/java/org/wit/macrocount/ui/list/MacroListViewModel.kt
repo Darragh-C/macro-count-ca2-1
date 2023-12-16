@@ -3,6 +3,7 @@ package org.wit.macrocount.ui.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import org.wit.macrocount.firebase.FirebaseDBManager
 //import org.wit.macrocount.models.MacroCountManager
@@ -24,7 +25,8 @@ class MacroListViewModel: ViewModel() {
 
     fun load() {
         try {
-            FirebaseDBManager.findAll(liveFirebaseUser.toString(), macroList)
+            Timber.i("Loading macros for ${FirebaseAuth.getInstance().currentUser!!.uid}")
+            FirebaseDBManager.findAll(FirebaseAuth.getInstance().currentUser!!.uid, macroList)
             Timber.i("Retrofit Success : $macroList.value")
         }
         catch (e: Exception) {

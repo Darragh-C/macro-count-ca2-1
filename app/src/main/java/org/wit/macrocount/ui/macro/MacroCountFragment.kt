@@ -33,6 +33,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.lifecycle.Observer
+import com.google.firebase.auth.FirebaseAuth
 import org.wit.macrocount.ui.login.LoggedInViewModel
 
 class MacroCountFragment : Fragment() {
@@ -283,7 +284,10 @@ class MacroCountFragment : Fragment() {
                         Timber.i("creating new macroCount from copied and edited macro: $macroCount")
                     }
                 } else {
-                    Timber.i("adding macroCount : ${macroViewModel.observableMacro.value} for ${loggedInViewModel.liveFirebaseUser}")
+
+                    val currentUser = FirebaseAuth.getInstance().currentUser
+
+                    Timber.i("adding macroCount : ${macroViewModel.observableMacro.value} for ${currentUser} or ${currentUser!!.uid}")
                     macroViewModel.addMacro(loggedInViewModel.liveFirebaseUser, macroViewModel.observableMacro.value!!)
 
                 }

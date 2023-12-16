@@ -19,8 +19,9 @@ object FirebaseDBManager: MacroCountStore {
     }
 
     override fun findAll(userid: String, macroList: MutableLiveData<List<MacroCountModel>>) {
+        Timber.i("Finding all macrocounts for user $userid")
 
-        database.child("user-donations").child(userid)
+        database.child("user-macrocounts").child(userid)
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     Timber.i("Firebase Donation error : ${error.message}")
