@@ -71,25 +71,19 @@
                 android:text="@string/button_login"
                  />
 
-            <TextView
-                android:id="@+id/signupLink"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/btnSignup"
+                style="@style/CustomButton"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:onClick="onLinkClick"
-                android:text="Sign up"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold" />
-
-
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_button"
+                android:stateListAnimator="@null"
+                android:text="@string/button_signup"
+                />
 
         </LinearLayout>
 
-
-
-
     </RelativeLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

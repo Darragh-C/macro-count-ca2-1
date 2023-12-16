@@ -36,7 +36,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
 
     private lateinit var app: MainApp
     private lateinit var userRepo: UserRepo
-    private var usersDailyMacroObjList = mutableListOf<MacroCountModel>()
+    //private var usersDailyMacroObjList = mutableListOf<MacroCountModel>()
     private var currentUserId: Long = 0
     private lateinit var macroCountAdapter: MacroCountAdapter
     lateinit var loader : AlertDialog
@@ -148,8 +148,13 @@ class MacroListFragment : Fragment(), MacroCountListener {
 
     override fun onMacroCountClick(macroCount: MacroCountModel) {
         i("onMacroCountClick called $macroCount")
-        val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroDetailFragment(macroCount.id)
-        findNavController().navigate(directions)
+        val directions = macroCount.uid?.let {
+            MacroListFragmentDirections.actionMacroListFragmentToMacroDetailFragment(
+                it.toLong())
+        }
+        if (directions != null) {
+            findNavController().navigate(directions)
+        }
     }
 
 //    private fun updatedAdapterMacros() {
@@ -176,13 +181,13 @@ class MacroListFragment : Fragment(), MacroCountListener {
 //    }
 
     override fun onMacroDeleteClick(macroCount: MacroCountModel) {
-        val position = usersDailyMacroObjList.indexOfFirst { it.id == macroCount.id }
-        if (position != -1) {
-            usersDailyMacroObjList.removeAt(position)
-            macroCountAdapter.updateData(usersDailyMacroObjList)
-            macroCountAdapter.notifyItemRemoved(position)
-
-            app.days.removeMacro(currentUserId, LocalDate.now().toString(), macroCount.id.toString())
-        }
+//        val position = usersDailyMacroObjList.indexOfFirst { it.uid == macroCount.uid }
+//        if (position != -1) {
+//            usersDailyMacroObjList.removeAt(position)
+//            macroCountAdapter.updateData(usersDailyMacroObjList)
+//            macroCountAdapter.notifyItemRemoved(position)
+//
+//            app.days.removeMacro(currentUserId, LocalDate.now().toString(), macroCount.uid.toString())
+//        }
     }
 }

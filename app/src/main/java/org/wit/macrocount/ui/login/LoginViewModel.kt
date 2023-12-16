@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import org.wit.macrocount.models.UserManager
 import org.wit.macrocount.models.UserModel
 
+
 class LoginViewModel : ViewModel() {
 
     private val status = MutableLiveData<Boolean>()
@@ -26,4 +27,5 @@ class LoginViewModel : ViewModel() {
             false
         }
     }
+
 }

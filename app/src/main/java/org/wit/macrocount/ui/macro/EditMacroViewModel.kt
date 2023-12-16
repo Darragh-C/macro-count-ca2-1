@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import org.wit.macrocount.firebase.FirebaseDBManager
 import org.wit.macrocount.models.DayManager
-import org.wit.macrocount.models.MacroCountManager
+//import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
 import timber.log.Timber
 import java.time.LocalDate
@@ -44,7 +44,7 @@ class EditMacroViewModel : ViewModel() {
 
     fun getMacro(id: Long) {
         getStatus.value = try {
-            vmMacro.value = MacroCountManager.findById(id)
+            //vmMacro.value = MacroCountManager.findById(id)
             true
         } catch (e: IllegalArgumentException) {
             false
@@ -65,9 +65,9 @@ class EditMacroViewModel : ViewModel() {
         copiedMacro.value = macro
     }
 
-    fun addMacro(firebaseUser: MutableLiveData<FirebaseUser>) {
+    fun addMacro() {
         addStatus.value = try {
-            vmMacro.value?.let { FirebaseDBManager.create(firebaseUser, it) }
+            vmMacro.value?.let { FirebaseDBManager.create(liveFirebaseUser, it) }
             true
         } catch (e: IllegalArgumentException) {
             false
@@ -76,7 +76,7 @@ class EditMacroViewModel : ViewModel() {
 
     fun updateMacro() {
         updateStatus.value = try {
-            vmMacro.value?.let { MacroCountManager.update(it) }
+            //vmMacro.value?.let { MacroCountManager.update(it) }
             true
         } catch (e: IllegalArgumentException) {
             false

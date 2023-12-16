@@ -28,6 +28,7 @@
     <string name="snackbar_userPassword">Please enter a password</string>
     <string name="snackbar_invalidLogin">Email or password incorrect</string>
 
+    <string name="menu_signout">Sign out</string>
     <string name="menu_addMacroCount">Add</string>
     <string name="menu_cancelMacroCount">Cancel</string>
     <string name="save_macroCount">Save</string>
@@ -59,6 +60,8 @@
 
     <string name="login_link">Log in</string>
     <string name="signup_link">Sign up</string>
+
+    <string name="auth_failed">Authentication failed</string>
 
     <string name="select_macrocount_image">Select image</string>
 

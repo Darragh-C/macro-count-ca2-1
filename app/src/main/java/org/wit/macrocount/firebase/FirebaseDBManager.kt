@@ -2,10 +2,14 @@ package org.wit.macrocount.firebase
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.MacroCountStore
+import timber.log.Timber
 
 object FirebaseDBManager: MacroCountStore {
 
@@ -15,15 +19,49 @@ object FirebaseDBManager: MacroCountStore {
     }
 
     override fun findAll(userid: String, macroList: MutableLiveData<List<MacroCountModel>>) {
+
+        database.child("user-donations").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase Donation error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<MacroCountModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val macro = it.getValue(MacroCountModel::class.java)
+                        localList.add(macro!!)
+                    }
+                    database.child("user-macrocounts").child(userid)
+                        .removeEventListener(this)
+
+                    macroList.value = localList
+                }
+            })
+    }
+
+    override fun findById(userid: String, macroid: String, macroCount: MutableLiveData<MacroCountModel>) {
         TODO("Not yet implemented")
     }
 
-//    override fun findById(userid: String, macroid: String, macroCount: MutableLiveData<MacroCountModel>) {
-//        TODO("Not yet implemented")
-//    }
-
     override fun create(firebaseUser: MutableLiveData<FirebaseUser>, macroCount: MacroCountModel) {
-        TODO("Not yet implemented")
+        Timber.i("Firebase DB Reference : $database")
+
+        val uid = firebaseUser.value!!.uid
+        val key = database.child("macrocounts").push().key
+        if (key == null) {
+            Timber.i("Firebase Error : Key Empty")
+            return
+        }
+        macroCount.uid = key
+        val macroValues = macroCount.toMap()
+
+        val childAdd = HashMap<String, Any>()
+        childAdd["/macrocounts/$key"] = macroValues
+        childAdd["/user-macrocounts/$uid/$key"] = macroValues
+
+        database.updateChildren(childAdd)
     }
 
     override fun delete(userid: String, macroid: String) {
@@ -38,9 +76,9 @@ object FirebaseDBManager: MacroCountStore {
         TODO("Not yet implemented")
     }
 
-    override fun findById(id: Long): MacroCountModel? {
-        TODO("Not yet implemented")
-    }
+//    override fun findById(id: Long): MacroCountModel? {
+//        TODO("Not yet implemented")
+//    }
 
     override fun findByTitle(title: String): MacroCountModel {
         TODO("Not yet implemented")
@@ -50,9 +88,9 @@ object FirebaseDBManager: MacroCountStore {
         TODO("Not yet implemented")
     }
 
-    override fun findByIds(ids: List<String>): List<MacroCountModel?> {
-        TODO("Not yet implemented")
-    }
+//    override fun findByIds(ids: List<String>): List<MacroCountModel?> {
+//        TODO("Not yet implemented")
+//    }
 
     override fun update(userid: String, macroid: String, macroCount: MacroCountModel) {
         TODO("Not yet implemented")

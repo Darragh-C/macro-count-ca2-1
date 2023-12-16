@@ -12,7 +12,7 @@ import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.databinding.ActivitySignUpBinding
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
-import org.wit.macrocount.models.generateRandomId
+//import org.wit.macrocount.models.generateRandomId
 import org.wit.macrocount.ui.login.LoginActivity
 import timber.log.Timber
 import timber.log.Timber.Forest.i
@@ -64,7 +64,8 @@ class SignupActivity: AppCompatActivity() {
             if (!validationFailed) {
 
                 Timber.i("User added: $user.email")
-                user.id = generateRandomId()
+                //user.id = generateRandomId()
+                user.id = 123456L
                 //app.users.create(user.copy())
                 signupViewModel.addUser(user.copy())
                 userRepo.userId = user.id.toString()

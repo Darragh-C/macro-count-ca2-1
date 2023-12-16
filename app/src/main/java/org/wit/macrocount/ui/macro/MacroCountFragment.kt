@@ -275,22 +275,22 @@ class MacroCountFragment : Fragment() {
                         macroViewModel.addToDay(currentUserId)
                         Timber.i("copied macroCount added to today: ${macroViewModel.observableMacro.value}")
                     } else {
-                        macroViewModel.addMacro(macroViewModel.liveFirebaseUser)
+                        macroViewModel.addMacro()
                         Timber.i("creating new macroCount from copied and edited macro: $macroCount")
                     }
                 } else {
-                    macroViewModel.addMacro(macroViewModel.liveFirebaseUser)
+                    macroViewModel.addMacro()
                     Timber.i("macroCount added: ${macroViewModel.observableMacro.value}")
                 }
                 Timber.i("LocalDate.now(): ${LocalDate.now()}")
-                Timber.i(
-                    "Today's macros: ${
-                        app.days.findByUserDate(
-                            currentUserId,
-                            LocalDate.now()
-                        )
-                    }"
-                )
+//                Timber.i(
+//                    "Today's macros: ${
+//                        app.days.findByUserDate(
+//                            currentUserId,
+//                            LocalDate.now()
+//                        )
+//                    }"
+                //)
                 val directions = MacroCountFragmentDirections.actionMacroCountFragmentToMacroListFragment()
                 findNavController().navigate(directions)
             }

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.PieEntry
-import org.wit.macrocount.models.MacroCountManager
+//import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.UserManager
 import org.wit.macrocount.models.UserModel
@@ -72,7 +72,7 @@ class AnalyticsViewModel: ViewModel() {
 
     fun load() {
         try {
-            MacroCountManager.findAll(macroList)
+            //MacroCountManager.findAll(macroList)
             Timber.i("Retrofit Success : $macroList.value")
         }
         catch (e: Exception) {
