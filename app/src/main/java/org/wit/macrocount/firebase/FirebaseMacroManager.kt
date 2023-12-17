@@ -11,7 +11,7 @@ import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.MacroCountStore
 import timber.log.Timber
 
-object FirebaseDBManager: MacroCountStore {
+object FirebaseMacroManager: MacroCountStore {
 
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
     override fun findAll(macroList: MutableLiveData<List<MacroCountModel>>) {
@@ -24,7 +24,7 @@ object FirebaseDBManager: MacroCountStore {
         database.child("user-macrocounts").child(userid)
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
-                    Timber.i("Firebase Donation error : ${error.message}")
+                    Timber.i("Firebase macro error : ${error.message}")
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -56,7 +56,7 @@ object FirebaseDBManager: MacroCountStore {
     }
 
     override fun create(firebaseUser: MutableLiveData<FirebaseUser>, macroCount: MacroCountModel) {
-        Timber.i("Creating macro FirebaseDBManager : $database")
+        Timber.i("Creating macro FirebaseMacroManager : $database")
         Timber.i("Firebase DB Reference : $database")
 
         val uid = firebaseUser.value!!.uid

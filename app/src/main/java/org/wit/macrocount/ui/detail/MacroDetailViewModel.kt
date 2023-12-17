@@ -3,7 +3,7 @@ package org.wit.macrocount.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.wit.macrocount.firebase.FirebaseDBManager
+import org.wit.macrocount.firebase.FirebaseMacroManager
 //import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
 import timber.log.Timber
@@ -16,7 +16,7 @@ class MacroDetailViewModel : ViewModel() {
 
     fun getMacro(userid:String, id: String) {
         try {
-            FirebaseDBManager.findById(userid, id, macro)
+            FirebaseMacroManager.findById(userid, id, macro)
             Timber.i("Detail getMacro() Success : ${
                 macro.value}")
         }

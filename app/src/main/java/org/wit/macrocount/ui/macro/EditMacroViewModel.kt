@@ -4,12 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
-import org.wit.macrocount.firebase.FirebaseDBManager
-import org.wit.macrocount.models.DayManager
+import org.wit.macrocount.firebase.FirebaseMacroManager
 //import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
 import timber.log.Timber
-import java.time.LocalDate
 
 class EditMacroViewModel : ViewModel() {
 
@@ -56,7 +54,7 @@ class EditMacroViewModel : ViewModel() {
 
     fun getMacro(userid: String, macroid: String) {
         try {
-            FirebaseDBManager.findById(userid, macroid, vmMacro)
+            FirebaseMacroManager.findById(userid, macroid, vmMacro)
             Timber.i("Edit macro getMacro() Success : ${
                 vmMacro.value}")
         }
@@ -82,7 +80,7 @@ class EditMacroViewModel : ViewModel() {
     fun addMacro(firebaseUser: MutableLiveData<FirebaseUser>, macro: MacroCountModel) {
         Timber.i("adding macro at edit macro vm, macro: ${macro}, user: ${firebaseUser.value.toString()}")
         addStatus.value = try {
-            FirebaseDBManager.create(firebaseUser, macro)
+            FirebaseMacroManager.create(firebaseUser, macro)
             true
         } catch (e: IllegalArgumentException) {
             false
@@ -91,7 +89,7 @@ class EditMacroViewModel : ViewModel() {
 
     fun updateMacro(userid:String, macroid: String, macro: MacroCountModel) {
         try {
-            FirebaseDBManager.update(userid, macroid, macro)
+            FirebaseMacroManager.update(userid, macroid, macro)
             Timber.i("Detail update() Success : userid: $userid , macroid: $macroid , macro: $macro")
         }
         catch (e: Exception) {
