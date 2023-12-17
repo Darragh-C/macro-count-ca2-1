@@ -10,7 +10,7 @@ interface MacroCountListener{
     fun onMacroCountClick(macroCount: MacroCountModel)
     fun onMacroDeleteClick(macroCount: MacroCountModel)
 }
-class MacroCountAdapter constructor(private var macroCounts: List<MacroCountModel>,
+class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCountModel>,
                                     private val listener: MacroCountListener
 ):
 
@@ -29,9 +29,14 @@ class MacroCountAdapter constructor(private var macroCounts: List<MacroCountMode
 
     override fun getItemCount(): Int = macroCounts.size
 
-    fun updateData(newData: List<MacroCountModel>) {
+    fun updateData(newData: ArrayList<MacroCountModel>) {
         macroCounts = newData
         notifyDataSetChanged()
+    }
+
+    fun removeAt(position: Int) {
+        macroCounts.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     class MainHolder(private val binding : CardMacrocountBinding) :

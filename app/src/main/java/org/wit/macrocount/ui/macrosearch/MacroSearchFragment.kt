@@ -28,8 +28,8 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
     private lateinit var app: MainApp
     private lateinit var macroCountAdapter: MacroCountAdapter
     private lateinit var userRepo: UserRepo
-    private lateinit var userMacros: List<MacroCountModel>
-    private lateinit var filteredMacros: List<MacroCountModel>
+    private lateinit var userMacros: ArrayList<MacroCountModel>
+    private lateinit var filteredMacros: ArrayList<MacroCountModel>
     private var currentUserId: Long = 0
 
     private var _fragBinding: FragmentMacroSearchBinding? = null
@@ -60,7 +60,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         macroSearchViewModel = ViewModelProvider(this).get(MacroSearchViewModel::class.java)
         macroSearchViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
                 macros ->
-            macros?.let { render(macros) }
+            macros?.let { render(macros  as ArrayList<MacroCountModel>) }
         })
 
 //        if (currentUserId != null) {
@@ -77,7 +77,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
                 fragBinding.macroSearchView.clearFocus()
                 if (query != null) {
                     val filteredMacros = userMacros.filter { it.title.contains(query, ignoreCase = true) }
-                    macroCountAdapter.updateData(filteredMacros)
+                    macroCountAdapter.updateData(filteredMacros as ArrayList<MacroCountModel>)
                 }
                 return false
             }
@@ -85,7 +85,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
                     val filteredMacros = userMacros.filter { it.title.contains(newText, ignoreCase = true) }
-                    macroCountAdapter.updateData(filteredMacros)
+                    macroCountAdapter.updateData(filteredMacros as ArrayList<MacroCountModel>)
                 }
                 return false
             }
@@ -99,7 +99,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         return root
     }
 
-    private fun render(macroList: List<MacroCountModel>) {
+    private fun render(macroList: ArrayList<MacroCountModel>) {
         fragBinding.macroSearchRecyclerView.adapter = MacroCountAdapter(macroList,this)
         if (macroList.isEmpty()) {
             fragBinding.macroSearchRecyclerView.visibility = View.GONE
@@ -138,39 +138,39 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         }
     }
 
-    private fun applyFilter(property: String, operator: String, filterValue: String): List<MacroCountModel> {
+    private fun applyFilter(property: String, operator: String, filterValue: String): ArrayList<MacroCountModel> {
         filteredMacros = userMacros
 
         when (property) {
             "Calories" -> {
                 filteredMacros = when (operator) {
-                    "Equals" -> filteredMacros.filter { it.calories.toInt() == filterValue.toInt() }
-                    "Less than" -> filteredMacros.filter { it.calories.toInt() <= filterValue.toInt() }
-                    "More than" -> filteredMacros.filter { it.calories.toInt() >= filterValue.toInt() }
+                    "Equals" -> filteredMacros.filter { it.calories.toInt() == filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "Less than" -> filteredMacros.filter { it.calories.toInt() <= filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "More than" -> filteredMacros.filter { it.calories.toInt() >= filterValue.toInt() } as ArrayList<MacroCountModel>
                     else -> filteredMacros
                 }
             }
             "Protein" -> {
                 filteredMacros = when (operator) {
-                    "Equals" -> filteredMacros.filter { it.protein.toInt() == filterValue.toInt() }
-                    "Less than" -> filteredMacros.filter { it.protein.toInt() <= filterValue.toInt() }
-                    "More than" -> filteredMacros.filter { it.protein.toInt() >= filterValue.toInt() }
+                    "Equals" -> filteredMacros.filter { it.protein.toInt() == filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "Less than" -> filteredMacros.filter { it.protein.toInt() <= filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "More than" -> filteredMacros.filter { it.protein.toInt() >= filterValue.toInt() } as ArrayList<MacroCountModel>
                     else -> filteredMacros
                 }
             }
             "Carbohydrates" -> {
                 filteredMacros = when (operator) {
-                    "Equals" -> filteredMacros.filter { it.carbs.toInt() == filterValue.toInt() }
-                    "Less than" -> filteredMacros.filter { it.carbs.toInt() <= filterValue.toInt() }
-                    "More than" -> filteredMacros.filter { it.carbs.toInt() >= filterValue.toInt() }
+                    "Equals" -> filteredMacros.filter { it.carbs.toInt() == filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "Less than" -> filteredMacros.filter { it.carbs.toInt() <= filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "More than" -> filteredMacros.filter { it.carbs.toInt() >= filterValue.toInt() } as ArrayList<MacroCountModel>
                     else -> filteredMacros
                 }
             }
             "Fat" -> {
                 filteredMacros = when (operator) {
-                    "Equals" -> filteredMacros.filter { it.fat.toInt() == filterValue.toInt() }
-                    "Less than" -> filteredMacros.filter { it.fat.toInt() <= filterValue.toInt() }
-                    "More than" -> filteredMacros.filter { it.fat.toInt() >= filterValue.toInt() }
+                    "Equals" -> filteredMacros.filter { it.fat.toInt() == filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "Less than" -> filteredMacros.filter { it.fat.toInt() <= filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "More than" -> filteredMacros.filter { it.fat.toInt() >= filterValue.toInt() } as ArrayList<MacroCountModel>
                     else -> filteredMacros
                 }
             }

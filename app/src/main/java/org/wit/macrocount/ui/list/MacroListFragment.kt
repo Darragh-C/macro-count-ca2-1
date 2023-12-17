@@ -76,8 +76,9 @@ class MacroListFragment : Fragment(), MacroCountListener {
         macroListViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
                 macros ->
             macros?.let {
-                render(macros)
+                render(macros as ArrayList<MacroCountModel>)
                 hideLoader(loader)
+                checkSwipeRefresh()
             }
         })
 
@@ -105,7 +106,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
             }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun render(macroList: List<MacroCountModel>) {
+    private fun render(macroList: ArrayList<MacroCountModel>) {
         fragBinding.recyclerView.adapter = MacroCountAdapter(macroList,this)
         if (macroList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
@@ -167,6 +168,18 @@ class MacroListFragment : Fragment(), MacroCountListener {
             )
             macroListViewModel.load()
         }
+    }
+    fun setSwipeRefresh() {
+        fragBinding.swipeRefresh.setOnRefreshListener {
+            fragBinding.swipeRefresh.isRefreshing = true
+            showLoader(loader,"Loading MacroCounts...")
+            macroListViewModel.load()
 
+        }
+    }
+
+    fun checkSwipeRefresh() {
+        if (fragBinding.swipeRefresh.isRefreshing)
+            fragBinding.swipeRefresh.isRefreshing = false
     }
 }
