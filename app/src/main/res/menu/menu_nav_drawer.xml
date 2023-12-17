@@ -5,10 +5,12 @@
     tools:ignore="MissingDefaultResource">
 
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/macroListFragment"
             android:icon="@drawable/ic_menu_list"
             android:title="@string/action_macro_list" />
+
         <item
             android:id="@+id/macroCountFragment"
             android:icon="@drawable/ic_add"

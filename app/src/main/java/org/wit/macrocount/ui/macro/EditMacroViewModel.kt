@@ -89,12 +89,13 @@ class EditMacroViewModel : ViewModel() {
         }
     }
 
-    fun updateMacro() {
-        updateStatus.value = try {
-            //vmMacro.value?.let { MacroCountManager.update(it) }
-            true
-        } catch (e: IllegalArgumentException) {
-            false
+    fun updateMacro(userid:String, macroid: String, macro: MacroCountModel) {
+        try {
+            FirebaseDBManager.update(userid, macroid, macro)
+            Timber.i("Detail update() Success : userid: $userid , macroid: $macroid , macro: $macro")
+        }
+        catch (e: Exception) {
+            Timber.i("Detail update() Error : $e.message")
         }
     }
 

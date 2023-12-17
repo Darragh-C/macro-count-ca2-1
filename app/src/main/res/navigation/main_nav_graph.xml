@@ -27,8 +27,6 @@
         android:name="org.wit.macrocount.ui.macro.MacroCountFragment"
         android:label="@string/action_macro_count"
         tools:layout="@layout/fragment_macro_count" >
-
-
         <action
             android:id="@+id/action_macroCountFragment_to_cameraFragment"
             app:destination="@id/cameraFragment"

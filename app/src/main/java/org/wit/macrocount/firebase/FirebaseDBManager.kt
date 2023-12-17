@@ -109,6 +109,11 @@ object FirebaseDBManager: MacroCountStore {
 //    }
 
     override fun update(userid: String, macroid: String, macroCount: MacroCountModel) {
-        TODO("Not yet implemented")
+        val macroValues = macroCount.toMap()
+        val childUpdate : MutableMap<String, Any?> = HashMap()
+        childUpdate["macrocounts/$macroid"] = macroValues
+        childUpdate["user-macrocounts/$userid/$macroid"] = macroValues
+
+        database.updateChildren(childUpdate)
     }
 }
