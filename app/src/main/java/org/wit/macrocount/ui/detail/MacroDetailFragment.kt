@@ -1,5 +1,6 @@
 package org.wit.macrocount.ui.detail
 
+import android.app.AlertDialog
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -19,9 +20,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import org.wit.macrocount.R
+import org.wit.macrocount.adapters.MacroCountAdapter
 import org.wit.macrocount.databinding.FragmentMacroDetailBinding
+import org.wit.macrocount.helpers.createLoader
+import org.wit.macrocount.helpers.hideLoader
+import org.wit.macrocount.helpers.showLoader
 import org.wit.macrocount.models.MacroCountModel
 import timber.log.Timber
 
@@ -31,6 +37,7 @@ class MacroDetailFragment : Fragment() {
     private lateinit var detailViewModel: MacroDetailViewModel
     private var _fragBinding: FragmentMacroDetailBinding? = null
     private val fragBinding get() = _fragBinding!!
+    lateinit var loader : AlertDialog
 
     companion object {
         fun newInstance() = MacroDetailFragment()
@@ -47,31 +54,18 @@ class MacroDetailFragment : Fragment() {
 
         detailViewModel = ViewModelProvider(this).get(MacroDetailViewModel::class.java)
 
+        loader = createLoader(requireActivity())
+        showLoader(loader,"Downloading macro")
 
+        detailViewModel.getMacro(FirebaseAuth.getInstance().currentUser!!.uid, args.macroid)
+
+        detailViewModel.observableMacro.observe(viewLifecycleOwner, Observer {
+            render()
+            hideLoader(loader)
+        })
 
         return root
 
-        //val args = arguments
-//        Timber.i("MacroDetailFragment passed args ${args}")
-//        Toast.makeText(context,"Macro ID Selected : ${args}", Toast.LENGTH_LONG).show()
-//        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        setupMenu()
-
-        detailViewModel.observableMacro.observe(viewLifecycleOwner, Observer {render() })
-        //Timber.i("observableMacro ${macro}")
-
-        detailViewModel.getMacro(args.macroid)
-
-        if (detailViewModel.observableMacro.value?.image != "") {
-            Timber.i("Loading image: ${detailViewModel.observableMacro.value?.image}")
-            Picasso.get()
-                .load(detailViewModel.observableMacro.value?.image)
-                .into(fragBinding.macroCountImage)
-        }
     }
 
     private fun setupMenu() {
@@ -100,9 +94,24 @@ class MacroDetailFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        setupMenu()
+
+        Timber.i(" onViewCreated macro ${detailViewModel.observableMacro.value}")
+
+        if (detailViewModel.observableMacro.value?.image != "") {
+            Timber.i("Loading image: ${detailViewModel.observableMacro.value?.image}")
+            Picasso.get()
+                .load(detailViewModel.observableMacro.value?.image)
+                .into(fragBinding.macroCountImage)
+        }
+    }
+
     private fun render() {
-        //fragBinding.
-        fragBinding.macrovm = detailViewModel
+        if (detailViewModel.observableMacro.value != null) {
+            fragBinding.macrovm = detailViewModel
+        }
     }
 
     override fun onResume() {

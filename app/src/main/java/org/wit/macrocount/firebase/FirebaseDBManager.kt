@@ -42,8 +42,17 @@ object FirebaseDBManager: MacroCountStore {
             })
     }
 
-    override fun findById(userid: String, macroid: String, macroCount: MutableLiveData<MacroCountModel>) {
-        TODO("Not yet implemented")
+    override fun findById(userid: String, macroid: String, macro: MutableLiveData<MacroCountModel>) {
+
+        database.child("user-macrocounts").child(userid)
+            .child(macroid).get().addOnSuccessListener {
+                macro.value = it.getValue(MacroCountModel::class.java)
+                Timber.i("firebase Got macro it.value ${it.value}")
+                Timber.i("firebase Got macro macro.value ${macro.value}")
+                Timber.i("firebase Got macro ${macro}")
+            }.addOnFailureListener{
+                Timber.e("firebase Error getting data $it")
+            }
     }
 
     override fun create(firebaseUser: MutableLiveData<FirebaseUser>, macroCount: MacroCountModel) {

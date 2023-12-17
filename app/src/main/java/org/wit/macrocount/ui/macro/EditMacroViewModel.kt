@@ -29,6 +29,18 @@ class EditMacroViewModel : ViewModel() {
     val observableGetStatus: LiveData<Boolean>
         get() = getStatus
 
+    val observableCalories: LiveData<Int>
+        get() = vmMacro.value?.calories?.toInt()?.let { MutableLiveData(it) } ?: MutableLiveData(0)
+
+    val observableProtein: LiveData<Int>
+        get() = vmMacro.value?.protein?.toInt()?.let { MutableLiveData(it) } ?: MutableLiveData(0)
+
+    val observableCarbs: LiveData<Int>
+        get() = vmMacro.value?.carbs?.toInt()?.let { MutableLiveData(it) } ?: MutableLiveData(0)
+
+    val observableFat: LiveData<Int>
+        get() = vmMacro.value?.fat?.toInt()?.let { MutableLiveData(it) } ?: MutableLiveData(0)
+
     val observableAddStatus: LiveData<Boolean>
         get() = addStatus
 
@@ -42,12 +54,14 @@ class EditMacroViewModel : ViewModel() {
         get() = copiedMacro
 
 
-    fun getMacro(id: Long) {
-        getStatus.value = try {
-            //vmMacro.value = MacroCountManager.findById(id)
-            true
-        } catch (e: IllegalArgumentException) {
-            false
+    fun getMacro(userid: String, macroid: String) {
+        try {
+            FirebaseDBManager.findById(userid, macroid, vmMacro)
+            Timber.i("Edit macro getMacro() Success : ${
+                vmMacro.value}")
+        }
+        catch (e: Exception) {
+            Timber.i("Detail getDonation() Error : $e.message")
         }
     }
 
@@ -90,6 +104,7 @@ class EditMacroViewModel : ViewModel() {
 
     fun editCalories(calories: Int) {
         vmMacro.value?.calories = calories.toString()
+        vmMacro.value = vmMacro.value
     }
 
     fun editProtein(protein: Int) {
@@ -110,5 +125,9 @@ class EditMacroViewModel : ViewModel() {
     fun setUserId(id: Long) {
         vmMacro.value?.userId = id
 
+    }
+
+    fun refresh() {
+        vmMacro.value = vmMacro.value
     }
 }

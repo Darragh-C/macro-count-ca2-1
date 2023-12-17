@@ -82,7 +82,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
         })
 
         fragBinding.listFab.setOnClickListener {
-            val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(0)
+            val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment("")
             findNavController().navigate(directions)
         }
 
@@ -151,35 +151,12 @@ class MacroListFragment : Fragment(), MacroCountListener {
         i("onMacroCountClick called $macroCount")
         val directions = macroCount.uid?.let {
             MacroListFragmentDirections.actionMacroListFragmentToMacroDetailFragment(
-                it.toLong())
+                it)
         }
         if (directions != null) {
             findNavController().navigate(directions)
         }
     }
-
-//    private fun updatedAdapterMacros() {
-//        val today = LocalDate.now()
-//        Timber.i("Checking if logged in user $currentUserId has added macros today on $today")
-//        val userToday = app.days.findByUserDate(currentUserId!!.toLong(), today)
-//        Timber.i("User's day object: $userToday")
-//
-//        val usersDailyMacroList = userToday?.userMacroIds
-//
-//        var usersDailyMacroListAsObjs = mutableListOf<MacroCountModel>()
-//
-//        if (!usersDailyMacroList.isNullOrEmpty()) {
-//            var foundMacros = app.macroCounts.findByIds(usersDailyMacroList)
-//            if (!foundMacros.isNullOrEmpty()) {
-//                foundMacros.forEach { it -> it?.let {usersDailyMacroListAsObjs.add(it)} }
-//            }
-//            Timber.i("user's daily macro object list usersDailyMacroListAsObjs: $usersDailyMacroListAsObjs")
-//        }
-//
-//        Timber.i("updateAdapterMacros result: $usersDailyMacroObjList.toList()")
-//        usersDailyMacroObjList = usersDailyMacroListAsObjs
-//
-//    }
 
     override fun onMacroDeleteClick(macroCount: MacroCountModel) {
 

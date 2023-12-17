@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:min="@{macrovm.seekbarMin}"
                     android:max="@{macrovm.seekbarMax}"
-                    android:progress="50"/>
+                    android:progress="@{macrovm.observableCalories}"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:min="@{macrovm.seekbarMin}"
                     android:max="@{macrovm.seekbarMax}"
-                    android:progress="50"/>
+                    android:progress="@{macrovm.observableProtein}"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -179,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:min="@{macrovm.seekbarMin}"
                     android:max="@{macrovm.seekbarMax}"
-                    android:progress="50"/>
+                    android:progress="@{macrovm.observableCarbs}"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -218,7 +218,7 @@
                     android:layout_height="wrap_content"
                     android:min="@{macrovm.seekbarMin}"
                     android:max="@{macrovm.seekbarMax}"
-                    android:progress="50"/>
+                    android:progress="@{macrovm.observableFat}"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
