@@ -18,6 +18,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import org.wit.macrocount.R
 import org.wit.macrocount.adapters.MacroCountAdapter
 import org.wit.macrocount.adapters.MacroCountListener
@@ -181,13 +182,14 @@ class MacroListFragment : Fragment(), MacroCountListener {
 //    }
 
     override fun onMacroDeleteClick(macroCount: MacroCountModel) {
-//        val position = usersDailyMacroObjList.indexOfFirst { it.uid == macroCount.uid }
-//        if (position != -1) {
-//            usersDailyMacroObjList.removeAt(position)
-//            macroCountAdapter.updateData(usersDailyMacroObjList)
-//            macroCountAdapter.notifyItemRemoved(position)
-//
-//            app.days.removeMacro(currentUserId, LocalDate.now().toString(), macroCount.uid.toString())
-//        }
+
+        if (macroCount.uid != null) {
+            Timber.i("Deleting macro: ${macroCount.uid}")
+            macroListViewModel.delete(FirebaseAuth.getInstance().currentUser!!.uid,
+                macroCount.uid!!
+            )
+            macroListViewModel.load()
+        }
+
     }
 }

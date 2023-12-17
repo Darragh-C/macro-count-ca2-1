@@ -34,4 +34,15 @@ class MacroListViewModel: ViewModel() {
         }
     }
 
+    fun delete(userid: String, id: String) {
+        Timber.i("macroListViewModel.delete $id")
+        try {
+            FirebaseDBManager.delete(userid,id)
+            Timber.i("Report Delete Success")
+        }
+        catch (e: Exception) {
+            Timber.i("Report Delete Error : $e.message")
+        }
+    }
+
 }

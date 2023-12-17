@@ -67,7 +67,12 @@ object FirebaseDBManager: MacroCountStore {
     }
 
     override fun delete(userid: String, macroid: String) {
-        TODO("Not yet implemented")
+
+        val childDelete : MutableMap<String, Any?> = HashMap()
+        childDelete["/macrocounts/$macroid"] = null
+        childDelete["/user-macrocounts/$userid/$macroid"] = null
+
+        database.updateChildren(childDelete)
     }
 
     override fun index(macroCount: MacroCountModel): Int {
