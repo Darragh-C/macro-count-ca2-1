@@ -15,7 +15,7 @@ import java.time.LocalDate
 
 object FirebaseDayManager: DayStore {
 
-    var database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    var database: DatabaseReference = FirebaseMacroManager.database
 
     override fun findAll(macroList: MutableLiveData<List<DayModel>>) {
         //TODO
@@ -43,7 +43,20 @@ object FirebaseDayManager: DayStore {
             })
     }
     override fun create(firebaseUser: MutableLiveData<FirebaseUser>, day: DayModel) {
-        //TODO
+        val uid = firebaseUser.value!!.uid
+        val key = database.child("days").push().key
+        if (key == null) {
+            Timber.i("Firebase Error : Key Empty")
+            return
+        }
+        day.uid = key
+        val dayValues = day.toMap()
+
+        val childAdd = HashMap<String, Any>()
+        childAdd["/days/$key"] = dayValues
+        childAdd["/user-days/$uid/$key"] = dayValues
+
+        database.updateChildren(childAdd)
     }
     override fun addMacroId(macroId: Long, userId: Long, date: LocalDate) {
         //TODO
@@ -52,7 +65,12 @@ object FirebaseDayManager: DayStore {
         //TODO
     }
     override fun update(userid: String, dayid: String, day: DayModel) {
-        //TODO
+        val dayValues = day.toMap()
+        val childUpdate : MutableMap<String, Any?> = HashMap()
+        childUpdate["days/$dayid"] = dayValues
+        childUpdate["user-days/$userid/$dayid"] = dayValues
+
+        database.updateChildren(childUpdate)
     }
     override fun removeMacro(userId: Long, date: String, macroId: String) {
         //TODO
