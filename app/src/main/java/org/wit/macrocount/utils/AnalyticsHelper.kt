@@ -1,6 +1,5 @@
-package org.wit.macrocount.helpers
+package org.wit.macrocount.utils
 
-import timber.log.Timber
 import kotlin.math.roundToInt
 
 

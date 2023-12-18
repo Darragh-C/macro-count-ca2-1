@@ -1,6 +1,5 @@
 package org.wit.macrocount.ui.analytics
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,10 +8,8 @@ import com.github.mikephil.charting.data.PieEntry
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.UserManager
 import org.wit.macrocount.models.UserModel
-import org.wit.macrocount.helpers.calcBmr
-import org.wit.macrocount.helpers.calcProtein
-import org.wit.macrocount.main.MainApp
-import org.wit.macrocount.models.UserRepo
+import org.wit.macrocount.utils.calcBmr
+import org.wit.macrocount.utils.calcProtein
 import timber.log.Timber
 import kotlin.math.roundToInt
 

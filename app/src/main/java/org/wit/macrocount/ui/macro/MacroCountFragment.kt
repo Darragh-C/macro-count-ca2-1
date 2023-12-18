@@ -16,17 +16,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.FragmentMacroCountBinding
-import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
-import org.wit.macrocount.models.UserRepo
 import org.wit.macrocount.showImagePicker
 import timber.log.Timber
-import java.time.LocalDate
-import android.net.Uri
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -36,9 +31,9 @@ import androidx.navigation.ui.NavigationUI
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
-import org.wit.macrocount.helpers.createLoader
-import org.wit.macrocount.helpers.hideLoader
-import org.wit.macrocount.helpers.showLoader
+import org.wit.macrocount.utils.createLoader
+import org.wit.macrocount.utils.hideLoader
+import org.wit.macrocount.utils.showLoader
 import org.wit.macrocount.ui.detail.MacroDetailFragmentArgs
 import org.wit.macrocount.ui.login.LoggedInViewModel
 

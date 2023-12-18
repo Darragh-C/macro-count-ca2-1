@@ -17,21 +17,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import org.wit.macrocount.R
 import org.wit.macrocount.adapters.MacroCountAdapter
 import org.wit.macrocount.adapters.MacroCountListener
 import org.wit.macrocount.databinding.FragmentMacroListBinding
-import org.wit.macrocount.helpers.createLoader
-import org.wit.macrocount.helpers.hideLoader
-import org.wit.macrocount.helpers.showLoader
+import org.wit.macrocount.utils.createLoader
+import org.wit.macrocount.utils.hideLoader
+import org.wit.macrocount.utils.showLoader
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.UserRepo
+import org.wit.macrocount.utils.SwipeToDeleteCallback
 import timber.log.Timber
 import timber.log.Timber.Forest.i
-import java.time.LocalDate
 
 class MacroListFragment : Fragment(), MacroCountListener {
 
@@ -82,10 +84,25 @@ class MacroListFragment : Fragment(), MacroCountListener {
             }
         })
 
+        setSwipeRefresh()
+
         fragBinding.listFab.setOnClickListener {
             val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment("")
             findNavController().navigate(directions)
         }
+
+
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = fragBinding.recyclerView.adapter as MacroCountAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+
+                macroListViewModel.delete(FirebaseAuth.getInstance().currentUser!!.uid,
+                    (viewHolder.itemView.tag as MacroCountModel).uid!!)
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
 
         return root
     }
