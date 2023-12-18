@@ -96,5 +96,6 @@
     <string name="menu_macro_detail">Macro Details</string>
 
     <string name="messageLoading">Please wait while the MacroCounts are Loading...</string>
+    <string name="select_profile_image">Select Profile Image</string>
 
 </resources>
