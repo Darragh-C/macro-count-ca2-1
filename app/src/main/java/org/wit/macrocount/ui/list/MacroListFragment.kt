@@ -32,6 +32,7 @@ import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.UserRepo
 import org.wit.macrocount.utils.SwipeToDeleteCallback
+import org.wit.macrocount.utils.SwipeToEditCallback
 import timber.log.Timber
 import timber.log.Timber.Forest.i
 
@@ -94,15 +95,26 @@ class MacroListFragment : Fragment(), MacroCountListener {
 
         val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                showLoader(loader,"Deleting macro")
                 val adapter = fragBinding.recyclerView.adapter as MacroCountAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
-
-                macroListViewModel.delete(FirebaseAuth.getInstance().currentUser!!.uid,
+                Timber.i("viewHolder.itemView.tag: ${viewHolder.itemView.tag}")
+                macroListViewModel.delete(FirebaseAuth.getInstance().currentUser!!.uid!!,
                     (viewHolder.itemView.tag as MacroCountModel).uid!!)
+
+                hideLoader(loader)
             }
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
         itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
+
+        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onMacroCountEdit(viewHolder.itemView.tag as MacroCountModel)
+            }
+        }
+        val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
+        itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
 
         return root
     }
@@ -169,6 +181,17 @@ class MacroListFragment : Fragment(), MacroCountListener {
         i("onMacroCountClick called $macroCount")
         val directions = macroCount.uid?.let {
             MacroListFragmentDirections.actionMacroListFragmentToMacroDetailFragment(
+                it)
+        }
+        if (directions != null) {
+            findNavController().navigate(directions)
+        }
+    }
+
+    override fun onMacroCountEdit(macroCount: MacroCountModel) {
+        i("onMacroCountEdit called $macroCount")
+        val directions = macroCount.uid?.let {
+            MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(
                 it)
         }
         if (directions != null) {

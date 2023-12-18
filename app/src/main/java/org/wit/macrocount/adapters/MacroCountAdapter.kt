@@ -9,6 +9,7 @@ import org.wit.macrocount.models.MacroCountModel
 interface MacroCountListener{
     fun onMacroCountClick(macroCount: MacroCountModel)
     fun onMacroDeleteClick(macroCount: MacroCountModel)
+    fun onMacroCountEdit(macroCount: MacroCountModel)
 }
 class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCountModel>,
                                     private val listener: MacroCountListener
@@ -43,6 +44,7 @@ class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCoun
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(macroCount: MacroCountModel, listener: MacroCountListener) {
+            binding.root.tag = macroCount
             binding.macroCounterTitle.text = macroCount.title
             binding.macroCountCalories.text = macroCount.calories + "Kj"
             binding.macroCountProtein.text = "ptn:" + macroCount.protein + "g"
@@ -55,7 +57,7 @@ class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCoun
 
             binding.root.setOnClickListener { listener.onMacroCountClick(macroCount) }
 
-
+            binding.root.setOnClickListener { listener.onMacroCountEdit(macroCount) }
 
         }
 

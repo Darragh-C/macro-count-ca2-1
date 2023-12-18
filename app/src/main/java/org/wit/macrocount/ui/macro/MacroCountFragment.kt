@@ -58,6 +58,7 @@ class MacroCountFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         loggedInViewModel = ViewModelProvider(requireActivity()).get(LoggedInViewModel::class.java)
+        macroViewModel = ViewModelProvider(requireActivity()).get(EditMacroViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -68,8 +69,6 @@ class MacroCountFragment : Fragment() {
         _fragBinding = FragmentMacroCountBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_macro_list)
-
-        macroViewModel = ViewModelProvider(requireActivity()).get(EditMacroViewModel::class.java)
 
         loader = createLoader(requireActivity())
         showLoader(loader,"Loading macro")
@@ -84,6 +83,10 @@ class MacroCountFragment : Fragment() {
             })
         } else {
             macroViewModel.setMacro(MacroCountModel())
+            macroViewModel.observableMacro.observe(viewLifecycleOwner, Observer {
+                render()
+                hideLoader(loader)
+            })
         }
         return root
     }
@@ -113,7 +116,7 @@ class MacroCountFragment : Fragment() {
         fragBinding.calorieSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(calorieSeekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                Timber.i("calorie onProgressChanged")
+                Timber.i("calorie onProgressChanged: $progress")
                 macroViewModel.editCalories(progress)
                 Timber.i("Macro progress: ${macroViewModel.observableMacro.value}")
             }

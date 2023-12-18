@@ -196,6 +196,10 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         Timber.i("delete click")
     }
 
+    override fun onMacroCountEdit(macroCount: MacroCountModel) {
+        Timber.i("edit click")
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
