@@ -22,6 +22,8 @@ import org.wit.macrocount.ui.login.LoginActivity
 import timber.log.Timber
 import timber.log.Timber.Forest.i
 import com.google.firebase.auth.FirebaseUser
+import com.squareup.picasso.Picasso
+import org.wit.macrocount.customTransformation
 
 class Home : AppCompatActivity() {
 
@@ -85,6 +87,16 @@ class Home : AppCompatActivity() {
         var headerView = homeBinding.navView.getHeaderView(0)
         navHeaderBinding = NavHeaderBinding.bind(headerView)
         navHeaderBinding.navHeaderEmail.text = currentUser.email
+
+        if(currentUser.photoUrl != null && currentUser.displayName != null) {
+            navHeaderBinding.navHeaderName.text = currentUser.displayName
+            Picasso.get().load(currentUser.photoUrl)
+                .resize(200, 200)
+                .transform(customTransformation())
+                .centerCrop()
+                .into(navHeaderBinding.navHeaderImage)
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

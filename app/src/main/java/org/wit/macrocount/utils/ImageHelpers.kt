@@ -1,7 +1,10 @@
 package org.wit.macrocount
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.activity.result.ActivityResultLauncher
+import com.makeramen.roundedimageview.RoundedTransformationBuilder
+import com.squareup.picasso.Transformation
 import org.wit.macrocount.R
 
 fun showImagePicker(intentLauncher : ActivityResultLauncher<Intent>) {
@@ -10,3 +13,11 @@ fun showImagePicker(intentLauncher : ActivityResultLauncher<Intent>) {
     chooseFile = Intent.createChooser(chooseFile, R.string.select_macrocount_image.toString())
     intentLauncher.launch(chooseFile)
 }
+
+fun customTransformation() : Transformation =
+    RoundedTransformationBuilder()
+        .borderColor(Color.WHITE)
+        .borderWidthDp(2F)
+        .cornerRadiusDp(35F)
+        .oval(false)
+        .build()
