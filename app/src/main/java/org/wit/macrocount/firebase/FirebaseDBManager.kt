@@ -116,4 +116,25 @@ object FirebaseDBManager: MacroCountStore {
 
         database.updateChildren(childUpdate)
     }
+
+    fun updateImageRef(userid: String,imageUri: String) {
+
+        val userMacros = database.child("user-macrocounts").child(userid)
+        val allMacros = database.child("macrocounts")
+
+        userMacros.addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {}
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach {
+                        //Update Users imageUri
+                        it.ref.child("profilepic").setValue(imageUri)
+                        //Update all donations that match 'it'
+                        val macro = it.getValue(MacroCountModel::class.java)
+                        allMacros.child(macro!!.uid!!)
+                            .child("profilepic").setValue(imageUri)
+                    }
+                }
+            })
+    }
 }
