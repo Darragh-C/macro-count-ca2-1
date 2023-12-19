@@ -5,15 +5,24 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SwitchCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.macrocount.R
 import org.wit.macrocount.adapters.MacroCountAdapter
@@ -33,6 +42,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
     lateinit var loader : AlertDialog
 
     private var _fragBinding: FragmentMacroSearchBinding? = null
+
     private val fragBinding get() = _fragBinding!!
 
     private lateinit var macroSearchViewModel: MacroSearchViewModel
@@ -50,6 +60,8 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         _fragBinding = FragmentMacroSearchBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_macro_search)
+
+        setupMenu()
 
         fragBinding.macroSearchRecyclerView.setLayoutManager(LinearLayoutManager(activity))
 
@@ -102,6 +114,31 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
 
 
         return root
+    }
+
+    private fun setupMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {
+                // Handle for example visibility of menu items
+            }
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_macro_search, menu)
+                val item = menu.findItem(R.id.toggleDonations) as MenuItem
+                item.setActionView(R.layout.togglebutton_layout)
+                val toggleDonations: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                toggleDonations.isChecked = false
+
+                toggleDonations.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) macroSearchViewModel.loadAll()
+                    else macroSearchViewModel.load()
+                }
+            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Validate and handle the selected menu item
+                return NavigationUI.onNavDestinationSelected(menuItem,
+                    requireView().findNavController())
+            }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun render(macroList: ArrayList<MacroCountModel>) {

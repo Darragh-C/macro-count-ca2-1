@@ -12,6 +12,7 @@ import timber.log.Timber
 class MacroSearchViewModel: ViewModel() {
 
     private val macroList = MutableLiveData<List<MacroCountModel>>()
+    var readOnly = MutableLiveData(false)
 
     val observableMacroList: LiveData<List<MacroCountModel>>
         get() = macroList
@@ -22,11 +23,23 @@ class MacroSearchViewModel: ViewModel() {
 
     fun load() {
         try {
+            readOnly.value = false
             FirebaseDBManager.findAll(FirebaseAuth.getInstance().currentUser!!.uid, macroList)
             Timber.i("Retrofit Success : $macroList.value")
         }
         catch (e: Exception) {
             Timber.i("Retrofit error: ${e.message}")
+        }
+    }
+
+    fun loadAll() {
+        try {
+            readOnly.value = true
+            FirebaseDBManager.findAll(macroList)
+            Timber.i("Report LoadAll Success : ${macroList.value.toString()}")
+        }
+        catch (e: Exception) {
+            Timber.i("Report LoadAll Error : $e.message")
         }
     }
 

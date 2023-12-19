@@ -46,4 +46,10 @@
         <item name="android:layout_width">wrap_content</item> <!-- Apply the custom width -->
         <item name="android:layout_height">wrap_content</item>
     </style>
+
+    <style name="toggleStyle">
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlHighlight">@color/black</item>
+    </style>
+
 </resources>
