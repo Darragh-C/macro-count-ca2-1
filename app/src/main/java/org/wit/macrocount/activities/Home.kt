@@ -103,14 +103,14 @@ class Home : AppCompatActivity() {
                 Timber.i("DX NO Existing imageUri")
                 if (currentUser.photoUrl != null) {
                     //if you're a google user
-                    FirebaseImageManager.updateUserImage(
+                    FirebaseImageManager.updateProfileImage(
                         currentUser.uid,
                         currentUser.photoUrl,
                         navHeaderBinding.navHeaderImage,
                         false
                     )
                 } else {
-                    Timber.i("DX Loading Existing Default imageUri")
+                    Timber.i("Loading Existing Default imageUri")
                     FirebaseImageManager.updateDefaultImage(
                         currentUser.uid,
                         R.drawable.ic_menu_user,
@@ -118,8 +118,8 @@ class Home : AppCompatActivity() {
                     )
                 }        } else // load existing image from firebase
             {
-                Timber.i("DX Loading Existing imageUri")
-                FirebaseImageManager.updateUserImage(
+                Timber.i("Loading Existing imageUri")
+                FirebaseImageManager.updateProfileImage(
                     currentUser.uid,
                     FirebaseImageManager.imageUri.value,
                     navHeaderBinding.navHeaderImage, false
@@ -150,9 +150,9 @@ class Home : AppCompatActivity() {
                 when(result.resultCode){
                     RESULT_OK -> {
                         if (result.data != null) {
-                            Timber.i("DX registerPickerCallback() ${readImageUri(result.resultCode, result.data).toString()}")
+                            Timber.i("registerPickerCallback() ${readImageUri(result.resultCode, result.data).toString()}")
                             FirebaseImageManager
-                                .updateUserImage(loggedInViewModel.liveFirebaseUser.value!!.uid,
+                                .updateProfileImage(loggedInViewModel.liveFirebaseUser.value!!.uid,
                                     readImageUri(result.resultCode, result.data),
                                     navHeaderBinding.navHeaderImage,
                                     true)

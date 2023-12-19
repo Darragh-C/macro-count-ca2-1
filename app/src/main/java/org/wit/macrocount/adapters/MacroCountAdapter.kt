@@ -51,13 +51,10 @@ class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCoun
             binding.macroCountCarbs.text = "crb:" + macroCount.carbs + "g"
             binding.macroCountFat.text = "fat:" + macroCount.fat + "g"
 
-            binding.liButtonDel.setOnClickListener {
-                listener.onMacroDeleteClick(macroCount)
+
+            binding.root.setOnClickListener {
+                listener.onMacroCountClick(macroCount)
             }
-
-            binding.root.setOnClickListener { listener.onMacroCountClick(macroCount) }
-
-            binding.root.setOnClickListener { listener.onMacroCountEdit(macroCount) }
 
         }
 

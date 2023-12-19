@@ -30,7 +30,7 @@ class FirebaseAuthManager(application: Application) {
             liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
             loggedOut.postValue(false)
             errorStatus.postValue(false)
-            FirebaseImageManager.checkStorageForExistingProfilePic(
+            FirebaseImageManager.checkStorageForExistingImage(
                 firebaseAuth!!.currentUser!!.uid)
         }
         configureGoogleSignIn()

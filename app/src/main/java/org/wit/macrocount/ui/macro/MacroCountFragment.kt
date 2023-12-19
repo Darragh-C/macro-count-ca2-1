@@ -31,6 +31,8 @@ import androidx.navigation.ui.NavigationUI
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
+import org.wit.macrocount.firebase.FirebaseImageManager
+import org.wit.macrocount.readImageUri
 import org.wit.macrocount.utils.createLoader
 import org.wit.macrocount.utils.hideLoader
 import org.wit.macrocount.utils.showLoader
@@ -161,6 +163,24 @@ class MacroCountFragment : Fragment() {
             showImagePicker(imageIntentLauncher)
         }
 
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    AppCompatActivity.RESULT_OK -> {
+                        if (result.data != null) {
+                            Timber.i("registerPickerCallback() ${readImageUri(result.resultCode, result.data).toString()}")
+                            FirebaseImageManager
+                                .updateImage(macroViewModel.observableMacro.value?.uid!!,
+                                    readImageUri(result.resultCode, result.data),
+                                    fragBinding.macroCountImage,
+                                    true)
+                        }
+                    }
+                    AppCompatActivity.RESULT_CANCELED -> { } else -> { }
+                }
+            }
+
 
         fragBinding.searchFab.setOnClickListener() {
             val directions = MacroCountFragmentDirections.actionMacroCountFragmentToMacroSearchFragment()
@@ -273,34 +293,37 @@ class MacroCountFragment : Fragment() {
         if (macroViewModel.observableMacro.value != null) {
             fragBinding.macrovm = macroViewModel
 
-//            if (macroViewModel.observableMacro.value?.image != "") {
-//                Picasso.get()
-//                    .load(macroViewModel.observableMacro.value?.image)
-//                    .into(fragBinding.macroCountImage)
-            }
-
-
-    }
-
-    private fun registerImagePickerCallback() {
-        imageIntentLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { result ->
-                when(result.resultCode){
-                    AppCompatActivity.RESULT_OK -> {
-                        if (result.data != null) {
-                            Timber.i("Got Result ${result.data!!.data!!}")
-                            macroViewModel.observableMacro.value?.image = result.data!!.data!!.toString()
-                            Timber.i("Got Result macrocount image ${macroViewModel.observableMacro.value?.image}")
-                            Picasso.get()
-                                .load(macroViewModel.observableMacro.value?.image)
-                                .into(fragBinding.macroCountImage)
-                        }
-                    }
-                    AppCompatActivity.RESULT_CANCELED -> { } else -> { }
-                }
+            FirebaseImageManager.checkStorageForExistingImage(macroViewModel.observableMacro.value?.uid!!)
+            if (FirebaseImageManager.imageUri.value != null) {
+                Timber.i("Loading Existing imageUri")
+                Picasso.get()
+                    .load(FirebaseImageManager.imageUri.value)
+                    .resize(600, 600)
+                    .into(fragBinding.macroCountImage)
             }
     }
+
+//    private fun registerImagePickerCallback() {
+//        imageIntentLauncher =
+//            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+//            { result ->
+//                when(result.resultCode){
+//                    AppCompatActivity.RESULT_OK -> {
+//                        if (result.data != null) {
+//                            Timber.i("registerPickerCallback() ${readImageUri(result.resultCode, result.data).toString()}")
+//                            FirebaseImageManager
+//                                .updateImage(macroViewModel.observableMacro.value?.uid!!,
+//                                    readImageUri(result.resultCode, result.data),
+//                                    fragBinding.macroCountImage,
+//                                    true)
+//                        }
+//                    }
+//                    AppCompatActivity.RESULT_CANCELED -> { } else -> { }
+//                }
+//            }
+//    }
+
+
 
     fun initData(value: String): String {
         return if (value.isNotEmpty()) value else "0"

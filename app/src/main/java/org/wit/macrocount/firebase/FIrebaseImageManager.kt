@@ -19,8 +19,8 @@ object FirebaseImageManager {
     var storage = FirebaseStorage.getInstance().reference
     var imageUri = MutableLiveData<Uri>()
 
-    fun checkStorageForExistingProfilePic(userid: String) {
-        val imageRef = storage.child("photos").child("${userid}.jpg")
+    fun checkStorageForExistingImage(filename: String) {
+        val imageRef = storage.child("photos").child("${filename}.jpg")
         val defaultImageRef = storage.child("homer.jpg")
 
         imageRef.metadata.addOnSuccessListener { //File Exists
@@ -33,9 +33,9 @@ object FirebaseImageManager {
         }
     }
 
-    fun uploadImageToFirebase(userid: String, bitmap: Bitmap, updating : Boolean) {
+    fun uploadImageToFirebase(filename: String, bitmap: Bitmap, updating : Boolean) {
         // Get the data from an ImageView as bytes
-        val imageRef = storage.child("photos").child("${userid}.jpg")
+        val imageRef = storage.child("photos").child("${filename}.jpg")
         //val bitmap = (imageView as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
         lateinit var uploadTask: UploadTask
@@ -65,7 +65,7 @@ object FirebaseImageManager {
         }
     }
 
-    fun updateUserImage(userid: String, imageUri : Uri?, imageView: ImageView, updating : Boolean) {
+    fun updateProfileImage(filename: String, imageUri : Uri?, imageView: ImageView, updating : Boolean) {
         Picasso.get().load(imageUri)
             .resize(200, 200)
             .transform(customTransformation())
@@ -75,14 +75,37 @@ object FirebaseImageManager {
                 override fun onBitmapLoaded(bitmap: Bitmap?,
                                             from: Picasso.LoadedFrom?
                 ) {
-                    Timber.i("DX onBitmapLoaded $bitmap")
-                    uploadImageToFirebase(userid, bitmap!!,updating)
+                    Timber.i("onBitmapLoaded $bitmap")
+                    uploadImageToFirebase(filename, bitmap!!,updating)
                     imageView.setImageBitmap(bitmap)
                 }
 
                 override fun onBitmapFailed(e: java.lang.Exception?,
                                             errorDrawable: Drawable?) {
-                    Timber.i("DX onBitmapFailed $e")
+                    Timber.i("onBitmapFailed $e")
+                }
+
+                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+            })
+    }
+
+    fun updateImage(filename: String, imageUri : Uri?, imageView: ImageView, updating : Boolean) {
+        Picasso.get().load(imageUri)
+            .resize(600, 600)
+            .memoryPolicy(MemoryPolicy.NO_CACHE)
+            .centerCrop()
+            .into(object : Target {
+                override fun onBitmapLoaded(bitmap: Bitmap?,
+                                            from: Picasso.LoadedFrom?
+                ) {
+                    Timber.i("onBitmapLoaded $bitmap")
+                    uploadImageToFirebase(filename, bitmap!!,updating)
+                    imageView.setImageBitmap(bitmap)
+                }
+
+                override fun onBitmapFailed(e: java.lang.Exception?,
+                                            errorDrawable: Drawable?) {
+                    Timber.i("onBitmapFailed $e")
                 }
 
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
@@ -99,14 +122,14 @@ object FirebaseImageManager {
                 override fun onBitmapLoaded(bitmap: Bitmap?,
                                             from: Picasso.LoadedFrom?
                 ) {
-                    Timber.i("DX onBitmapLoaded $bitmap")
+                    Timber.i("onBitmapLoaded $bitmap")
                     uploadImageToFirebase(userid, bitmap!!,false)
                     imageView.setImageBitmap(bitmap)
                 }
 
                 override fun onBitmapFailed(e: java.lang.Exception?,
                                             errorDrawable: Drawable?) {
-                    Timber.i("DX onBitmapFailed $e")
+                    Timber.i("onBitmapFailed $e")
                 }
 
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
