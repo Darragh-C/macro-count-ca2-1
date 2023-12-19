@@ -37,15 +37,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
-                <Button
-                    android:id="@+id/li_button_del"
-                    style="@style/CustomButton"
-                    android:text="@string/button_deleteItem"
-                    android:background="@drawable/rounded_button"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="@dimen/list_end_margin"
-                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout

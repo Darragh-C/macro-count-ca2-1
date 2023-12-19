@@ -22,15 +22,15 @@ import org.wit.macrocount.databinding.FragmentMacroSearchBinding
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.UserRepo
+import org.wit.macrocount.utils.createLoader
+import org.wit.macrocount.utils.hideLoader
+import org.wit.macrocount.utils.showLoader
 import timber.log.Timber
 
 class MacroSearchFragment : Fragment(), MacroCountListener {
-    private lateinit var app: MainApp
     private lateinit var macroCountAdapter: MacroCountAdapter
-    private lateinit var userRepo: UserRepo
-    private lateinit var userMacros: ArrayList<MacroCountModel>
     private lateinit var filteredMacros: ArrayList<MacroCountModel>
-    private var currentUserId: Long = 0
+    lateinit var loader : AlertDialog
 
     private var _fragBinding: FragmentMacroSearchBinding? = null
     private val fragBinding get() = _fragBinding!!
@@ -39,10 +39,6 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        app = activity?.application as MainApp
-        userRepo = UserRepo(app.applicationContext)
-        currentUserId = userRepo.userId!!.toLong()
-
         setHasOptionsMenu(true)
     }
 
@@ -58,10 +54,19 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         fragBinding.macroSearchRecyclerView.setLayoutManager(LinearLayoutManager(activity))
 
         macroSearchViewModel = ViewModelProvider(this).get(MacroSearchViewModel::class.java)
+
+        loader = createLoader(requireActivity())
+        showLoader(loader,"Loading macros")
         macroSearchViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
                 macros ->
-            macros?.let { render(macros  as ArrayList<MacroCountModel>) }
+            macros?.let {
+                render(macros as ArrayList<MacroCountModel>)
+                hideLoader(loader)
+            }
         })
+
+
+
 
 //        if (currentUserId != null) {
 //            //userMacros = app.macroCounts.findByUserId(currentUserId)
@@ -76,7 +81,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 fragBinding.macroSearchView.clearFocus()
                 if (query != null) {
-                    val filteredMacros = userMacros.filter { it.title.contains(query, ignoreCase = true) }
+                    val filteredMacros = macroSearchViewModel.observableMacroList.value?.filter { it.title.contains(query, ignoreCase = true) }
                     macroCountAdapter.updateData(filteredMacros as ArrayList<MacroCountModel>)
                 }
                 return false
@@ -84,7 +89,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-                    val filteredMacros = userMacros.filter { it.title.contains(newText, ignoreCase = true) }
+                    val filteredMacros = macroSearchViewModel.observableMacroList.value?.filter { it.title.contains(newText, ignoreCase = true) }
                     macroCountAdapter.updateData(filteredMacros as ArrayList<MacroCountModel>)
                 }
                 return false
@@ -100,7 +105,9 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
     }
 
     private fun render(macroList: ArrayList<MacroCountModel>) {
-        fragBinding.macroSearchRecyclerView.adapter = MacroCountAdapter(macroList,this)
+        macroCountAdapter = MacroCountAdapter(macroList,this)
+        fragBinding.macroSearchRecyclerView.adapter = macroCountAdapter
+
         if (macroList.isEmpty()) {
             fragBinding.macroSearchRecyclerView.visibility = View.GONE
             fragBinding.macrosNotFound.visibility = View.VISIBLE
@@ -139,7 +146,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
     }
 
     private fun applyFilter(property: String, operator: String, filterValue: String): ArrayList<MacroCountModel> {
-        filteredMacros = userMacros
+        filteredMacros = macroSearchViewModel.observableMacroList.value as ArrayList<MacroCountModel>
 
         when (property) {
             "Calories" -> {

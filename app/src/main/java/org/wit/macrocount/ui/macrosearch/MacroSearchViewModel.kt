@@ -3,6 +3,8 @@ package org.wit.macrocount.ui.macrosearch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
+import org.wit.macrocount.firebase.FirebaseDBManager
 //import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
 import timber.log.Timber
@@ -20,7 +22,7 @@ class MacroSearchViewModel: ViewModel() {
 
     fun load() {
         try {
-            //MacroCountManager.findAll(macroList)
+            FirebaseDBManager.findAll(FirebaseAuth.getInstance().currentUser!!.uid, macroList)
             Timber.i("Retrofit Success : $macroList.value")
         }
         catch (e: Exception) {
