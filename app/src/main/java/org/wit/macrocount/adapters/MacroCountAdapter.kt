@@ -9,8 +9,9 @@ import org.wit.macrocount.models.MacroCountModel
 interface MacroCountListener{
     fun onMacroCountClick(macroCount: MacroCountModel)
     fun onMacroDeleteClick(macroCount: MacroCountModel)
+    fun onMacroCountEdit(macroCount: MacroCountModel)
 }
-class MacroCountAdapter constructor(private var macroCounts: List<MacroCountModel>,
+class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCountModel>,
                                     private val listener: MacroCountListener
 ):
 
@@ -29,28 +30,31 @@ class MacroCountAdapter constructor(private var macroCounts: List<MacroCountMode
 
     override fun getItemCount(): Int = macroCounts.size
 
-    fun updateData(newData: List<MacroCountModel>) {
+    fun updateData(newData: ArrayList<MacroCountModel>) {
         macroCounts = newData
         notifyDataSetChanged()
+    }
+
+    fun removeAt(position: Int) {
+        macroCounts.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     class MainHolder(private val binding : CardMacrocountBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(macroCount: MacroCountModel, listener: MacroCountListener) {
+            binding.root.tag = macroCount
             binding.macroCounterTitle.text = macroCount.title
             binding.macroCountCalories.text = macroCount.calories + "Kj"
             binding.macroCountProtein.text = "ptn:" + macroCount.protein + "g"
             binding.macroCountCarbs.text = "crb:" + macroCount.carbs + "g"
             binding.macroCountFat.text = "fat:" + macroCount.fat + "g"
 
-            binding.liButtonDel.setOnClickListener {
-                listener.onMacroDeleteClick(macroCount)
+
+            binding.root.setOnClickListener {
+                listener.onMacroCountClick(macroCount)
             }
-
-            binding.root.setOnClickListener { listener.onMacroCountClick(macroCount) }
-
-
 
         }
 

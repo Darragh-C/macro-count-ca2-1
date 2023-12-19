@@ -5,15 +5,24 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SwitchCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.macrocount.R
 import org.wit.macrocount.adapters.MacroCountAdapter
@@ -22,27 +31,24 @@ import org.wit.macrocount.databinding.FragmentMacroSearchBinding
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.UserRepo
+import org.wit.macrocount.utils.createLoader
+import org.wit.macrocount.utils.hideLoader
+import org.wit.macrocount.utils.showLoader
 import timber.log.Timber
 
 class MacroSearchFragment : Fragment(), MacroCountListener {
-    private lateinit var app: MainApp
     private lateinit var macroCountAdapter: MacroCountAdapter
-    private lateinit var userRepo: UserRepo
-    private lateinit var userMacros: List<MacroCountModel>
-    private lateinit var filteredMacros: List<MacroCountModel>
-    private var currentUserId: Long = 0
+    private lateinit var filteredMacros: ArrayList<MacroCountModel>
+    lateinit var loader : AlertDialog
 
     private var _fragBinding: FragmentMacroSearchBinding? = null
+
     private val fragBinding get() = _fragBinding!!
 
     private lateinit var macroSearchViewModel: MacroSearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        app = activity?.application as MainApp
-        userRepo = UserRepo(app.applicationContext)
-        currentUserId = userRepo.userId!!.toLong()
-
         setHasOptionsMenu(true)
     }
 
@@ -55,13 +61,24 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         val root = fragBinding.root
         activity?.title = getString(R.string.action_macro_search)
 
+        setupMenu()
+
         fragBinding.macroSearchRecyclerView.setLayoutManager(LinearLayoutManager(activity))
 
         macroSearchViewModel = ViewModelProvider(this).get(MacroSearchViewModel::class.java)
+
+        loader = createLoader(requireActivity())
+        showLoader(loader,"Loading macros")
         macroSearchViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
                 macros ->
-            macros?.let { render(macros) }
+            macros?.let {
+                render(macros as ArrayList<MacroCountModel>)
+                hideLoader(loader)
+            }
         })
+
+
+
 
 //        if (currentUserId != null) {
 //            //userMacros = app.macroCounts.findByUserId(currentUserId)
@@ -76,16 +93,16 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 fragBinding.macroSearchView.clearFocus()
                 if (query != null) {
-                    val filteredMacros = userMacros.filter { it.title.contains(query, ignoreCase = true) }
-                    macroCountAdapter.updateData(filteredMacros)
+                    val filteredMacros = macroSearchViewModel.observableMacroList.value?.filter { it.title.contains(query, ignoreCase = true) }
+                    macroCountAdapter.updateData(filteredMacros as ArrayList<MacroCountModel>)
                 }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-                    val filteredMacros = userMacros.filter { it.title.contains(newText, ignoreCase = true) }
-                    macroCountAdapter.updateData(filteredMacros)
+                    val filteredMacros = macroSearchViewModel.observableMacroList.value?.filter { it.title.contains(newText, ignoreCase = true) }
+                    macroCountAdapter.updateData(filteredMacros as ArrayList<MacroCountModel>)
                 }
                 return false
             }
@@ -99,8 +116,35 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         return root
     }
 
-    private fun render(macroList: List<MacroCountModel>) {
-        fragBinding.macroSearchRecyclerView.adapter = MacroCountAdapter(macroList,this)
+    private fun setupMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {
+                // Handle for example visibility of menu items
+            }
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_macro_search, menu)
+                val item = menu.findItem(R.id.toggleDonations) as MenuItem
+                item.setActionView(R.layout.togglebutton_layout)
+                val toggleDonations: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                toggleDonations.isChecked = false
+
+                toggleDonations.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) macroSearchViewModel.loadAll()
+                    else macroSearchViewModel.load()
+                }
+            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Validate and handle the selected menu item
+                return NavigationUI.onNavDestinationSelected(menuItem,
+                    requireView().findNavController())
+            }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun render(macroList: ArrayList<MacroCountModel>) {
+        macroCountAdapter = MacroCountAdapter(macroList,this)
+        fragBinding.macroSearchRecyclerView.adapter = macroCountAdapter
+
         if (macroList.isEmpty()) {
             fragBinding.macroSearchRecyclerView.visibility = View.GONE
             fragBinding.macrosNotFound.visibility = View.VISIBLE
@@ -138,39 +182,39 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         }
     }
 
-    private fun applyFilter(property: String, operator: String, filterValue: String): List<MacroCountModel> {
-        filteredMacros = userMacros
+    private fun applyFilter(property: String, operator: String, filterValue: String): ArrayList<MacroCountModel> {
+        filteredMacros = macroSearchViewModel.observableMacroList.value as ArrayList<MacroCountModel>
 
         when (property) {
             "Calories" -> {
                 filteredMacros = when (operator) {
-                    "Equals" -> filteredMacros.filter { it.calories.toInt() == filterValue.toInt() }
-                    "Less than" -> filteredMacros.filter { it.calories.toInt() <= filterValue.toInt() }
-                    "More than" -> filteredMacros.filter { it.calories.toInt() >= filterValue.toInt() }
+                    "Equals" -> filteredMacros.filter { it.calories.toInt() == filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "Less than" -> filteredMacros.filter { it.calories.toInt() <= filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "More than" -> filteredMacros.filter { it.calories.toInt() >= filterValue.toInt() } as ArrayList<MacroCountModel>
                     else -> filteredMacros
                 }
             }
             "Protein" -> {
                 filteredMacros = when (operator) {
-                    "Equals" -> filteredMacros.filter { it.protein.toInt() == filterValue.toInt() }
-                    "Less than" -> filteredMacros.filter { it.protein.toInt() <= filterValue.toInt() }
-                    "More than" -> filteredMacros.filter { it.protein.toInt() >= filterValue.toInt() }
+                    "Equals" -> filteredMacros.filter { it.protein.toInt() == filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "Less than" -> filteredMacros.filter { it.protein.toInt() <= filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "More than" -> filteredMacros.filter { it.protein.toInt() >= filterValue.toInt() } as ArrayList<MacroCountModel>
                     else -> filteredMacros
                 }
             }
             "Carbohydrates" -> {
                 filteredMacros = when (operator) {
-                    "Equals" -> filteredMacros.filter { it.carbs.toInt() == filterValue.toInt() }
-                    "Less than" -> filteredMacros.filter { it.carbs.toInt() <= filterValue.toInt() }
-                    "More than" -> filteredMacros.filter { it.carbs.toInt() >= filterValue.toInt() }
+                    "Equals" -> filteredMacros.filter { it.carbs.toInt() == filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "Less than" -> filteredMacros.filter { it.carbs.toInt() <= filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "More than" -> filteredMacros.filter { it.carbs.toInt() >= filterValue.toInt() } as ArrayList<MacroCountModel>
                     else -> filteredMacros
                 }
             }
             "Fat" -> {
                 filteredMacros = when (operator) {
-                    "Equals" -> filteredMacros.filter { it.fat.toInt() == filterValue.toInt() }
-                    "Less than" -> filteredMacros.filter { it.fat.toInt() <= filterValue.toInt() }
-                    "More than" -> filteredMacros.filter { it.fat.toInt() >= filterValue.toInt() }
+                    "Equals" -> filteredMacros.filter { it.fat.toInt() == filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "Less than" -> filteredMacros.filter { it.fat.toInt() <= filterValue.toInt() } as ArrayList<MacroCountModel>
+                    "More than" -> filteredMacros.filter { it.fat.toInt() >= filterValue.toInt() } as ArrayList<MacroCountModel>
                     else -> filteredMacros
                 }
             }
@@ -194,6 +238,10 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
 
     override fun onMacroDeleteClick(macroCount: MacroCountModel) {
         Timber.i("delete click")
+    }
+
+    override fun onMacroCountEdit(macroCount: MacroCountModel) {
+        Timber.i("edit click")
     }
 
     companion object {

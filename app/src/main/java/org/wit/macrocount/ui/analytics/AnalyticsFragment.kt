@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -15,15 +14,11 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.FragmentAnalyticsBinding
-import org.wit.macrocount.helpers.calcBmr
-import org.wit.macrocount.helpers.calcProtein
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
 import timber.log.Timber
-import java.time.LocalDate
-import kotlin.math.roundToInt
 
 
 class AnalyticsFragment : Fragment() {

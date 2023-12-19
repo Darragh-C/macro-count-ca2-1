@@ -17,21 +17,24 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import org.wit.macrocount.R
 import org.wit.macrocount.adapters.MacroCountAdapter
 import org.wit.macrocount.adapters.MacroCountListener
 import org.wit.macrocount.databinding.FragmentMacroListBinding
-import org.wit.macrocount.helpers.createLoader
-import org.wit.macrocount.helpers.hideLoader
-import org.wit.macrocount.helpers.showLoader
+import org.wit.macrocount.utils.createLoader
+import org.wit.macrocount.utils.hideLoader
+import org.wit.macrocount.utils.showLoader
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.UserRepo
+import org.wit.macrocount.utils.SwipeToDeleteCallback
+import org.wit.macrocount.utils.SwipeToEditCallback
 import timber.log.Timber
 import timber.log.Timber.Forest.i
-import java.time.LocalDate
 
 class MacroListFragment : Fragment(), MacroCountListener {
 
@@ -76,15 +79,42 @@ class MacroListFragment : Fragment(), MacroCountListener {
         macroListViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
                 macros ->
             macros?.let {
-                render(macros)
+                render(macros as ArrayList<MacroCountModel>)
                 hideLoader(loader)
+                checkSwipeRefresh()
             }
         })
+
+        setSwipeRefresh()
 
         fragBinding.listFab.setOnClickListener {
             val directions = MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment("")
             findNavController().navigate(directions)
         }
+
+
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                showLoader(loader,"Deleting macro")
+                val adapter = fragBinding.recyclerView.adapter as MacroCountAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+                Timber.i("viewHolder.itemView.tag: ${viewHolder.itemView.tag}")
+                macroListViewModel.delete(FirebaseAuth.getInstance().currentUser!!.uid!!,
+                    (viewHolder.itemView.tag as MacroCountModel).uid!!)
+
+                hideLoader(loader)
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
+
+        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onMacroCountEdit(viewHolder.itemView.tag as MacroCountModel)
+            }
+        }
+        val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
+        itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
 
         return root
     }
@@ -105,7 +135,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
             }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun render(macroList: List<MacroCountModel>) {
+    private fun render(macroList: ArrayList<MacroCountModel>) {
         fragBinding.recyclerView.adapter = MacroCountAdapter(macroList,this)
         if (macroList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
@@ -158,6 +188,17 @@ class MacroListFragment : Fragment(), MacroCountListener {
         }
     }
 
+    override fun onMacroCountEdit(macroCount: MacroCountModel) {
+        i("onMacroCountEdit called $macroCount")
+        val directions = macroCount.uid?.let {
+            MacroListFragmentDirections.actionMacroListFragmentToMacroCountFragment(
+                it)
+        }
+        if (directions != null) {
+            findNavController().navigate(directions)
+        }
+    }
+
     override fun onMacroDeleteClick(macroCount: MacroCountModel) {
 
         if (macroCount.uid != null) {
@@ -167,6 +208,18 @@ class MacroListFragment : Fragment(), MacroCountListener {
             )
             macroListViewModel.load()
         }
+    }
+    fun setSwipeRefresh() {
+        fragBinding.swipeRefresh.setOnRefreshListener {
+            fragBinding.swipeRefresh.isRefreshing = true
+            showLoader(loader,"Loading MacroCounts...")
+            macroListViewModel.load()
 
+        }
+    }
+
+    fun checkSwipeRefresh() {
+        if (fragBinding.swipeRefresh.isRefreshing)
+            fragBinding.swipeRefresh.isRefreshing = false
     }
 }

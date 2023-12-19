@@ -14,8 +14,27 @@ import timber.log.Timber
 object FirebaseMacroManager: MacroCountStore {
 
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
+
     override fun findAll(macroList: MutableLiveData<List<MacroCountModel>>) {
-        TODO("Not yet implemented")
+        database.child("macrocounts")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase Donation error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<MacroCountModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val macro = it.getValue(MacroCountModel::class.java)
+                        localList.add(macro!!)
+                    }
+                    database.child("macrocounts")
+                        .removeEventListener(this)
+
+                    macroList.value = localList
+                }
+            })
     }
 
     override fun findAll(userid: String, macroList: MutableLiveData<List<MacroCountModel>>) {
@@ -116,4 +135,5 @@ object FirebaseMacroManager: MacroCountStore {
 
         database.updateChildren(childUpdate)
     }
+
 }

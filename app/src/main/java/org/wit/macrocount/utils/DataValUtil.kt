@@ -1,4 +1,4 @@
-package org.wit.macrocount.helpers
+package org.wit.macrocount.utils
 object DataValUtil {
 
     fun validNum(string: String): Boolean {

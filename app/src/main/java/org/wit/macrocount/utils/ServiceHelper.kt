@@ -1,4 +1,4 @@
-package org.wit.macrocount.helpers
+package org.wit.macrocount.utils
 
 import android.app.AlertDialog
 import android.widget.Toast
