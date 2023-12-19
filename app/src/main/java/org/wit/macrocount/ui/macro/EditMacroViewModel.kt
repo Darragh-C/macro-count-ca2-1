@@ -1,10 +1,14 @@
 package org.wit.macrocount.ui.macro
 
+import android.graphics.Bitmap
+import android.net.Uri
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import org.wit.macrocount.firebase.FirebaseDBManager
+import org.wit.macrocount.firebase.FirebaseImageManager
 import org.wit.macrocount.models.DayManager
 //import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
@@ -24,6 +28,7 @@ class EditMacroViewModel : ViewModel() {
 
     val seekbarMin = 0
     val seekbarMax = 500
+    lateinit var bitmap: Bitmap
 
 
     val observableGetStatus: LiveData<Boolean>
@@ -83,6 +88,8 @@ class EditMacroViewModel : ViewModel() {
         Timber.i("adding macro at edit macro vm, macro: ${macro}, user: ${firebaseUser.value.toString()}")
         addStatus.value = try {
             FirebaseDBManager.create(firebaseUser, macro)
+            val createdMacro = FirebaseDBManager.findById(firebaseUser.value!!.uid, vmMacro.value?.uid!!, vmMacro)
+
             true
         } catch (e: IllegalArgumentException) {
             false
@@ -97,6 +104,15 @@ class EditMacroViewModel : ViewModel() {
         catch (e: Exception) {
             Timber.i("Detail update() Error : $e.message")
         }
+    }
+
+    fun uploadImage(filename: String, bitmap: Bitmap, updating : Boolean) {
+        FirebaseImageManager
+            .uploadMacroImageToFirebase(
+                observableMacro.value?.uid!!,
+                bitmap,
+                true
+            )
     }
 
     fun editTitle(string: String) {

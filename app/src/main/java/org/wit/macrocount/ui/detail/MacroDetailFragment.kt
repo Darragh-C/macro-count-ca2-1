@@ -10,6 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.FragmentMacroDetailBinding
+import org.wit.macrocount.firebase.FirebaseImageManager
 import org.wit.macrocount.utils.createLoader
 import org.wit.macrocount.utils.hideLoader
 import org.wit.macrocount.utils.showLoader
@@ -96,17 +98,20 @@ class MacroDetailFragment : Fragment() {
 
         Timber.i(" onViewCreated macro ${detailViewModel.observableMacro.value}")
 
-        if (detailViewModel.observableMacro.value?.image != "") {
-            Timber.i("Loading image: ${detailViewModel.observableMacro.value?.image}")
-            Picasso.get()
-                .load(detailViewModel.observableMacro.value?.image)
-                .into(fragBinding.macroCountImage)
-        }
+
     }
 
     private fun render() {
         if (detailViewModel.observableMacro.value != null) {
             fragBinding.macrovm = detailViewModel
+
+            if (detailViewModel.observableMacro.value?.image != "") {
+                Timber.i("Loading Existing imageUri: ${detailViewModel.observableMacro.value?.image}")
+                Picasso.get()
+                    .load(detailViewModel.observableMacro.value?.image!!.toUri())
+                    .resize(600, 600)
+                    .into(fragBinding.macroCountImage)
+            }
         }
     }
 

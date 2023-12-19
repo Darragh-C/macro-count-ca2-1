@@ -18,6 +18,7 @@ object FirebaseImageManager {
 
     var storage = FirebaseStorage.getInstance().reference
     var imageUri = MutableLiveData<Uri>()
+    var macroImageUri = MutableLiveData<Uri>()
 
     fun checkStorageForExistingImage(filename: String) {
         val imageRef = storage.child("photos").child("${filename}.jpg")
@@ -30,6 +31,19 @@ object FirebaseImageManager {
             //File Doesn't Exist
         }.addOnFailureListener {
             imageUri.value = Uri.EMPTY
+        }
+    }
+
+    fun checkStorageForExistingMacroImage(filename: String, callback: (Uri) -> Unit) {
+        val imageRef = storage.child("photos").child("${filename}.jpg")
+        imageRef.metadata.addOnSuccessListener { //File Exists
+            imageRef.downloadUrl.addOnCompleteListener { task ->
+                callback(task.result!!)
+            }
+            //File Doesn't Exist
+        }.addOnFailureListener {
+            Timber.i("addOnFailureListener: ${macroImageUri.value}")
+            macroImageUri.value = Uri.EMPTY
         }
     }
 
@@ -59,6 +73,38 @@ object FirebaseImageManager {
             uploadTask.addOnSuccessListener { ut ->
                 ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
                     imageUri.value = task.result!!
+                    // FirebaseDBManager.updateImageRef(userid,imageUri.value.toString())
+                }
+            }
+        }
+    }
+
+    fun uploadMacroImageToFirebase(filename: String, bitmap: Bitmap, updating : Boolean) {
+        // Get the data from an ImageView as bytes
+        val imageRef = storage.child("photos").child("${filename}.jpg")
+        //val bitmap = (imageView as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        lateinit var uploadTask: UploadTask
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        imageRef.metadata.addOnSuccessListener { //File Exists
+            if(updating) // Update existing Image
+            {
+                uploadTask = imageRef.putBytes(data)
+                uploadTask.addOnSuccessListener { ut ->
+                    ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
+                        macroImageUri.value = task.result!!
+                        //FirebaseDBManager.updateImageRef(userid,imageUri.value.toString())
+                    }
+                }
+            }
+        }.addOnFailureListener { //File Doesn't Exist
+            uploadTask = imageRef.putBytes(data)
+            uploadTask.addOnSuccessListener { ut ->
+                ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
+                    macroImageUri.value = task.result!!
                     // FirebaseDBManager.updateImageRef(userid,imageUri.value.toString())
                 }
             }
@@ -101,6 +147,52 @@ object FirebaseImageManager {
                     Timber.i("onBitmapLoaded $bitmap")
                     uploadImageToFirebase(filename, bitmap!!,updating)
                     imageView.setImageBitmap(bitmap)
+                }
+
+                override fun onBitmapFailed(e: java.lang.Exception?,
+                                            errorDrawable: Drawable?) {
+                    Timber.i("onBitmapFailed $e")
+                }
+
+                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+            })
+    }
+
+    fun updateMacroImage(filename: String, imageUri : Uri?, imageView: ImageView, updating : Boolean) {
+        Picasso.get().load(imageUri)
+            .resize(600, 600)
+            .memoryPolicy(MemoryPolicy.NO_CACHE)
+            .centerCrop()
+            .into(object : Target {
+                override fun onBitmapLoaded(bitmap: Bitmap?,
+                                            from: Picasso.LoadedFrom?
+                ) {
+                    Timber.i("onBitmapLoaded $bitmap")
+                    uploadMacroImageToFirebase(filename, bitmap!!,updating)
+                    imageView.setImageBitmap(bitmap)
+                }
+
+                override fun onBitmapFailed(e: java.lang.Exception?,
+                                            errorDrawable: Drawable?) {
+                    Timber.i("onBitmapFailed $e")
+                }
+
+                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+            })
+    }
+
+    fun uploadMacroImage(filename: String, imageUri : Uri?, updating : Boolean) {
+        Picasso.get().load(imageUri)
+            .resize(600, 600)
+            .memoryPolicy(MemoryPolicy.NO_CACHE)
+            .centerCrop()
+            .into(object : Target {
+                override fun onBitmapLoaded(bitmap: Bitmap?,
+                                            from: Picasso.LoadedFrom?
+                ) {
+                    Timber.i("onBitmapLoaded $bitmap")
+                    uploadImageToFirebase(filename, bitmap!!,updating)
+
                 }
 
                 override fun onBitmapFailed(e: java.lang.Exception?,
