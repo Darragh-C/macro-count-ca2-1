@@ -86,12 +86,29 @@ object FirebaseDayManager: DayStore {
             create(firebaseUser, newDayModel)
         }
     }
+    override fun findByUserDate(userid: String, date: LocalDate): DayModel {
+        var day = DayModel()
+        var days = MutableLiveData<List<DayModel>>()
+        findByUserId(userid, days)
 
+        val dayArray = days.value?.filter { d -> d.date == date.toString() }
+        if (dayArray != null) {
+            day = dayArray[0]
+        }
+        return day
+    }
 
-    //    override fun findByUserDate(id: Long, date: LocalDate): DayModel? {
-//        //TODO
-//        return DayModel()
-//    }
+    //            val macroids = day.userMacroIds
+//            var macros = ArrayList<MutableLiveData<MacroCountModel>>()
+//            var count = 0
+//            macroids.forEach { m ->
+//                val macro = MutableLiveData<MacroCountModel>()
+//                FirebaseMacroManager.findById(userid, m, macro)
+//                macros.add(macro)
+//                Timber.i("Macro : $m")
+//            }
+//            return macros
+
     override fun update(userid: String, dayid: String, day: DayModel) {
         Timber.i("Updating day : $dayid")
         val dayValues = day.toMap()
@@ -100,8 +117,16 @@ object FirebaseDayManager: DayStore {
 
         database.updateChildren(childUpdate)
     }
-    override fun removeMacro(userId: Long, date: String, macroId: String) {
-        //TODO
+    override fun removeMacro(userid: String, date: String, macroId: String) {
+        Timber.i("Removing macro $macroId from day $date for user $userid")
+        //find day
+        val day = findByUserDate(userid, LocalDate.parse(date))
+        //remove macro from day
+        var macros = day.userMacroIds
+        var updatedMacros = macros.filter { m -> m != macroId }
+        day.userMacroIds = updatedMacros
+        //update day
+        update(userid, day.uid!!, day)
     }
 
     private fun getCurrentUserId(): String? {

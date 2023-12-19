@@ -10,7 +10,7 @@ interface DayStore {
     fun findByUserId(userid: String, dayList: MutableLiveData<List<DayModel>>)
     fun create(firebaseUser: MutableLiveData<FirebaseUser>, day: DayModel)
     fun addMacroId(macroId: String, firebaseUser: MutableLiveData<FirebaseUser>, date: LocalDate)
-//    fun findByUserDate(id: Long, date: LocalDate): DayModel?
+    fun findByUserDate(id: String, date: LocalDate): DayModel
     fun update(userid: String, dayid: String, day: DayModel)
-    fun removeMacro(userId: Long, date: String, macroId: String)
+    fun removeMacro(userid: String, date: String, macroId: String)
 }
