@@ -9,7 +9,6 @@ import kotlinx.parcelize.Parcelize
 data class DayModel(
     var uid: String? = "",
     var date: String = "",
-    var userId: String = "",
     var userMacroIds: List<String> = emptyList<String>()) : Parcelable
 {
     @Exclude
@@ -17,7 +16,6 @@ data class DayModel(
         return mapOf(
             "uid" to uid,
             "date" to date,
-            "userId" to userId,
             "userMacroIds" to userMacroIds,
         )
     }

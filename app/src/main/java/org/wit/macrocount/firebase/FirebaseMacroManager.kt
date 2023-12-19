@@ -10,6 +10,7 @@ import com.google.firebase.database.ValueEventListener
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.MacroCountStore
 import timber.log.Timber
+import java.time.LocalDate
 
 object FirebaseMacroManager: MacroCountStore {
 
@@ -92,6 +93,8 @@ object FirebaseMacroManager: MacroCountStore {
         childAdd["/user-macrocounts/$uid/$key"] = macroValues
 
         database.updateChildren(childAdd)
+
+        FirebaseDayManager.addMacroId(key, firebaseUser, LocalDate.now())
     }
 
     override fun delete(userid: String, macroid: String) {

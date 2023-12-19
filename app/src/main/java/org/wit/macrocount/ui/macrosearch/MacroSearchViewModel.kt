@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
-import org.wit.macrocount.firebase.FirebaseDBManager
+import org.wit.macrocount.firebase.FirebaseMacroManager
 //import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
 import timber.log.Timber
@@ -24,7 +24,7 @@ class MacroSearchViewModel: ViewModel() {
     fun load() {
         try {
             readOnly.value = false
-            FirebaseDBManager.findAll(FirebaseAuth.getInstance().currentUser!!.uid, macroList)
+            FirebaseMacroManager.findAll(FirebaseAuth.getInstance().currentUser!!.uid, macroList)
             Timber.i("Retrofit Success : $macroList.value")
         }
         catch (e: Exception) {
@@ -35,7 +35,7 @@ class MacroSearchViewModel: ViewModel() {
     fun loadAll() {
         try {
             readOnly.value = true
-            FirebaseDBManager.findAll(macroList)
+            FirebaseMacroManager.findAll(macroList)
             Timber.i("Report LoadAll Success : ${macroList.value.toString()}")
         }
         catch (e: Exception) {
