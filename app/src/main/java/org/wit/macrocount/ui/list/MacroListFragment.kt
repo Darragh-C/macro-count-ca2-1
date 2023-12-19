@@ -38,25 +38,14 @@ import timber.log.Timber.Forest.i
 
 class MacroListFragment : Fragment(), MacroCountListener {
 
-    private lateinit var app: MainApp
-    private lateinit var userRepo: UserRepo
-    //private var usersDailyMacroObjList = mutableListOf<MacroCountModel>()
-    private var currentUserId: Long = 0
     private lateinit var macroCountAdapter: MacroCountAdapter
     lateinit var loader : AlertDialog
-    //private val navController = findNavController()
-
-    //private lateinit var adapter: MacroCountAdapter
     private var _fragBinding: FragmentMacroListBinding? = null
     private val fragBinding get() = _fragBinding!!
-
     private lateinit var macroListViewModel: MacroListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        app = activity?.application as MainApp
-        userRepo = UserRepo(app.applicationContext)
-        currentUserId = userRepo.userId!!.toLong()
         setHasOptionsMenu(true)
     }
 

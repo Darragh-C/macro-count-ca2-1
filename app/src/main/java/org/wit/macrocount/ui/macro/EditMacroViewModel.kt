@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
+import org.wit.macrocount.firebase.FirebaseDayManager
 import org.wit.macrocount.firebase.FirebaseMacroManager
 import org.wit.macrocount.firebase.FirebaseImageManager
 //import org.wit.macrocount.models.FirebaseDayManager
@@ -75,8 +76,8 @@ class EditMacroViewModel : ViewModel() {
         vmMacro.value = vmMacro.value
     }
 
-    fun addToDay(userId: Long) {
-//        vmMacro.value?.let { DayManager.addMacroId(it.uid, it.userId, LocalDate.now() ) }
+    fun addToDay(firebaseUser: MutableLiveData<FirebaseUser>) {
+        FirebaseDayManager.addMacroId(vmMacro.value?.uid!!, firebaseUser, LocalDate.now())
         Timber.i("addtoDay")
     }
 

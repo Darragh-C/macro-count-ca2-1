@@ -128,9 +128,4 @@ object FirebaseDayManager: DayStore {
         //update day
         update(userid, day.uid!!, day)
     }
-
-    private fun getCurrentUserId(): String? {
-        val currentUser: FirebaseUser? = firebaseAuth.currentUser
-        return currentUser?.uid
-    }
 }

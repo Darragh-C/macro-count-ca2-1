@@ -319,7 +319,7 @@ class MacroCountFragment : Fragment() {
                 } else if (copyMacro) {
                     Timber.i("copiedMacro: ${macroViewModel.observableCopy.value}")
                     if (macroViewModel.observableCopy.equals(macroViewModel.observableMacro.value)) {
-                        macroViewModel.addToDay(currentUserId)
+                        macroViewModel.addToDay(loggedInViewModel.liveFirebaseUser)
                         Timber.i("copied macroCount added to today: ${macroViewModel.observableMacro.value}")
                     } else {
                         macroViewModel.addMacro(
