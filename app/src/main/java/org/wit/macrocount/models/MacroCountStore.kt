@@ -14,5 +14,6 @@ interface MacroCountStore {
     fun findById(userid: String, macroid: String, macroCount: MutableLiveData<MacroCountModel>)
     fun findByTitle(title: String): MacroCountModel
     fun isUniqueTitle(title: String): Boolean
+    fun asyncFindById(userid: String, macroid: String, macro: MutableLiveData<MacroCountModel>, callback: (Boolean) -> Unit)
 //    fun findByIds(ids: List<String>): List<MacroCountModel?>
 }

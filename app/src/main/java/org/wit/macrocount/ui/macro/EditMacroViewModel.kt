@@ -77,8 +77,8 @@ class EditMacroViewModel : ViewModel() {
     }
 
     fun addToDay(firebaseUser: MutableLiveData<FirebaseUser>) {
-        FirebaseDayManager.addMacroId(vmMacro.value?.uid!!, firebaseUser, LocalDate.now())
-        Timber.i("addtoDay")
+        Timber.i("adding to day")
+        FirebaseDayManager.addMacroId(vmMacro.value?.uid!!, firebaseUser.value!!, LocalDate.now())
     }
 
     fun setCopy(macro: MacroCountModel) {

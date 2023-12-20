@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.wit.macrocount.models.DayModel
 import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.models.MacroCountStore
 import timber.log.Timber
@@ -75,6 +76,21 @@ object FirebaseMacroManager: MacroCountStore {
             }
     }
 
+    override fun asyncFindById(userid: String, macroid: String, macro: MutableLiveData<MacroCountModel>, callback: (Boolean) -> Unit) {
+
+        database.child("user-macrocounts").child(userid)
+            .child(macroid).get().addOnSuccessListener {
+                macro.value = it.getValue(MacroCountModel::class.java)
+                Timber.i("firebase Got macro it.value ${it.value}")
+                Timber.i("firebase Got macro macro.value ${macro.value}")
+                Timber.i("firebase Got macro ${macro}")
+                callback(true)
+            }.addOnFailureListener{
+                Timber.e("firebase Error getting data $it")
+                callback(false)
+            }
+    }
+
     override fun create(firebaseUser: MutableLiveData<FirebaseUser>, macroCount: MacroCountModel) {
         Timber.i("Creating macro FirebaseMacroManager : $database")
         Timber.i("Firebase DB Reference : $database")
@@ -94,7 +110,7 @@ object FirebaseMacroManager: MacroCountStore {
 
         database.updateChildren(childAdd)
 
-        FirebaseDayManager.addMacroId(key, firebaseUser, LocalDate.now())
+        FirebaseDayManager.addMacroId(key, firebaseUser.value!!, LocalDate.now())
     }
 
     override fun delete(userid: String, macroid: String) {

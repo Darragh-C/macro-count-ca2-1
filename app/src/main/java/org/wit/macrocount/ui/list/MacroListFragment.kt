@@ -158,7 +158,12 @@ class MacroListFragment : Fragment(), MacroCountListener {
 
     override fun onResume() {
         super.onResume()
-        macroListViewModel.load()
+        if (macroListViewModel.snapshotCheck) {
+            macroListViewModel.loadDayMacros(FirebaseAuth.getInstance().currentUser!!.uid)
+        } else {
+            Timber.i("snapshot waiting at onResume")
+        }
+
     }
 
     override fun onDestroyView() {
@@ -195,15 +200,23 @@ class MacroListFragment : Fragment(), MacroCountListener {
             macroListViewModel.delete(FirebaseAuth.getInstance().currentUser!!.uid,
                 macroCount.uid!!
             )
-            macroListViewModel.load()
+            if (macroListViewModel.snapshotCheck) {
+                macroListViewModel.loadDayMacros(FirebaseAuth.getInstance().currentUser!!.uid)
+            } else {
+                Timber.i("snapshot waiting at onDelete")
+            }
+
         }
     }
     fun setSwipeRefresh() {
         fragBinding.swipeRefresh.setOnRefreshListener {
             fragBinding.swipeRefresh.isRefreshing = true
             showLoader(loader,"Loading MacroCounts...")
-            macroListViewModel.load()
-
+            if (macroListViewModel.snapshotCheck) {
+                macroListViewModel.loadDayMacros(FirebaseAuth.getInstance().currentUser!!.uid)
+            } else {
+                Timber.i("snapshot waiting at swipe refresh")
+            }
         }
     }
 

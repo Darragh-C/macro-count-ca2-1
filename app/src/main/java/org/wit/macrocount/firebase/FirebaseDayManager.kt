@@ -1,17 +1,16 @@
 package org.wit.macrocount.firebase
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
 import com.google.firebase.database.ValueEventListener
 import org.wit.macrocount.models.DayModel
 import org.wit.macrocount.models.DayStore
-import org.wit.macrocount.models.MacroCountModel
 import org.wit.macrocount.ui.login.LoggedInViewModel
 import timber.log.Timber
 import java.time.LocalDate
@@ -26,7 +25,7 @@ object FirebaseDayManager: DayStore {
     override fun findAll(macroList: MutableLiveData<List<DayModel>>) {
         //TODO
     }
-    override fun findByUserId(userid: String, dayList: MutableLiveData<List<DayModel>>){
+    override fun findByUserId(userid: String, callback: (List<DayModel?>) -> Unit){
         Timber.i("Finding all days for user $userid")
 
         database.child("user-days").child(userid)
@@ -35,21 +34,170 @@ object FirebaseDayManager: DayStore {
                     Timber.i("Firebase day error : ${error.message}")
                 }
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    for (childSnapshot in snapshot.children) {
+                        Timber.i("Child Key: ${childSnapshot.key}, Value: ${childSnapshot.value}")
+                    }
                     val localList = ArrayList<DayModel>()
                     val children = snapshot.children
+
                     children.forEach {
+
                         val day = it.getValue(DayModel::class.java)
+                        Timber.i("Adding child day : $day")
                         localList.add(day!!)
+                        Timber.i("Local list : ${localList}")
                     }
                     FirebaseMacroManager.database.child("user-days").child(userid)
                         .removeEventListener(this)
-
-                    dayList.value = localList
+                    Timber.i("Initiating callback with localList : ${localList}")
+                    callback(localList)
                 }
             })
     }
-    override fun create(firebaseUser: MutableLiveData<FirebaseUser>, day: DayModel) {
-        val uid = firebaseUser.value!!.uid
+
+//    fun snapshotCheck(userid: String, callback: (Boolean) -> Unit) {
+//        Timber.i("Checking day snapshot for user $userid")
+//        database.child("user-days").child(userid)
+//            .addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onCancelled(error: DatabaseError) {
+//                    Timber.i("Firebase day error : ${error.message}")
+//                }
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    Timber.i("Snapshot : $snapshot")
+//                    if (snapshot.exists()) {
+//                        Timber.i("Snapshot exists")
+//                        callback(true)
+//                    } else {
+//                        Timber.i("Snapshot does not exist")
+//                        callback(false)
+//                    }
+//                }
+//            })
+//    }
+
+//    fun snapshotCheck(userid: String, callback: (Boolean) -> Unit) {
+//        Timber.i("Checking day snapshot for user $userid")
+//        database.child("user-days").child(userid)
+//            .addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onCancelled(error: DatabaseError) {
+//                    Timber.i("Firebase day error : ${error.message}")
+//                }
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    Timber.i("Snapshot : $snapshot")
+//                    if (snapshot.exists()) {
+//                        Timber.i("Snapshot exists")
+//                        callback(true)
+//                    } else {
+//                        Timber.i("Snapshot does not exist")
+//                        var newDayModel = DayModel()
+//                        newDayModel.date = LocalDate.now().toString()
+//                        Timber.i("Creating today with newDayModel: $newDayModel")
+//                        create(firebaseAuth.currentUser!!, newDayModel) {
+//                            createdResult ->
+//                                if (createdResult) {
+//                                    callback(true)
+//                                } else {
+//                                    Timber.i("Error creating day")
+//                                    callback(false)
+//                                }
+//                        }
+//                    }
+//                }
+//            })
+//    }
+
+    fun snapshotCheck(userid: String, callback: (Boolean) -> Unit) {
+        Timber.i("Checking day snapshot for user $userid")
+
+        val userDaysRef = database.child("user-days").child(userid)
+
+        userDaysRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                Timber.i("Firebase day error: ${error.message}")
+                callback(false)
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Timber.i("Snapshot : $snapshot")
+
+                if (snapshot.exists()) {
+                    Timber.i("Snapshot exists")
+                    callback(true)
+                } else {
+                    Timber.i("Snapshot does not exist, creating day")
+
+                    // Create a new DayModel for the current day
+                    val newDayModel = DayModel()
+                    newDayModel.date = LocalDate.now().toString()
+
+                    // Use the create function to store the new DayModel
+                    Timber.i("creating today with newDayModel: $newDayModel")
+                    create(firebaseAuth.currentUser!!, newDayModel) { createdResult ->
+                        if (createdResult) {
+                            Timber.i("Created day for snapshot")
+                            callback(true)
+                        } else {
+                            Timber.i("Error creating day")
+                            callback(false)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+//    private fun safeFindByUserId(userid: String, callback: (List<DayModel?>) -> Unit) {
+//        snapshotCheck(userid) { result ->
+//            if (result) {
+//                Timber.i("Snapshot day found: $result")
+//                findByUserId(userid) { result ->
+//                    callback(result)
+//                }
+//            } else {
+//                Timber.i("No snapshot days found for user $userid, creating today")
+//                var newDayModel = DayModel()
+//                newDayModel.date = LocalDate.now().toString()
+//                Timber.i("Creating today with newDayModel: $newDayModel")
+//                create(firebaseAuth.currentUser!!, newDayModel) {
+//                        createdResult ->
+//                    if (createdResult) {
+//                        Timber.i("createdResult true, finding by user id")
+//                        findByUserId(userid) { newResult ->
+//                            callback(newResult)
+//                        }
+//                    } else {
+//                        Timber.i("Error creating day")
+//                    }
+//                }
+//            }
+//        }
+//        Timber.i("Safe finding all days for user $userid")
+//        findByUserId(userid) { result ->
+//            if (result.isEmpty()) {
+//                Timber.i("No days found for user $userid, creating today")
+//                var newDayModel = DayModel()
+//                newDayModel.date = LocalDate.now().toString()
+//                Timber.i("Creating today with newDayModel: $newDayModel")
+//                create(firebaseAuth.currentUser!!, newDayModel) {
+//                    createdResult ->
+//                    if (createdResult) {
+//                        Timber.i("createdResult true, finding by user id")
+//                        findByUserId(userid) { newResult ->
+//                            callback(newResult)
+//                        }
+//                    } else {
+//                        Timber.i("Error creating day")
+//                    }
+//                }
+//            } else {
+//                Timber.i("Days found for user $userid, result : $result")
+//                callback(result)
+//            }
+//        }
+   // }
+    override fun create(firebaseUser: FirebaseUser, day: DayModel, callback: (Boolean) -> Unit) {
+        val uid = firebaseUser.uid
+
         val key = database.child("user-days").push().key
         Timber.i("Creating day with key : $key")
         if (key == null) {
@@ -57,45 +205,55 @@ object FirebaseDayManager: DayStore {
             return
         }
         day.uid = key
+        Timber.i("Creating day $day")
         val dayValues = day.toMap()
 
         val childAdd = HashMap<String, Any>()
         childAdd["/user-days/$uid/$key"] = dayValues
 
         database.updateChildren(childAdd)
+        callback(true)
     }
-    override fun addMacroId(macroId: String, firebaseUser: MutableLiveData<FirebaseUser>, date: LocalDate) {
+    override fun addMacroId(macroId: String, firebaseUser: FirebaseUser, date: LocalDate) {
         Timber.i("Adding macro id to day")
-        val userId = firebaseUser.value!!.uid
-        var days = MutableLiveData<List<DayModel>>()
-        findByUserId(userId, days)
-        var today = days.value?.filter { d -> d.date == date.toString() }
-        if (today != null) {
+        val userId = firebaseUser.uid
+        var days: List<DayModel?> = emptyList()
+
+        findByUserId(userId) {result ->
+            Timber.i("addMacroId days result : ${result}")
+            days = result
+            Timber.i("addMacroId days : ${days}")
+            val stringDate = date.toString()
+            Timber.i("Date format : ${stringDate}, date type : ${stringDate::class}")
+            //gets a list of days that match today's date
+            val today = days.filter { d ->
+                Timber.i("d.date format : ${d?.date}, d.date type : ${d?.date!!::class}")
+                d.date == date.toString()
+            }
+
             var foundToday = today[0]
-            Timber.i("Updating foundToday : ${foundToday.uid}")
-            var macroIds = foundToday.userMacroIds.toMutableList()
+            Timber.i("Updating foundToday : ${foundToday?.uid}")
+            var macroIds = foundToday?.userMacroIds!!.toMutableList()
             macroIds.add(macroId)
             foundToday.userMacroIds = macroIds
             update(userId, foundToday.uid!!, foundToday)
-        } else {
-            Timber.i("Day not found, creating new one")
-            var newDayModel = DayModel()
-            newDayModel.date = date.toString()
-            newDayModel.userMacroIds = listOf(macroId)
 
-            create(firebaseUser, newDayModel)
         }
     }
-    override fun findByUserDate(userid: String, date: LocalDate): DayModel {
+    override fun findByUserDate(userid: String, date: LocalDate, callback: (DayModel?) -> Unit) {
+        Timber.i("finding by user date ${date.toString()}")
         var day = DayModel()
-        var days = MutableLiveData<List<DayModel>>()
-        findByUserId(userid, days)
+        var days = MutableLiveData<List<DayModel?>>()
+        findByUserId(userid) {result ->
+            days.value = result
 
-        val dayArray = days.value?.filter { d -> d.date == date.toString() }
-        if (dayArray != null) {
-            day = dayArray[0]
+            Timber.i("findByUserDate days : ${days.value}")
+            val dayArray = days.value?.filter { d -> d?.date == date.toString() }
+            Timber.i("findByUserDate dayArray : ${dayArray}")
+            Timber.i("findByUserDate dayArray 0 : ${dayArray?.get(0)}")
+            callback(dayArray?.get(0))
+
         }
-        return day
     }
 
     //            val macroids = day.userMacroIds
@@ -120,12 +278,32 @@ object FirebaseDayManager: DayStore {
     override fun removeMacro(userid: String, date: String, macroId: String) {
         Timber.i("Removing macro $macroId from day $date for user $userid")
         //find day
-        val day = findByUserDate(userid, LocalDate.parse(date))
-        //remove macro from day
-        var macros = day.userMacroIds
-        var updatedMacros = macros.filter { m -> m != macroId }
-        day.userMacroIds = updatedMacros
-        //update day
-        update(userid, day.uid!!, day)
+        findByUserDate(userid, LocalDate.parse(date)) { result ->
+            //remove macro from day
+            var macro = result!!
+            var macroIds = macro.userMacroIds
+            var updatedMacroIds = macroIds.filter { m -> m != macroId }
+            macro.userMacroIds = updatedMacroIds
+            //update day
+            update(userid, result.uid!!, macro)
+        }
     }
+
+    override fun checkDayExists(userid: String, date: LocalDate, callback: (Boolean) -> Unit) {
+        Timber.i("Checking user days for $userid")
+        var days = MutableLiveData<List<DayModel?>>()
+        findByUserId(userid) {result ->
+            days.value = result
+            Timber.i("findByUserDate days : ${days.value}")
+            val dayArray = days.value?.filter { d -> d?.date == date.toString() }
+            Timber.i("findByUserDate dayArray : ${dayArray}")
+            if (dayArray != null) {
+                callback(true)
+            } else {
+                callback(false)
+            }
+        }
+    }
+
+
 }
