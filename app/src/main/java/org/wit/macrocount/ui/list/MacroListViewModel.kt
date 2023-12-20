@@ -20,17 +20,21 @@ class MacroListViewModel: ViewModel() {
     val observableMacroList: MutableLiveData<ArrayList<MacroCountModel>>
         get() = macroList
 
-    var snapshotCheck = false
+    var snapshotCheck = MutableLiveData<Boolean>()
+
+    val observableSnapshotCheck: MutableLiveData<Boolean>
+        get() = snapshotCheck
 
     init {
-        Timber.i("init block executed")
+        Timber.i("init block called")
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         if (currentUser != null) {
             FirebaseDayManager.snapshotCheck(currentUser.uid) { result ->
                 if (result) {
                     loadDayMacros(currentUser.uid)
-                    snapshotCheck = true
+                    Timber.i("snapshot true called")
+                    snapshotCheck.value = true
                 } else {
                     Timber.i("snapshot failed at init block")
                 }
@@ -41,20 +45,22 @@ class MacroListViewModel: ViewModel() {
     }
 
     fun loadDayMacros(userid: String) {
-        Timber.i("loadDayMacros block executed")
+        Timber.i("loadDayMacros block called")
+        Timber.i("loadDayMacros snapshotCheck state called: ${observableSnapshotCheck.value}")
+        Timber.i("loadDayMacros macroList state called: ${macroList.value}")
 
         Timber.i("Loading macros for $userid")
         FirebaseDayManager.findByUserDate(userid, LocalDate.now()) { dayResult ->
             Timber.i("loadDayMacros findByUserDate Result : $dayResult")
             val todayMacroIds = dayResult?.userMacroIds
             Timber.i("loadDayMacros findByUserDate Result macro ids: $todayMacroIds")
-            val todayMacros = ArrayList<MacroCountModel>()
 
             if (todayMacroIds.isNullOrEmpty()) {
                 Timber.i("No macros today")
-                macroList.value = todayMacros
+                macroList.value = ArrayList<MacroCountModel>()
                 Timber.i("No macros today list: ${macroList.value}")
             } else {
+                val todayMacros = ArrayList<MacroCountModel>()
                 Timber.i("Macro ids found for today: $todayMacroIds")
                 todayMacroIds.forEach { m ->
                     val macro = MutableLiveData<MacroCountModel>()
@@ -67,14 +73,15 @@ class MacroListViewModel: ViewModel() {
                                 Timber.i("what is it: $it")
                                 todayMacros.add(it)
                             }
+                            Timber.i("todayMacros: ${todayMacros}")
+                            macroList.value = todayMacros
+                            Timber.i("loadDayMacros Success : ${macroList.value}")
                         } else {
                             Timber.i("loadDayMacros failed to find macro by id: $m")
                         }
                     }
                 }
-                Timber.i("todayMacros: $todayMacros")
-                macroList.value = todayMacros
-                Timber.i("loadDayMacros Success : ${macroList.value}")
+
             }
         }
     }

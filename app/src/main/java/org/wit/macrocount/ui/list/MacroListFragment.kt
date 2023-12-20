@@ -65,9 +65,17 @@ class MacroListFragment : Fragment(), MacroCountListener {
 
         loader = createLoader(requireActivity())
         showLoader(loader,"Downloading macros")
+
+        macroListViewModel.observableSnapshotCheck.observe(viewLifecycleOwner, Observer { snapshotCheck ->
+            Timber.i("SnapshotCheck change called: $snapshotCheck")
+        })
+
         macroListViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
+
                 macros ->
             macros?.let {
+                Timber.i("macroListViewModel.observableMacroList.observe called, snapshot: ${macroListViewModel.observableSnapshotCheck.value}")
+                Timber.i("macroListViewModel.observableMacroList.observe called: ${macroListViewModel.observableMacroList.value}")
                 render(macros as ArrayList<MacroCountModel>)
                 hideLoader(loader)
                 checkSwipeRefresh()
@@ -125,6 +133,8 @@ class MacroListFragment : Fragment(), MacroCountListener {
     }
 
     private fun render(macroList: ArrayList<MacroCountModel>) {
+        Timber.i("render called, snapshot: ${macroListViewModel.observableSnapshotCheck.value}")
+        Timber.i("render called: ${macroListViewModel.observableMacroList.value}")
         fragBinding.recyclerView.adapter = MacroCountAdapter(macroList,this)
         if (macroList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
@@ -157,8 +167,10 @@ class MacroListFragment : Fragment(), MacroCountListener {
     }
 
     override fun onResume() {
+        Timber.i("onResume called snapshotCheck: ${macroListViewModel.observableSnapshotCheck.value}")
+        Timber.i("onResume called: ${macroListViewModel.observableMacroList.value}")
         super.onResume()
-        if (macroListViewModel.snapshotCheck) {
+        if (macroListViewModel.observableSnapshotCheck.value == true) {
             macroListViewModel.loadDayMacros(FirebaseAuth.getInstance().currentUser!!.uid)
         } else {
             Timber.i("snapshot waiting at onResume")
@@ -168,7 +180,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _fragBinding = null
+        //_fragBinding = null
     }
 
     override fun onMacroCountClick(macroCount: MacroCountModel) {
@@ -200,7 +212,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
             macroListViewModel.delete(FirebaseAuth.getInstance().currentUser!!.uid,
                 macroCount.uid!!
             )
-            if (macroListViewModel.snapshotCheck) {
+            if (macroListViewModel.observableSnapshotCheck.value == true) {
                 macroListViewModel.loadDayMacros(FirebaseAuth.getInstance().currentUser!!.uid)
             } else {
                 Timber.i("snapshot waiting at onDelete")
@@ -212,7 +224,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
         fragBinding.swipeRefresh.setOnRefreshListener {
             fragBinding.swipeRefresh.isRefreshing = true
             showLoader(loader,"Loading MacroCounts...")
-            if (macroListViewModel.snapshotCheck) {
+            if (macroListViewModel.observableSnapshotCheck.value == true) {
                 macroListViewModel.loadDayMacros(FirebaseAuth.getInstance().currentUser!!.uid)
             } else {
                 Timber.i("snapshot waiting at swipe refresh")
