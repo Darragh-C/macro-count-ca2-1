@@ -78,7 +78,7 @@ class MacroListFragment : Fragment(), MacroCountListener {
             macros?.let {
                 Timber.i("macroListViewModel.observableMacroList.observe called, snapshot: ${macroListViewModel.observableSnapshotCheck.value}")
                 Timber.i("macroListViewModel.observableMacroList.observe called: ${macroListViewModel.observableMacroList.value}")
-                render(macros as ArrayList<MacroCountModel>)
+                render(macros)
                 hideLoader(loader)
                 checkSwipeRefresh()
             }
@@ -137,7 +137,12 @@ class MacroListFragment : Fragment(), MacroCountListener {
     private fun render(macroList: ArrayList<MacroCountModel>) {
         Timber.i("render called, snapshot: ${macroListViewModel.observableSnapshotCheck.value}")
         Timber.i("render called: ${macroListViewModel.observableMacroList.value}")
-        fragBinding.recyclerView.adapter = MacroCountAdapter(macroList,this)
+        fragBinding.recyclerView.adapter = MacroCountAdapter(
+            macroList,
+            this,
+            macroListViewModel.observableFavourites.value as ArrayList<String>
+        )
+
         if (macroList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
             fragBinding.macrosNotFound.visibility = View.VISIBLE

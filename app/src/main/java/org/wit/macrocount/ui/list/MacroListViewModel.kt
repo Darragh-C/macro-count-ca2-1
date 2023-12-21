@@ -16,11 +16,15 @@ import java.time.LocalDate
 class MacroListViewModel: ViewModel() {
 
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
+    var favourites = MutableLiveData<List<String>>()
 
     private var macroList = MutableLiveData<ArrayList<MacroCountModel>>()
 
     val observableMacroList: MutableLiveData<ArrayList<MacroCountModel>>
         get() = macroList
+
+    val observableFavourites: MutableLiveData<List<String>>
+        get() = favourites
 
     var snapshotCheck = MutableLiveData<Boolean>()
 
@@ -35,6 +39,7 @@ class MacroListViewModel: ViewModel() {
             FirebaseDayManager.snapshotCheck(currentUser.uid) { result ->
                 if (result) {
                     loadDayMacros(currentUser.uid)
+                    getFavourites(currentUser, favourites)
                     Timber.i("snapshot true called")
                     snapshotCheck.value = true
                 } else {
@@ -108,6 +113,11 @@ class MacroListViewModel: ViewModel() {
             Timber.i("Removing macro from favourites")
             FirebaseProfileManager.removeFavourite(macroCount.uid!!, firebaseUser)
         }
+    }
+
+    fun getFavourites(firebaseUser: FirebaseUser, favourites: MutableLiveData<List<String>>) {
+        Timber.i("Getting favourites list view model")
+        FirebaseProfileManager.getFavourites(firebaseUser, favourites)
     }
 
 }

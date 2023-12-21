@@ -171,4 +171,27 @@ object FirebaseProfileManager: UserStore {
         }
     }
 
+    override fun getFavourites(firebaseUser: FirebaseUser, favourites: MutableLiveData<List<String>>) {
+
+        val userId = firebaseUser.uid
+
+        Timber.i("Getting $userId favourites")
+
+        findById(userId) { result ->
+            Timber.i("found profile : ${result}")
+            var profile = result
+            var profileFavs = profile?.favourites!!
+            if (profileFavs.isNullOrEmpty()) {
+                Timber.i("No favourites found")
+                favourites.value = emptyList()
+            } else {
+                Timber.i("Found favourites ${profileFavs}")
+                favourites.value = profileFavs
+                Timber.i("Returned favourites ${favourites.value}")
+            }
+
+        }
+
+    }
+
 }

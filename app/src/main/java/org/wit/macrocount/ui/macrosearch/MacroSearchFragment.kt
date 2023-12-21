@@ -25,6 +25,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import org.wit.macrocount.R
 import org.wit.macrocount.adapters.MacroCountAdapter
 import org.wit.macrocount.adapters.MacroCountListener
@@ -70,6 +71,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
 
         loader = createLoader(requireActivity())
         showLoader(loader,"Loading macros")
+
         macroSearchViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
                 macros ->
             macros?.let {
@@ -143,8 +145,13 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
     }
 
     private fun render(macroList: ArrayList<MacroCountModel>) {
-        macroCountAdapter = MacroCountAdapter(macroList,this)
-        fragBinding.macroSearchRecyclerView.adapter = macroCountAdapter
+
+        fragBinding.macroSearchRecyclerView.adapter = MacroCountAdapter(
+            macroList,
+            this,
+            macroSearchViewModel.observableFavourites.value as ArrayList<String>
+        )
+
 
         if (macroList.isEmpty()) {
             fragBinding.macroSearchRecyclerView.visibility = View.GONE
@@ -247,6 +254,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
 
     override fun handleFavourite(macroCount: MacroCountModel, isFavourite: Boolean) {
         Toast.makeText(activity, "Favourite Toggled $isFavourite, for $macroCount", Toast.LENGTH_LONG).show()
+        macroSearchViewModel.handleFavourite(macroCount, isFavourite, FirebaseAuth.getInstance().currentUser!!)
     }
 
     companion object {

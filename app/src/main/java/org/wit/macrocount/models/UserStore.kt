@@ -10,6 +10,7 @@ interface UserStore {
     fun update(userid: String, user: UserModel)
     fun addFavourite(macroId: String, firebaseUser: FirebaseUser)
     fun removeFavourite(macroId: String, firebaseUser: FirebaseUser)
+    fun getFavourites(firebaseUser: FirebaseUser, favourites: MutableLiveData<List<String>>)
 //    fun findAll(): List<UserModel>
 //    fun create(user: UserModel)
 //    fun update(user: UserModel)

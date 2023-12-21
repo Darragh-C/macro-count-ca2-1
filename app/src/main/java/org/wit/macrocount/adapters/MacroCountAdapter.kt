@@ -18,7 +18,8 @@ interface MacroCountListener{
     fun handleFavourite(macroCount: MacroCountModel, isFavourite: Boolean)
 }
 class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCountModel>,
-                                    private val listener: MacroCountListener
+                                    private val listener: MacroCountListener,
+                                    private val favourites: ArrayList<String>
 ):
 
     RecyclerView.Adapter<MacroCountAdapter.MainHolder>() {
@@ -33,7 +34,7 @@ class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCoun
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val macroCount = macroCounts[holder.adapterPosition]
-        holder.bind(macroCount, listener)
+        holder.bind(macroCount, listener, favourites)
 
     }
 
@@ -56,9 +57,17 @@ class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCoun
 
 
 
-        private var isFavourite = false
+        private var isFavourite: Boolean = false
 
-        fun bind(macroCount: MacroCountModel, listener: MacroCountListener) {
+        fun bind(macroCount: MacroCountModel, listener: MacroCountListener, favourites: ArrayList<String>) {
+
+            isFavourite = favourites.contains(macroCount.uid)
+
+            if (isFavourite) {
+                binding.bookmarkButton.setColorFilter(Color.parseColor("#0E76CC"))
+            } else {
+                binding.bookmarkButton.setColorFilter(Color.LTGRAY)
+            }
 
             binding.root.tag = macroCount
             binding.macroCounterTitle.text = macroCount.title
