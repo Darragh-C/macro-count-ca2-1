@@ -55,57 +55,6 @@ object FirebaseDayManager: DayStore {
             })
     }
 
-//    fun snapshotCheck(userid: String, callback: (Boolean) -> Unit) {
-//        Timber.i("Checking day snapshot for user $userid")
-//        database.child("user-days").child(userid)
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                override fun onCancelled(error: DatabaseError) {
-//                    Timber.i("Firebase day error : ${error.message}")
-//                }
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    Timber.i("Snapshot : $snapshot")
-//                    if (snapshot.exists()) {
-//                        Timber.i("Snapshot exists")
-//                        callback(true)
-//                    } else {
-//                        Timber.i("Snapshot does not exist")
-//                        callback(false)
-//                    }
-//                }
-//            })
-//    }
-
-//    fun snapshotCheck(userid: String, callback: (Boolean) -> Unit) {
-//        Timber.i("Checking day snapshot for user $userid")
-//        database.child("user-days").child(userid)
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                override fun onCancelled(error: DatabaseError) {
-//                    Timber.i("Firebase day error : ${error.message}")
-//                }
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    Timber.i("Snapshot : $snapshot")
-//                    if (snapshot.exists()) {
-//                        Timber.i("Snapshot exists")
-//                        callback(true)
-//                    } else {
-//                        Timber.i("Snapshot does not exist")
-//                        var newDayModel = DayModel()
-//                        newDayModel.date = LocalDate.now().toString()
-//                        Timber.i("Creating today with newDayModel: $newDayModel")
-//                        create(firebaseAuth.currentUser!!, newDayModel) {
-//                            createdResult ->
-//                                if (createdResult) {
-//                                    callback(true)
-//                                } else {
-//                                    Timber.i("Error creating day")
-//                                    callback(false)
-//                                }
-//                        }
-//                    }
-//                }
-//            })
-//    }
-
     fun snapshotCheck(userid: String, callback: (Boolean) -> Unit) {
         Timber.i("Checking day snapshot for user $userid")
 
@@ -134,7 +83,7 @@ object FirebaseDayManager: DayStore {
                     Timber.i("creating today with newDayModel: $newDayModel")
                     create(firebaseAuth.currentUser!!, newDayModel) { createdResult ->
                         if (createdResult) {
-                            Timber.i("Created day for snapshot")
+                            Timber.i("Created day node")
                             callback(true)
                         } else {
                             Timber.i("Error creating day")
@@ -146,55 +95,6 @@ object FirebaseDayManager: DayStore {
         })
     }
 
-//    private fun safeFindByUserId(userid: String, callback: (List<DayModel?>) -> Unit) {
-//        snapshotCheck(userid) { result ->
-//            if (result) {
-//                Timber.i("Snapshot day found: $result")
-//                findByUserId(userid) { result ->
-//                    callback(result)
-//                }
-//            } else {
-//                Timber.i("No snapshot days found for user $userid, creating today")
-//                var newDayModel = DayModel()
-//                newDayModel.date = LocalDate.now().toString()
-//                Timber.i("Creating today with newDayModel: $newDayModel")
-//                create(firebaseAuth.currentUser!!, newDayModel) {
-//                        createdResult ->
-//                    if (createdResult) {
-//                        Timber.i("createdResult true, finding by user id")
-//                        findByUserId(userid) { newResult ->
-//                            callback(newResult)
-//                        }
-//                    } else {
-//                        Timber.i("Error creating day")
-//                    }
-//                }
-//            }
-//        }
-//        Timber.i("Safe finding all days for user $userid")
-//        findByUserId(userid) { result ->
-//            if (result.isEmpty()) {
-//                Timber.i("No days found for user $userid, creating today")
-//                var newDayModel = DayModel()
-//                newDayModel.date = LocalDate.now().toString()
-//                Timber.i("Creating today with newDayModel: $newDayModel")
-//                create(firebaseAuth.currentUser!!, newDayModel) {
-//                    createdResult ->
-//                    if (createdResult) {
-//                        Timber.i("createdResult true, finding by user id")
-//                        findByUserId(userid) { newResult ->
-//                            callback(newResult)
-//                        }
-//                    } else {
-//                        Timber.i("Error creating day")
-//                    }
-//                }
-//            } else {
-//                Timber.i("Days found for user $userid, result : $result")
-//                callback(result)
-//            }
-//        }
-   // }
     override fun create(firebaseUser: FirebaseUser, day: DayModel, callback: (Boolean) -> Unit) {
         val uid = firebaseUser.uid
 
@@ -255,17 +155,6 @@ object FirebaseDayManager: DayStore {
 
         }
     }
-
-    //            val macroids = day.userMacroIds
-//            var macros = ArrayList<MutableLiveData<MacroCountModel>>()
-//            var count = 0
-//            macroids.forEach { m ->
-//                val macro = MutableLiveData<MacroCountModel>()
-//                FirebaseMacroManager.findById(userid, m, macro)
-//                macros.add(macro)
-//                Timber.i("Macro : $m")
-//            }
-//            return macros
 
     override fun update(userid: String, dayid: String, day: DayModel) {
         Timber.i("Updating day : $dayid")

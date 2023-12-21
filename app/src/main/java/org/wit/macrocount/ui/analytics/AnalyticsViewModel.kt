@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.PieEntry
+import com.google.firebase.auth.FirebaseAuth
+import org.wit.macrocount.firebase.FirebaseProfileManager
 //import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
-import org.wit.macrocount.models.UserManager
+
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.utils.calcBmr
 import org.wit.macrocount.utils.calcProtein
@@ -28,6 +30,8 @@ class AnalyticsViewModel: ViewModel() {
     private val calorieFraction = MutableLiveData<String>()
     private val proteinFraction = MutableLiveData<String>()
     private val macroTotals = MutableLiveData<List<PieEntry>>()
+
+    private val userid = FirebaseAuth.getInstance().currentUser!!.uid
 
     val observableMacroList: LiveData<List<MacroCountModel>>
         get() = macroList
@@ -59,7 +63,7 @@ class AnalyticsViewModel: ViewModel() {
     val observableProteinFraction: LiveData<String>
         get() = proteinFraction
 
-    val observablemMcroTotals: LiveData<List<PieEntry>>
+    val observablemMacroTotals: LiveData<List<PieEntry>>
         get() = macroTotals
 
 
@@ -90,8 +94,8 @@ class AnalyticsViewModel: ViewModel() {
         calcProteinProgress()
     }
 
-    fun getUser(id: Long) {
-         user.value = UserManager.findById(id)
+    fun getUser(userid: String) {
+         FirebaseProfileManager.findById(userid, user)
     }
 
     fun calcDailyCalories() {

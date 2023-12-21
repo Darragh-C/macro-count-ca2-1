@@ -77,19 +77,6 @@
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
 
-                <TextView
-                    android:id="@+id/detailGoalDataView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{uservm.observableUser.email}"
-                    android:layout_marginStart="@dimen/text_padding"
-                    android:layout_marginTop="@dimen/text_padding"
-                    android:layout_marginEnd="@dimen/detail_data_padding_medium"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_large" />
-
             </RelativeLayout>
 
             <RelativeLayout

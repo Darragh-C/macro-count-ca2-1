@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseUser
 import org.wit.macrocount.firebase.FirebaseAuthManager
+import org.wit.macrocount.firebase.FirebaseProfileManager
+import org.wit.macrocount.models.UserModel
 
 
 class LoginRegisterViewModel (app: Application) : AndroidViewModel(app) {
