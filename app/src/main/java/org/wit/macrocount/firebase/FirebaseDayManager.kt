@@ -47,7 +47,7 @@ object FirebaseDayManager: DayStore {
                         localList.add(day!!)
                         Timber.i("Local list : ${localList}")
                     }
-                    FirebaseMacroManager.database.child("user-days").child(userid)
+                    database.child("user-days").child(userid)
                         .removeEventListener(this)
                     Timber.i("Initiating callback with localList : ${localList}")
                     callback(localList)
@@ -141,18 +141,57 @@ object FirebaseDayManager: DayStore {
         }
     }
     override fun findByUserDate(userid: String, date: LocalDate, callback: (DayModel?) -> Unit) {
+        if (date == LocalDate.now()) {
+            todayExists(userid) { result ->
+                if (result) {
+                    getDay(userid, date) { day ->
+                        callback(day)
+                    }
+                }
+            }
+        } else {
+            getDay(userid, date) { day ->
+                callback(day)
+            }
+        }
+    }
+
+    fun getDay(userid: String, date: LocalDate, callback: (DayModel?) -> Unit) {
         Timber.i("finding by user date ${date.toString()}")
         var day = DayModel()
         var days = MutableLiveData<List<DayModel?>>()
-        findByUserId(userid) {result ->
+        findByUserId(userid) { result ->
             days.value = result
-
             Timber.i("findByUserDate days : ${days.value}")
             val dayArray = days.value?.filter { d -> d?.date == date.toString() }
             Timber.i("findByUserDate dayArray : ${dayArray}")
-            Timber.i("findByUserDate dayArray 0 : ${dayArray?.get(0)}")
-            callback(dayArray?.get(0))
+            if (dayArray!!.isNotEmpty()) {
+                Timber.i("findByUserDate dayArray 0 : ${dayArray.get(0)}")
+                callback(dayArray[0])
+            } else {
+                Timber.i("day not found}")
+                callback(null)
+            }
+        }
+    }
 
+    fun todayExists(userid: String, callback: (Boolean) -> Unit) {
+        getDay(userid, LocalDate.now()) { day ->
+            if (day != null) {
+                callback(true)
+            } else {
+                val today = DayModel()
+                today.date = LocalDate.now().toString()
+                create(firebaseAuth.currentUser!!, today) { createdResult ->
+                    if (createdResult) {
+                        Timber.i("Created day node")
+                        callback(true)
+                    } else {
+                        Timber.i("Error creating day")
+                        callback(false)
+                    }
+                }
+            }
         }
     }
 

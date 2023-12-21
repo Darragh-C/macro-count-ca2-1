@@ -3,7 +3,6 @@ package org.wit.macrocount.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,10 +12,8 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.material.snackbar.Snackbar
 import org.wit.macrocount.R
 import org.wit.macrocount.activities.Home
-import org.wit.macrocount.ui.signup.SignupActivity
 import org.wit.macrocount.main.MainApp
 import org.wit.macrocount.databinding.ActivityLogInBinding
-import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
 import timber.log.Timber
 import androidx.lifecycle.Observer
@@ -29,7 +26,7 @@ class LoginActivity: AppCompatActivity() {
     lateinit var app : MainApp
     private lateinit var binding: ActivityLogInBinding
     private lateinit var userRepo: UserRepo
-    private lateinit var loginViewModel: LoginViewModel
+    //private lateinit var loginViewModel: LoginViewModel
     private lateinit var loginRegisterViewModel : LoginRegisterViewModel
     private lateinit var startForResult : ActivityResultLauncher<Intent>
 
@@ -44,7 +41,7 @@ class LoginActivity: AppCompatActivity() {
         app = application as MainApp
         userRepo = UserRepo(applicationContext)
 
-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        //loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         Timber.i("Log in started..")
 

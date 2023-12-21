@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseUser
 interface UserStore {
 
     fun create(firebaseUser: FirebaseUser, user: UserModel, callback: (Boolean) -> Unit)
-    fun findById(userid: String, user: MutableLiveData<UserModel>)
+    fun findById(userid: String, callback: (UserModel?) -> Unit)
     fun update(userid: String, user: UserModel)
 //    fun findAll(): List<UserModel>
 //    fun create(user: UserModel)

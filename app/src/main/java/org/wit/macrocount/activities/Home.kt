@@ -100,7 +100,7 @@ class Home : AppCompatActivity() {
     private fun updateNavHeader(currentUser: FirebaseUser) {
         FirebaseImageManager.imageUri.observe(this) { result ->
             if (result == Uri.EMPTY) {
-                Timber.i("DX NO Existing imageUri")
+                Timber.i("No Existing imageUri")
                 if (currentUser.photoUrl != null) {
                     //if you're a google user
                     FirebaseImageManager.updateProfileImage(

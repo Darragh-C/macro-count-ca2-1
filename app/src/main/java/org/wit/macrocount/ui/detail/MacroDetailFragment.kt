@@ -53,7 +53,7 @@ class MacroDetailFragment : Fragment() {
         detailViewModel = ViewModelProvider(this).get(MacroDetailViewModel::class.java)
 
         loader = createLoader(requireActivity())
-        showLoader(loader,"Downloading macro")
+        showLoader(loader,"Loading macro")
 
         detailViewModel.getMacro(FirebaseAuth.getInstance().currentUser!!.uid, args.macroid)
 
@@ -64,6 +64,29 @@ class MacroDetailFragment : Fragment() {
 
         return root
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        setupMenu()
+
+        Timber.i(" onViewCreated macro ${detailViewModel.observableMacro.value}")
+
+
+    }
+
+    private fun render() {
+        if (detailViewModel.observableMacro.value != null) {
+            fragBinding.macrovm = detailViewModel
+
+            if (detailViewModel.observableMacro.value?.image != "") {
+                Timber.i("Loading Existing imageUri: ${detailViewModel.observableMacro.value?.image}")
+                Picasso.get()
+                    .load(detailViewModel.observableMacro.value?.image!!.toUri())
+                    .resize(600, 600)
+                    .into(fragBinding.macroCountImage)
+            }
+        }
     }
 
     private fun setupMenu() {
@@ -90,29 +113,6 @@ class MacroDetailFragment : Fragment() {
                     requireView().findNavController())
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        setupMenu()
-
-        Timber.i(" onViewCreated macro ${detailViewModel.observableMacro.value}")
-
-
-    }
-
-    private fun render() {
-        if (detailViewModel.observableMacro.value != null) {
-            fragBinding.macrovm = detailViewModel
-
-            if (detailViewModel.observableMacro.value?.image != "") {
-                Timber.i("Loading Existing imageUri: ${detailViewModel.observableMacro.value?.image}")
-                Picasso.get()
-                    .load(detailViewModel.observableMacro.value?.image!!.toUri())
-                    .resize(600, 600)
-                    .into(fragBinding.macroCountImage)
-            }
-        }
     }
 
     override fun onResume() {

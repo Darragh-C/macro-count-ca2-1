@@ -20,12 +20,43 @@ object FirebaseProfileManager: UserStore {
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
     private val firebaseAuth = FirebaseAuth.getInstance()
 
-    override fun findById(userid: String, user: MutableLiveData<UserModel>) {
+//    override fun findById(userid: String, callback: (UserModel?) -> Unit) {
+//
+//        database.child("user-profiles").child(userid)
+//            .addValueEventListener(object : ValueEventListener {
+//                override fun onCancelled(error: DatabaseError) {
+//                    Timber.i("Firebase profile error : ${error.message}")
+//                }
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    for (childSnapshot in snapshot.children) {
+//                        Timber.i("Child profile Key: ${childSnapshot.key}, Value: ${childSnapshot.value}")
+//                    }
+//                    val profileList = ArrayList<UserModel>()
+//                    val children = snapshot.children
+//
+//                    children.forEach {
+//
+//                        val profile = it.getValue(UserModel::class.java)
+//                        Timber.i("Adding child profile : $profile")
+//                        profileList.add(profile!!)
+//                        Timber.i("profileList : ${profileList}")
+//                    }
+//                    database.child("user-profiles").child(userid)
+//                        .removeEventListener(this)
+//                    Timber.i("Initiating callback with profileList : ${profileList}")
+//                    callback(profileList[0])
+//                }
+//            })
+//    }
+
+    override fun findById(userid: String, callback: (UserModel?) -> Unit) {
 
         database.child("user-profiles").child(userid)
             .get().addOnSuccessListener {
-                user.value = it.getValue(UserModel::class.java)
-                Timber.i("firebase Got user profile it.value ${it.value}")
+                val profile = it.getValue(UserModel::class.java)
+                //user.value = profileArray[0].getValue(UserModel::class.java)
+                Timber.i("firebase Got user profile ${profile}")
+                callback(profile)
             }.addOnFailureListener{
                 Timber.e("firebase Error getting data $it")
             }
@@ -44,7 +75,7 @@ object FirebaseProfileManager: UserStore {
         val userValues = user.toMap()
 
         val childAdd = HashMap<String, Any>()
-        childAdd["/user-profiles/$key"] = userValues
+        childAdd["/user-profiles/$uid/$key"] = userValues
 
         database.updateChildren(childAdd)
         callback(true)

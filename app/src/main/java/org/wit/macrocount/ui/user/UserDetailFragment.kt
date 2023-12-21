@@ -1,5 +1,7 @@
 package org.wit.macrocount.ui.user
 
+import android.app.AlertDialog
+import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -18,21 +21,26 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
+import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 import org.wit.macrocount.R
+import org.wit.macrocount.customTransformation
 import org.wit.macrocount.databinding.FragmentUserDetailBinding
 import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.models.UserRepo
 import org.wit.macrocount.ui.detail.MacroDetailFragmentDirections
+import org.wit.macrocount.utils.createLoader
+import org.wit.macrocount.utils.hideLoader
+import org.wit.macrocount.utils.showLoader
 import timber.log.Timber
 
 class UserDetailFragment : Fragment() {
-    private lateinit var userRepo: UserRepo
-    private var currentUserId: Long = 0
 
     //private val args by navArgs<UserDetailFragmentArgs>()
     private lateinit var detailViewModel: UserDetailViewModel
     private var _fragBinding: FragmentUserDetailBinding? = null
     private val fragBinding get() = _fragBinding!!
+    lateinit var loader : AlertDialog
 
     companion object {
         fun newInstance() = UserDetailFragment()
@@ -49,35 +57,21 @@ class UserDetailFragment : Fragment() {
 
         detailViewModel = ViewModelProvider(requireActivity()).get(UserDetailViewModel::class.java)
 
-        setupMenu()
+        loader = createLoader(requireActivity())
+        showLoader(loader,"Loading profile")
+
+        detailViewModel.observableUser.observe(viewLifecycleOwner, Observer {
+            render()
+            hideLoader(loader)
+        })
 
         return root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        userRepo = UserRepo(requireActivity().applicationContext)
-        if (userRepo.userId != null) {
-            currentUserId = userRepo.userId!!.toLong()
-        }
+        setupMenu()
 
-        Timber.i("currentUserId: $currentUserId at user fragment")
-
-        if (currentUserId != null) {
-            Timber.i("currentUserId: $currentUserId not null")
-            detailViewModel.getUser(currentUserId.toLong())
-        }
-        val vmUser = detailViewModel.observableUser.value
-        Timber.i("vmUser: $vmUser at user fragment")
-        detailViewModel.observableUser.observe(viewLifecycleOwner, Observer { render() })
-        //Timber.i("observableMacro ${macro}")
-
-
-        fragBinding.editUser.setOnClickListener() {
-            val action = UserDetailFragmentDirections.actionUserDetailFragmentToUserFragment()
-            findNavController().navigate(action)
-        }
-
+        Timber.i(" onViewCreated user profile ${detailViewModel.observableUser.value}")
     }
 
     private fun setupMenu() {
@@ -98,19 +92,28 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun render() {
-        val vmUser = detailViewModel.observableUser.value
-        if (vmUser != null) {
+        if (detailViewModel.observableUser.value != null) {
             fragBinding.uservm = detailViewModel
+
+            val photoUri = FirebaseAuth.getInstance().currentUser?.photoUrl
+            if (photoUri != Uri.EMPTY) {
+                Timber.i("Loading Existing profile photo: ${photoUri}")
+                Picasso.get()
+                    .load(photoUri)
+                    .resize(400, 400)
+                    .transform(customTransformation())
+                    .into(fragBinding.profileImage)
+            }
+
         } else {
             Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show()
         }
     }
 
-
-//    override fun onResume() {
-//        super.onResume()
-//        detailViewModel.getUser(currentUserId)
-//    }
+    override fun onResume() {
+        super.onResume()
+        detailViewModel.loadProfile(detailViewModel.currentUser.uid)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

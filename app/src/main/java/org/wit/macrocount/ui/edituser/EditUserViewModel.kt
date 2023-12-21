@@ -29,32 +29,17 @@ class EditUserViewModel: ViewModel() {
         user.value = userModel
     }
 
-    var snapshotCheck = MutableLiveData<Boolean>()
-
-    val observableSnapshotCheck: MutableLiveData<Boolean>
-        get() = snapshotCheck
-
     init {
         Timber.i("init block called")
-        val currentUser = FirebaseAuth.getInstance().currentUser
-
-        if (currentUser != null) {
-            FirebaseProfileManager.snapshotCheck(currentUser.uid) { result ->
-                if (result) {
-                    loadProfile(currentUser.uid)
-                    Timber.i("snapshot true called")
-                    snapshotCheck.value = true
-                } else {
-                    Timber.i("snapshot failed at init block")
-                }
-            }
-        } else {
-            Timber.i("User not authenticated")
-        }
+        loadProfile(userid)
     }
 
     fun loadProfile(userid: String) {
-        FirebaseProfileManager.findById(userid, user)
+        Timber.i("loading profile for $userid")
+        FirebaseProfileManager.findById(userid) {
+            user.value = it
+            Timber.i("user.value = ${user.value}")
+        }
     }
 
     fun saveUser() {
@@ -67,9 +52,9 @@ class EditUserViewModel: ViewModel() {
         }
     }
 
-    fun getUser(id: Long) {
-         FirebaseProfileManager.findById(userid, user)
-    }
+//    fun getUser(userid: String) {
+//         FirebaseProfileManager.findById(userid, user)
+//    }
 
     fun setGoal(string: String) {
         user.value!!.goal = string

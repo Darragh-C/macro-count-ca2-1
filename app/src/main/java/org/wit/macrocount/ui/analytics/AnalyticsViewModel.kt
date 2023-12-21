@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.PieEntry
 import com.google.firebase.auth.FirebaseAuth
+import org.wit.macrocount.firebase.FirebaseDayManager
+import org.wit.macrocount.firebase.FirebaseMacroManager
 import org.wit.macrocount.firebase.FirebaseProfileManager
 //import org.wit.macrocount.models.MacroCountManager
 import org.wit.macrocount.models.MacroCountModel
@@ -13,6 +15,7 @@ import org.wit.macrocount.models.UserModel
 import org.wit.macrocount.utils.calcBmr
 import org.wit.macrocount.utils.calcProtein
 import timber.log.Timber
+import java.time.LocalDate
 import kotlin.math.roundToInt
 
 class AnalyticsViewModel: ViewModel() {
@@ -68,16 +71,57 @@ class AnalyticsViewModel: ViewModel() {
 
 
     init {
-        load()
+        Timber.i("init block called")
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (currentUser != null) {
+            getUser(currentUser.uid)
+            loadDayMacros(currentUser.uid)
+
+        } else {
+            Timber.i("User not authenticated")
+        }
     }
 
-    fun load() {
-        try {
-            //MacroCountManager.findAll(macroList)
-            Timber.i("Retrofit Success : $macroList.value")
-        }
-        catch (e: Exception) {
-            Timber.i("Retrofit error: ${e.message}")
+    fun loadDayMacros(userid: String) {
+        Timber.i("analytics loadDayMacros block called")
+        //Timber.i("loadDayMacros snapshotCheck state called: ${observableSnapshotCheck.value}")
+        Timber.i("analytics loadDayMacros macroList state called: ${macroList.value}")
+
+        Timber.i("analytics Loading macros for $userid")
+        FirebaseDayManager.findByUserDate(userid, LocalDate.now()) { dayResult ->
+            Timber.i("analytics loadDayMacros findByUserDate Result : $dayResult")
+            val todayMacroIds = dayResult?.userMacroIds
+            Timber.i("analytics loadDayMacros findByUserDate Result macro ids: $todayMacroIds")
+
+            if (todayMacroIds.isNullOrEmpty()) {
+                Timber.i("analytics No macros today")
+                macroList.value = ArrayList<MacroCountModel>()
+                Timber.i("analytics No macros today list: ${macroList.value}")
+            } else {
+                val todayMacros = ArrayList<MacroCountModel>()
+                Timber.i("analytics Macro ids found for today: $todayMacroIds")
+                todayMacroIds.forEach { m ->
+                    val macro = MutableLiveData<MacroCountModel>()
+                    Timber.i("analytics loadDayMacros finding macro by id: $m")
+                    FirebaseMacroManager.asyncFindById(userid, m, macro) {
+                            result ->
+                        if (result) {
+                            Timber.i("analytics loadDayMacros adding found macro to todayMacros: macro: ${macro}, macro.value: ${macro.value}")
+                            macro.value?.let {
+                                Timber.i("what is it: $it")
+                                todayMacros.add(it)
+                            }
+                            Timber.i("analytics todayMacros: ${todayMacros}")
+                            macroList.value = todayMacros
+                            Timber.i("analytics loadDayMacros Success : ${macroList.value}")
+                        } else {
+                            Timber.i("analytics loadDayMacros failed to find macro by id: $m")
+                        }
+                    }
+                }
+
+            }
         }
     }
 
@@ -95,7 +139,10 @@ class AnalyticsViewModel: ViewModel() {
     }
 
     fun getUser(userid: String) {
-         FirebaseProfileManager.findById(userid, user)
+         FirebaseProfileManager.findById(userid) {
+             user.value = it
+             Timber.i("user.value at analytics = ${user.value}")
+         }
     }
 
     fun calcDailyCalories() {
