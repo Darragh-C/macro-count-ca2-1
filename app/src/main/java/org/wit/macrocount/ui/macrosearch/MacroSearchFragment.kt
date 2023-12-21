@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
@@ -242,6 +243,10 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
 
     override fun onMacroCountEdit(macroCount: MacroCountModel) {
         Timber.i("edit click")
+    }
+
+    override fun handleFavourite(macroCount: MacroCountModel, isFavourite: Boolean) {
+        Toast.makeText(activity, "Favourite Toggled $isFavourite, for $macroCount", Toast.LENGTH_LONG).show()
     }
 
     companion object {

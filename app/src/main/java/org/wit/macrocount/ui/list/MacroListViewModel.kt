@@ -6,8 +6,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import org.wit.macrocount.firebase.FirebaseDayManager
 import org.wit.macrocount.firebase.FirebaseMacroManager
+import org.wit.macrocount.firebase.FirebaseProfileManager
 import org.wit.macrocount.models.DayModel
 import org.wit.macrocount.models.MacroCountModel
+import org.wit.macrocount.ui.login.LoggedInViewModel
 import timber.log.Timber
 import java.time.LocalDate
 
@@ -94,6 +96,17 @@ class MacroListViewModel: ViewModel() {
         }
         catch (e: Exception) {
             Timber.i("Report Delete Error : $e.message")
+        }
+    }
+
+    fun handleFavourite(macroCount: MacroCountModel, isFavourite: Boolean, firebaseUser: FirebaseUser) {
+        //add to user's favs
+        if (isFavourite) {
+            Timber.i("Adding macro to favourites")
+            FirebaseProfileManager.addFavourite(macroCount.uid!!, firebaseUser)
+        } else {
+            Timber.i("Removing macro from favourites")
+            FirebaseProfileManager.removeFavourite(macroCount.uid!!, firebaseUser)
         }
     }
 

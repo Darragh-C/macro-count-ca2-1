@@ -8,6 +8,8 @@ interface UserStore {
     fun create(firebaseUser: FirebaseUser, user: UserModel, callback: (Boolean) -> Unit)
     fun findById(userid: String, callback: (UserModel?) -> Unit)
     fun update(userid: String, user: UserModel)
+    fun addFavourite(macroId: String, firebaseUser: FirebaseUser)
+    fun removeFavourite(macroId: String, firebaseUser: FirebaseUser)
 //    fun findAll(): List<UserModel>
 //    fun create(user: UserModel)
 //    fun update(user: UserModel)

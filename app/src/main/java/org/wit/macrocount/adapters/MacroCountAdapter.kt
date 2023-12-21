@@ -9,22 +9,26 @@ import androidx.recyclerview.widget.RecyclerView
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.CardMacrocountBinding
 import org.wit.macrocount.models.MacroCountModel
+import retrofit2.Callback
 
 interface MacroCountListener{
     fun onMacroCountClick(macroCount: MacroCountModel)
     fun onMacroDeleteClick(macroCount: MacroCountModel)
     fun onMacroCountEdit(macroCount: MacroCountModel)
+    fun handleFavourite(macroCount: MacroCountModel, isFavourite: Boolean)
 }
 class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCountModel>,
                                     private val listener: MacroCountListener
 ):
 
     RecyclerView.Adapter<MacroCountAdapter.MainHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardMacrocountBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
         return MainHolder(binding)
+
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
@@ -45,10 +49,14 @@ class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCoun
         notifyItemRemoved(position)
     }
 
+
+
     class MainHolder(private val binding : CardMacrocountBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private var isGrey = true
+
+
+        private var isFavourite = false
 
         fun bind(macroCount: MacroCountModel, listener: MacroCountListener) {
 
@@ -64,18 +72,22 @@ class MacroCountAdapter constructor(private var macroCounts: ArrayList<MacroCoun
             }
 
             binding.bookmarkButton.setOnClickListener() {
-                toggleColor()
+                toggleFavourite() {
+                    listener.handleFavourite(macroCount, isFavourite)
+                }
             }
+
         }
-        private fun toggleColor() {
-            val newColor = if (isGrey) {
+        private fun toggleFavourite(callback: (Boolean) -> Unit) {
+            val newColor = if (!isFavourite) {
                 Color.parseColor("#0E76CC")
+
             } else {
                 Color.LTGRAY
             }
-
             binding.bookmarkButton.setColorFilter(newColor)
-            isGrey = !isGrey
+            isFavourite = !isFavourite
+            callback(isFavourite)
         }
 
     }

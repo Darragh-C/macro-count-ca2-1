@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import org.wit.macrocount.R
 import org.wit.macrocount.adapters.MacroCountAdapter
 import org.wit.macrocount.adapters.MacroCountListener
@@ -220,6 +222,12 @@ class MacroListFragment : Fragment(), MacroCountListener {
 
         }
     }
+
+    override fun handleFavourite(macroCount: MacroCountModel, isFavourite: Boolean) {
+        Toast.makeText(activity, "Favourite Toggled $isFavourite, for $macroCount", Toast.LENGTH_LONG).show()
+        macroListViewModel.handleFavourite(macroCount, isFavourite, FirebaseAuth.getInstance().currentUser!!)
+    }
+
     fun setSwipeRefresh() {
         fragBinding.swipeRefresh.setOnRefreshListener {
             fragBinding.swipeRefresh.isRefreshing = true

@@ -12,7 +12,8 @@ data class UserModel (var uid: String? = "",
                       var weight: String = "0",
                       var height: String = "0",
                       var dob: String = "",
-                      var goal: String = "" ) : Parcelable
+                      var goal: String = "",
+                      var favourites: List<String> = emptyList<String>()) : Parcelable
 {
     @Exclude
     fun toMap(): Map<String, Any?> {
@@ -25,6 +26,7 @@ data class UserModel (var uid: String? = "",
             "height" to height,
             "dob" to dob,
             "goal" to goal,
+            "favourites" to favourites,
         )
     }
 }

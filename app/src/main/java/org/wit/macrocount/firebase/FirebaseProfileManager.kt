@@ -92,7 +92,7 @@ object FirebaseProfileManager: UserStore {
     fun snapshotCheck(userid: String, callback: (Boolean) -> Unit) {
         Timber.i("Checking user-profiles snapshot for user $userid")
 
-        val userDaysRef = FirebaseDayManager.database.child("user-profiles").child(userid)
+        val userDaysRef = database.child("user-profiles").child(userid)
 
         userDaysRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
@@ -130,6 +130,45 @@ object FirebaseProfileManager: UserStore {
                 }
             }
         })
+    }
+
+
+    override fun addFavourite(macroId: String, firebaseUser: FirebaseUser) {
+
+        val userId = firebaseUser.uid
+
+        Timber.i("Adding $macroId to $userId favourites")
+
+        findById(userId) { result ->
+            Timber.i("found profile : ${result}")
+            var profile = result
+            var profileFavs = profile?.favourites?.toMutableList()
+            profileFavs?.add(macroId)
+            profile?.favourites = profileFavs?.toList()!!
+            Timber.i("Updating profile with favourites ${profile?.favourites}")
+
+            update(userId, profile!!)
+            Timber.i("Updated profile with favourites")
+        }
+    }
+
+
+    override fun removeFavourite(macroId: String, firebaseUser: FirebaseUser) {
+        val userId = firebaseUser.uid
+
+        Timber.i("Removing $macroId from $userId favourites")
+
+        findById(userId) { result ->
+            Timber.i("found profile : ${result}")
+            var profile = result
+            var profileFavs = profile?.favourites?.toMutableList()
+            profileFavs?.remove(macroId)
+            profile?.favourites = profileFavs?.toList()!!
+            Timber.i("Updating profile with favourites ${profile?.favourites}")
+
+            update(userId, profile!!)
+            Timber.i("Updated profile with favourites")
+        }
     }
 
 }
