@@ -2,6 +2,7 @@ package org.wit.macrocount.ui.macrosearch
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -42,6 +44,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
     private lateinit var macroCountAdapter: MacroCountAdapter
     private lateinit var filteredMacros: ArrayList<MacroCountModel>
     lateinit var loader : AlertDialog
+    var bookMarks: Boolean = false
 
     private var _fragBinding: FragmentMacroSearchBinding? = null
 
@@ -72,25 +75,15 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         loader = createLoader(requireActivity())
         showLoader(loader,"Loading macros")
 
-        macroSearchViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
-                macros ->
-            macros?.let {
-                render(macros as ArrayList<MacroCountModel>)
-                hideLoader(loader)
-            }
+        macroSearchViewModel.observableFavourites.observe(viewLifecycleOwner, Observer {
+            macroSearchViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
+                    macros ->
+                macros?.let {
+                    render(macros as ArrayList<MacroCountModel>)
+                    hideLoader(loader)
+                }
+            })
         })
-
-
-
-
-//        if (currentUserId != null) {
-//            //userMacros = app.macroCounts.findByUserId(currentUserId)
-//            Timber.i("userMacros at search: $userMacros")
-//            //filteredMacros = userMacros
-//            macroCountAdapter = MacroCountAdapter(userMacros, this)
-//            fragBinding.macroSearchRecyclerView.adapter = macroCountAdapter
-//
-//        }
 
         fragBinding.macroSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -114,34 +107,7 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         fragBinding.filterIcon.setOnClickListener {
             showFilterDialog(fragBinding.filterIcon)
         }
-
-
         return root
-    }
-
-    private fun setupMenu() {
-        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
-            override fun onPrepareMenu(menu: Menu) {
-                // Handle for example visibility of menu items
-            }
-
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_macro_search, menu)
-                val item = menu.findItem(R.id.toggleDonations) as MenuItem
-                item.setActionView(R.layout.togglebutton_layout)
-                val toggleDonations: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
-                toggleDonations.isChecked = false
-
-                toggleDonations.setOnCheckedChangeListener { _, isChecked ->
-                    if (isChecked) macroSearchViewModel.loadAll()
-                    else macroSearchViewModel.load()
-                }
-            }
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Validate and handle the selected menu item
-                return NavigationUI.onNavDestinationSelected(menuItem,
-                    requireView().findNavController())
-            }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun render(macroList: ArrayList<MacroCountModel>) {
@@ -188,6 +154,64 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
             dialog.dismiss()
 
         }
+    }
+
+    private fun setupMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {
+                // Handle for example visibility of menu items
+            }
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_macro_search, menu)
+                val item = menu.findItem(R.id.toggleMacros) as MenuItem
+                val bookmarkToggle = menu.findItem(R.id.toggleBookmarks) as MenuItem
+                item.setActionView(R.layout.togglebutton_layout)
+                val toggleMacross: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                toggleMacross.isChecked = false
+
+                toggleMacross.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        macroSearchViewModel.loadAll()
+                    }
+                    else {
+                        macroSearchViewModel.load()
+                    }
+                    if (bookMarks) {
+                        onToggleBookmarksClicked(bookmarkToggle)
+                    }
+                }
+            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.toggleBookmarks -> {
+                        onToggleBookmarksClicked(menuItem)
+                        true
+                    }
+                    else -> {
+                        NavigationUI.onNavDestinationSelected(menuItem, requireView().findNavController())
+                    }
+                }
+            }
+        })
+    }
+
+    fun onToggleBookmarksClicked(menuItem: MenuItem) {
+        bookMarks = !bookMarks
+
+        // Assuming bookmarkIconDrawable is the Drawable for the bookmark icon
+        val bookmarkIconDrawable: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_bookmark)
+
+        if (bookMarks) {
+            Timber.i("Bookmarks toggled on: $bookMarks")
+            bookmarkIconDrawable?.setTint(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+            macroSearchViewModel.filterFavourites()
+        } else {
+            Timber.i("Bookmarks toggled off: $bookMarks")
+            bookmarkIconDrawable?.setTint(ContextCompat.getColor(requireContext(), R.color.white))
+            macroSearchViewModel.load()
+        }
+
+        menuItem.icon = bookmarkIconDrawable
     }
 
     private fun applyFilter(property: String, operator: String, filterValue: String): ArrayList<MacroCountModel> {

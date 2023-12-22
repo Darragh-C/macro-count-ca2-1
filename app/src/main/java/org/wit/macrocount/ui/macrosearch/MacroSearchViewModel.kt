@@ -5,6 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.wit.macrocount.firebase.FirebaseMacroManager
 import org.wit.macrocount.firebase.FirebaseProfileManager
 //import org.wit.macrocount.models.MacroCountManager
@@ -47,6 +54,16 @@ class MacroSearchViewModel: ViewModel() {
         }
         catch (e: Exception) {
             Timber.i("Report LoadAll Error : $e.message")
+        }
+    }
+
+    fun filterFavourites() {
+        try {
+            Timber.e("Filtering for favourites")
+            macroList.value = macroList.value?.filter { favourites.value?.contains(it.uid)!! }
+            Timber.e("Filtered macroList.value: ${macroList.value}")
+        } catch (e: Exception) {
+            Timber.e("Report LoadFavourites Error: ${e.message}")
         }
     }
 

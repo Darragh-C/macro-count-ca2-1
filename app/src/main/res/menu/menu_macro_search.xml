@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/toggleDonations"
+        android:id="@+id/toggleBookmarks"
+        android:icon="@drawable/ic_bookmark"
+        android:title="Item"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/toggleMacros"
         android:title=""
         app:actionLayout="@layout/togglebutton_layout"
         app:showAsAction="always" />
