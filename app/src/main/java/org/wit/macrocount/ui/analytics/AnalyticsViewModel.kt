@@ -34,6 +34,8 @@ class AnalyticsViewModel: ViewModel() {
     private val proteinFraction = MutableLiveData<String>()
     private val macroTotals = MutableLiveData<List<PieEntry>>()
 
+    private val calculationsStatus = MutableLiveData<Boolean>()
+
     private val userid = FirebaseAuth.getInstance().currentUser!!.uid
 
     val observableMacroList: LiveData<List<MacroCountModel>>
@@ -41,6 +43,9 @@ class AnalyticsViewModel: ViewModel() {
 
     val observableUser: LiveData<UserModel>
         get() = user
+
+    val observableCalculationsStatus: MutableLiveData<Boolean>
+        get() = calculationsStatus
 
     val observableCalorieTotal: MutableLiveData<Int>
         get() = dailyCalories
@@ -65,6 +70,12 @@ class AnalyticsViewModel: ViewModel() {
 
     val observableProteinFraction: LiveData<String>
         get() = proteinFraction
+
+    val observableCalorieGoal: MutableLiveData<Int>
+        get() = calorieGoal
+
+    val observableProteinGoal: MutableLiveData<Int>
+        get() = proteinGoal
 
     val observablemMacroTotals: LiveData<List<PieEntry>>
         get() = macroTotals
@@ -136,6 +147,7 @@ class AnalyticsViewModel: ViewModel() {
         concatCalorieFraction()
         calcCaloriesProgress()
         calcProteinProgress()
+        calculationsStatus.value = true
     }
 
     fun getUser(userid: String) {
