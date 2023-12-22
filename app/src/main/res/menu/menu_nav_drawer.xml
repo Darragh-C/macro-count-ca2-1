@@ -7,7 +7,7 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/macroListFragment"
+            android:id="@+id/home"
             android:icon="@drawable/ic_menu_list"
             android:title="@string/action_macro_list" />
 

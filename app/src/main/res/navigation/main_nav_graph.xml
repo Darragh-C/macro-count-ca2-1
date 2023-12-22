@@ -13,13 +13,13 @@
         <action
             android:id="@+id/action_macroListFragment_to_macroCountFragment"
             app:destination="@id/macroCountFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_macroListFragment_to_macroDetailFragment"
             app:destination="@id/macroDetailFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -30,16 +30,18 @@
         <action
             android:id="@+id/action_macroCountFragment_to_cameraFragment"
             app:destination="@id/cameraFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_macroCountFragment_to_macroSearchFragment"
-            app:destination="@id/macroSearchFragment" />
+            app:destination="@id/macroSearchFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_macroCountFragment_to_macroListFragment"
             app:destination="@id/macroListFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@android:anim/cycle_interpolator"
+            app:exitAnim="@android:anim/bounce_interpolator" />
         <argument
             android:name="macroid"
             app:argType="string"
@@ -63,8 +65,8 @@
         <action
             android:id="@+id/action_userFragment_to_userDetailFragment"
             app:destination="@id/userDetailFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
@@ -85,10 +87,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_macroDetailFragment_to_macroCountFragment"
-            app:destination="@id/macroCountFragment"
             android:label="@string/menu_macro_detail"
-            tools:layout="@layout/fragment_macro_detail"
-            />
+            app:destination="@id/macroCountFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            tools:layout="@layout/fragment_macro_detail" />
 
     </fragment>
     <fragment
@@ -99,8 +102,13 @@
         <action
             android:id="@+id/action_userDetailFragment_to_userFragment"
             app:destination="@id/userFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
+    <activity
+        android:id="@+id/home"
+        android:name="org.wit.macrocount.activities.Home"
+        android:label="app_bar_home"
+        tools:layout="@layout/app_bar_home" />
 
 </navigation>
