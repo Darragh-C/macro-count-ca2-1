@@ -39,7 +39,7 @@ tools:context=".ui.signup.SignupFragment">
             android:maxLength="25"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="@color/black"
+            style="@style/TextColour"
             android:textSize="14sp" />
 
         <EditText
@@ -53,7 +53,7 @@ tools:context=".ui.signup.SignupFragment">
             android:maxLength="25"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="@color/black"
+            style="@style/TextColour"
             android:textSize="14sp" />
 
         <Button
@@ -65,7 +65,6 @@ tools:context=".ui.signup.SignupFragment">
             android:background="@drawable/rounded_button"
             android:stateListAnimator="@null"
             android:text="@string/button_signup"
-
             android:textSize="16sp" />
 
         <TextView

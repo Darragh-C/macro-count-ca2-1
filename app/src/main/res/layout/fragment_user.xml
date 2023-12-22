@@ -9,6 +9,7 @@
 </data>
 <ScrollView
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScreenBg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.edituser.UserFragment">
@@ -34,7 +35,7 @@
                     android:maxLength="25"
                     android:maxLines="1"
                     android:padding="@dimen/text_padding"
-                    android:textColor="@color/colorPrimaryDark"
+                    style="@style/TextColour"
                     android:textSize="@dimen/edit_text_size" />
 
             <LinearLayout
@@ -54,6 +55,7 @@
                     android:paddingBottom="@dimen/text_padding"
                     android:paddingLeft="@dimen/text_padding_large"
                     android:textSize="@dimen/text_size_large"
+                    style="@style/TextColour"
                     />
 
                 <RadioGroup
@@ -93,6 +95,7 @@
                     android:paddingBottom="@dimen/text_padding_medium"
                     android:paddingLeft="@dimen/text_padding_large"
                     android:textSize="@dimen/text_size_large"
+                    style="@style/TextColour"
                     />
 
                 <RadioGroup
@@ -133,6 +136,7 @@
                     android:paddingBottom="@dimen/text_padding"
                     android:paddingLeft="@dimen/text_padding_large"
                     android:textSize="@dimen/text_size_large"
+                    style="@style/TextColour"
                     />
 
                 <NumberPicker
@@ -173,6 +177,7 @@
                     android:paddingBottom="@dimen/text_padding"
                     android:paddingLeft="@dimen/text_padding_large"
                     android:textSize="@dimen/text_size_large"
+                    style="@style/TextColour"
                     />
 
                 <NumberPicker
@@ -192,6 +197,7 @@
                     android:paddingBottom="@dimen/text_padding"
                     android:paddingLeft="@dimen/text_padding_large"
                     android:textSize="@dimen/text_size_large"
+                    style="@style/TextColour"
                     />
 
             </LinearLayout>
@@ -212,6 +218,7 @@
                     android:paddingTop="@dimen/text_padding_medium"
                     android:paddingEnd="@dimen/text_padding"
                     android:paddingBottom="@dimen/text_padding"
+                    style="@style/TextColour"
                     android:text="@string/text_weight"
                     android:textSize="@dimen/text_size_large" />
 
@@ -231,6 +238,7 @@
                     android:paddingBottom="@dimen/text_padding"
                     android:paddingLeft="@dimen/text_padding_large"
                     android:textSize="@dimen/text_size_large"
+                    style="@style/TextColour"
                     />
             </LinearLayout>
 
@@ -251,6 +259,7 @@
                     android:paddingBottom="@dimen/text_padding"
                     android:paddingLeft="@dimen/text_padding_large"
                     android:textSize="@dimen/text_size_large"
+                    style="@style/TextColour"
                     />
 
                 <NumberPicker
@@ -277,7 +286,7 @@
                 android:paddingBottom="@dimen/button_padding"
                 android:stateListAnimator="@null"
                 android:text="@string/btn_save_user"
-                android:textColor="@color/white"
+                style="@style/AltTextColour"
                 android:textSize="@dimen/button_text_size" />
 
         </LinearLayout>

@@ -18,6 +18,7 @@
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        style="@style/ScreenBg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hint_userName"
                     android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:layout_marginStart="@dimen/detail_data_padding_medium"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
@@ -62,7 +63,7 @@
                     android:layout_marginEnd="@dimen/detail_data_padding_medium"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/text_size_large" />
 
             </RelativeLayout>
@@ -78,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/text_gender"
                     android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:layout_marginStart="@dimen/detail_data_padding_medium"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
@@ -93,7 +94,7 @@
                     android:layout_marginEnd="@dimen/detail_data_padding_medium"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/text_size_large" />
 
             </RelativeLayout>
@@ -109,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/text_age"
                     android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:layout_marginStart="@dimen/detail_data_padding_medium"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
@@ -124,7 +125,7 @@
                     android:layout_marginEnd="@dimen/detail_data_padding_medium"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/text_size_large" />
 
             </RelativeLayout>
@@ -140,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/text_height"
                     android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:layout_marginStart="@dimen/detail_data_padding_medium"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
@@ -155,7 +156,7 @@
                     android:layout_marginEnd="@dimen/detail_data_padding_medium"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/text_size_large" />
 
             </RelativeLayout>
@@ -171,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/text_weight"
                     android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:layout_marginStart="@dimen/detail_data_padding_medium"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
@@ -186,7 +187,7 @@
                     android:layout_marginEnd="@dimen/detail_data_padding_medium"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/text_size_large" />
 
             </RelativeLayout>
@@ -202,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/text_dob"
                     android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:layout_marginStart="@dimen/detail_data_padding_medium"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
@@ -217,7 +218,7 @@
                     android:layout_marginEnd="@dimen/detail_data_padding_medium"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/text_size_large" />
 
             </RelativeLayout>
@@ -225,41 +226,6 @@
         </LinearLayout>
 
     </ScrollView>
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        android:weightSum="2">-->
-
-<!--        <Button-->
-<!--            android:id="@+id/editUser"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:layout_margin="@dimen/button_padding"-->
-<!--            android:background="@color/color_primary"-->
-<!--            android:paddingBottom="@dimen/button_padding"-->
-<!--            android:paddingTop="@dimen/button_padding"-->
-<!--            android:text="@string/button_editItem"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="@dimen/button_text_size" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/deleteUser"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:layout_margin="@dimen/button_padding"-->
-<!--            android:background="@color/color_primary"-->
-<!--            android:paddingBottom="@dimen/button_padding"-->
-<!--            android:paddingTop="@dimen/button_padding"-->
-<!--            android:text="@string/button_deleteItem"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="@dimen/button_text_size" />-->
-
-<!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

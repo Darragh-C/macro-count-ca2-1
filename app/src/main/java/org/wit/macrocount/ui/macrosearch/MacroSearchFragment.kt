@@ -75,6 +75,8 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
         loader = createLoader(requireActivity())
         showLoader(loader,"Loading macros")
 
+
+
         macroSearchViewModel.observableFavourites.observe(viewLifecycleOwner, Observer {
             macroSearchViewModel.observableMacroList.observe(viewLifecycleOwner, Observer {
                     macros ->
@@ -112,11 +114,13 @@ class MacroSearchFragment : Fragment(), MacroCountListener {
 
     private fun render(macroList: ArrayList<MacroCountModel>) {
 
-        fragBinding.macroSearchRecyclerView.adapter = MacroCountAdapter(
+        val favouritesList = macroSearchViewModel.observableFavourites.value as? ArrayList<String>
+        macroCountAdapter = MacroCountAdapter(
             macroList,
             this,
-            macroSearchViewModel.observableFavourites.value as ArrayList<String>
+            favouritesList ?: ArrayList()
         )
+        fragBinding.macroSearchRecyclerView.adapter = macroCountAdapter
 
 
         if (macroList.isEmpty()) {

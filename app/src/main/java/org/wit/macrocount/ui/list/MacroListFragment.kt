@@ -135,12 +135,13 @@ class MacroListFragment : Fragment(), MacroCountListener {
     }
 
     private fun render(macroList: ArrayList<MacroCountModel>) {
-        Timber.i("render called, snapshot: ${macroListViewModel.observableSnapshotCheck.value}")
-        Timber.i("render called: ${macroListViewModel.observableMacroList.value}")
+
+        val favouritesList = macroListViewModel.observableFavourites.value as? ArrayList<String>
+
         fragBinding.recyclerView.adapter = MacroCountAdapter(
             macroList,
             this,
-            macroListViewModel.observableFavourites.value as ArrayList<String>
+            favouritesList ?: ArrayList()
         )
 
         if (macroList.isEmpty()) {

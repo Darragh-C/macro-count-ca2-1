@@ -25,7 +25,19 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
 
+    <style name="ScreenBg">
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="CardBg">
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="TextColour">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="AltTextColour">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Theme.Macro.NoActionBar">

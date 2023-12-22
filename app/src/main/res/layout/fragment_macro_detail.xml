@@ -19,6 +19,7 @@
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        style="@style/ScreenBg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{macrovm.observableMacro.title}"
                 android:textSize="@dimen/text_size_xlarge"
-                android:textColor="@color/black"
+                style="@style/TextColour"
                 android:layout_marginStart="@dimen/text_padding_large"
                 android:layout_marginTop="@dimen/text_padding"
                 android:layout_marginEnd="@dimen/text_padding" />
@@ -48,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{macrovm.observableMacro.description}"
                 android:textSize="@dimen/text_size"
-                android:textColor="@color/black"
+                style="@style/TextColour"
                 android:layout_marginStart="@dimen/text_padding_large"
                 android:layout_marginTop="@dimen/text_padding"
                 android:layout_marginEnd="@dimen/text_padding" />
@@ -64,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hint_macroCountCalories"
                     android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:layout_marginStart="@dimen/detail_data_padding_medium"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
@@ -79,7 +80,7 @@
                     android:layout_marginEnd="@dimen/detail_data_padding_large"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/text_size_large" />
 
             </RelativeLayout>
@@ -95,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hint_macroCountProtein"
                     android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:layout_marginStart="@dimen/detail_data_padding_medium"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
@@ -110,7 +111,7 @@
                     android:layout_marginEnd="@dimen/detail_data_padding_large"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/text_size_large" />
 
             </RelativeLayout>
@@ -126,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hint_macroCountCarbs"
                     android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:layout_marginStart="@dimen/detail_data_padding_medium"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
@@ -141,7 +142,7 @@
                     android:layout_marginEnd="@dimen/detail_data_padding_large"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/text_size_large" />
 
             </RelativeLayout>
@@ -157,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hint_macroCountFat"
                     android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:layout_marginStart="@dimen/detail_data_padding_medium"
                     android:layout_marginTop="@dimen/text_padding"
                     android:layout_marginEnd="@dimen/text_padding" />
@@ -172,7 +173,7 @@
                     android:layout_marginEnd="@dimen/detail_data_padding_large"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/text_size_large" />
 
             </RelativeLayout>

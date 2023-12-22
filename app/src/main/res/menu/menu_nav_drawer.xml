@@ -52,4 +52,16 @@
                 android:title="@string/menu_signout" />
         </menu>
     </item>
+
+    <item android:title="Mode toggle">
+        <menu>
+            <item
+                android:id="@+id/nav_dark_toggle"
+                android:icon="@drawable/ic_menu_night"
+                android:title="Dark Mode"
+                android:onClick="toggleDarkMode"
+                />
+
+        </menu>
+    </item>
 </menu>

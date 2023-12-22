@@ -18,6 +18,7 @@
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        style="@style/ScreenBg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +43,7 @@
                     android:maxLength="25"
                     android:maxLines="1"
                     android:padding="@dimen/text_padding"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/edit_text_size" />
 
                 <EditText
@@ -57,7 +58,7 @@
                     android:maxLength="25"
                     android:maxLines="1"
                     android:padding="@dimen/text_padding"
-                    android:textColor="@color/black"
+                    style="@style/TextColour"
                     android:textSize="@dimen/edit_text_size" />
 
                 <RelativeLayout
@@ -71,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/hint_macroCountCalories"
                         android:textSize="@dimen/slider_text_size"
-                        android:textColor="@color/black"
+                        style="@style/TextColour"
                         android:layout_marginStart="@dimen/text_padding"
                         android:layout_marginTop="@dimen/text_padding"
                         android:layout_marginEnd="@dimen/text_padding" />
@@ -86,7 +87,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:text="@={macrovm.observableMacro.calories}"
-                        android:textColor="@color/black"
+                        style="@style/TextColour"
                         android:textSize="@dimen/slider_text_size" />
 
                 </RelativeLayout>
@@ -110,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/hint_macroCountProtein"
                         android:textSize="@dimen/slider_text_size"
-                        android:textColor="@color/black"
+                        style="@style/TextColour"
                         android:layout_marginStart="@dimen/text_padding"
                         android:layout_marginTop="@dimen/text_padding"
                         android:layout_marginEnd="@dimen/text_padding" />
@@ -125,7 +126,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:text="@={macrovm.observableMacro.protein}"
-                        android:textColor="@color/black"
+                        style="@style/TextColour"
                         android:textSize="@dimen/slider_text_size" />
 
                 </RelativeLayout>
@@ -149,7 +150,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/hint_macroCountCarbs"
                         android:textSize="@dimen/slider_text_size"
-                        android:textColor="@color/black"
+                        style="@style/TextColour"
                         android:layout_marginStart="@dimen/text_padding"
                         android:layout_marginTop="@dimen/text_padding"
                         android:layout_marginEnd="@dimen/text_padding" />
@@ -164,7 +165,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:text="@={macrovm.observableMacro.carbs}"
-                        android:textColor="@color/black"
+                        style="@style/TextColour"
                         android:textSize="@dimen/slider_text_size" />
 
                 </RelativeLayout>
@@ -188,7 +189,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/hint_macroCountFat"
                         android:textSize="@dimen/slider_text_size"
-                        android:textColor="@color/black"
+                        style="@style/TextColour"
                         android:layout_marginStart="@dimen/text_padding"
                         android:layout_marginTop="@dimen/text_padding"
                         android:layout_marginEnd="@dimen/text_padding" />
@@ -203,7 +204,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:text="@={macrovm.observableMacro.fat}"
-                        android:textColor="@color/black"
+                        style="@style/TextColour"
                         android:textSize="@dimen/slider_text_size" />
 
                 </RelativeLayout>
@@ -232,7 +233,7 @@
                         android:paddingBottom="@dimen/button_padding"
                         android:paddingTop="@dimen/button_padding"
                         android:text="@string/button_addImage"
-                        android:textColor="@color/white"
+                        style="@style/AltTextColour"
                         android:textSize="@dimen/button_text_size" />
 
                     <Button
@@ -245,7 +246,7 @@
                         android:paddingBottom="@dimen/button_padding"
                         android:paddingTop="@dimen/button_padding"
                         android:text="@string/button_takePhoto"
-                        android:textColor="@color/white"
+                        style="@style/AltTextColour"
                         android:textSize="@dimen/button_text_size" />
 
                 </LinearLayout>
@@ -268,7 +269,7 @@
                     android:paddingBottom="@dimen/button_padding"
                     android:stateListAnimator="@null"
                     android:text="@string/save_macroCount"
-                    android:textColor="@color/white"
+                    style="@style/AltTextColour"
                     android:textSize="@dimen/button_text_size" />
 
 

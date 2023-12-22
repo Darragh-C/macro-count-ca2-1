@@ -1,6 +1,7 @@
 package org.wit.macrocount.activities
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -19,6 +22,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationView
 import org.wit.macrocount.R
 import org.wit.macrocount.databinding.HomeBinding
 import org.wit.macrocount.databinding.NavHeaderBinding
@@ -43,6 +47,11 @@ class Home : AppCompatActivity() {
     private lateinit var headerView : View
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
 
+    private lateinit var darkToggle: SwitchCompat
+    private var nightMode: Boolean = false
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
+
     override fun onCreate(savedInstanceState: Bundle?) {
         i("starting home")
         super.onCreate(savedInstanceState)
@@ -52,7 +61,6 @@ class Home : AppCompatActivity() {
         drawerLayout = homeBinding.drawerLayout
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
         val navController = findNavController(R.id.nav_host_fragment)
 
         appBarConfiguration = AppBarConfiguration(setOf(
@@ -68,6 +76,30 @@ class Home : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         initNavHeader()
+
+
+//        darkToggle = navHeaderBinding.nightModeSwitch
+        sharedPreferences = getSharedPreferences("MODE", MODE_PRIVATE)
+        nightMode = sharedPreferences.getBoolean("nightMode", false)
+//
+//        if (nightMode) {
+//            darkToggle.isChecked = true
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//        }
+//        darkToggle.setOnClickListener{
+//            if (nightMode) {
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//                editor = sharedPreferences.edit()
+//                editor.putBoolean("nightMode", false)
+//            } else {
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//                editor = sharedPreferences.edit()
+//                editor.putBoolean("nightMode", true)
+//            }
+//            editor.apply()
+//        }
+
+
 
     }
 
@@ -95,6 +127,21 @@ class Home : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
+    }
+
+    fun toggleDarkMode(item: MenuItem) {
+        if (nightMode) {
+            Timber.i("Night Mode Off")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            editor = sharedPreferences.edit()
+            editor.putBoolean("nightMode", false)
+        } else {
+            Timber.i("Night Mode On")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            editor = sharedPreferences.edit()
+            editor.putBoolean("nightMode", true)
+        }
+        editor.apply()
     }
 
     private fun updateNavHeader(currentUser: FirebaseUser) {

@@ -40,8 +40,8 @@
         <action
             android:id="@+id/action_macroCountFragment_to_macroListFragment"
             app:destination="@id/macroListFragment"
-            app:enterAnim="@android:anim/cycle_interpolator"
-            app:exitAnim="@android:anim/bounce_interpolator" />
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="macroid"
             app:argType="string"
